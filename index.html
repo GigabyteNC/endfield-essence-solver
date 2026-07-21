@@ -1,202 +1,419 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arknights: Endfield - Essence Farming Solver</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Essence Solver | Arknights: Endfield Tactical Advisor</title>
   <style>
-    /* Industrial Sci-Fi Grid Background */
-    body {
-      background-color: #090d16;
-      background-image: 
-        linear-gradient(rgba(15, 23, 42, 0.8) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(15, 23, 42, 0.8) 1px, transparent 1px);
-      background-size: 24px 24px;
+    /* ===================================================
+       GLOBAL RESET & THEME VARIABLES
+       =================================================== */
+    :root {
+      --bg-dark: #090d12;
+      --card-bg: #0d1117;
+      --accent-cyan: #00F0FF;
+      --accent-yellow: #FFB800;
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --border-color: rgba(0, 240, 255, 0.25);
     }
 
-    /* HUD Glow & Corner Accent Styling */
-    .hud-card {
-      background: rgba(13, 19, 33, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      box-shadow: inset 0 0 15px rgba(59, 130, 246, 0.05);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      padding: 20px 12px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    /* ===================================================
+       1. HERO TITLE BANNER
+       =================================================== */
+    .endfield-hero-banner {
+      position: relative;
+      background-color: var(--card-bg);
+      background-image: 
+        radial-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 0),
+        linear-gradient(to bottom, rgba(13, 17, 23, 0.85), rgba(13, 17, 23, 0.98));
+      background-size: 20px 20px, 100% 100%;
+      border: 1px solid var(--border-color);
+      clip-path: polygon(
+        0 15px, 15px 0, 
+        calc(100% - 15px) 0, 100% 15px, 
+        100% calc(100% - 15px), calc(100% - 15px) 100%, 
+        15px 100%, 0 calc(100% - 15px)
+      );
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    .telemetry-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent-cyan);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-cyan);
+      animation: pulse 2s infinite;
+    }
+
+    .domain-tag {
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 2px;
+    }
+
+    .subtitle-tag {
+      color: var(--accent-yellow);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .main-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+      color: #ffffff;
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+    }
+
+    .description-text {
+      color: #c9d1d9;
+      font-size: 1rem;
+      max-width: 750px;
+    }
+
+    .hazard-stripe {
+      height: 4px;
+      width: 100%;
+      margin-top: 20px;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--accent-yellow),
+        var(--accent-yellow) 10px,
+        var(--card-bg) 10px,
+        var(--card-bg) 20px
+      );
+    }
+
+    /* Corner Brackets */
+    .bracket {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: var(--accent-cyan);
+      border-style: solid;
+      pointer-events: none;
+    }
+    .top-left { top: 4px; left: 4px; border-width: 2px 0 0 2px; }
+    .top-right { top: 4px; right: 4px; border-width: 2px 2px 0 0; }
+    .bottom-left { bottom: 4px; left: 4px; border-width: 0 0 2px 2px; }
+    .bottom-right { bottom: 4px; right: 4px; border-width: 0 2px 2px 0; }
+
+    /* ===================================================
+       2. OPERATOR SHOWCASE BANNER GRID
+       =================================================== */
+    .section-header {
+      color: var(--accent-cyan);
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-header::after {
+      content: '';
+      flex-grow: 1;
+      height: 1px;
+      background: rgba(0, 240, 255, 0.2);
+    }
+
+    .operator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .op-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .op-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-2px);
+    }
+
+    .op-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .op-name {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .op-tag {
+      background: rgba(0, 240, 255, 0.1);
+      color: var(--accent-cyan);
+      border: 1px solid var(--accent-cyan);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 6px;
+    }
+
+    .damage-stat {
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--accent-yellow);
+      padding: 10px 14px;
+      margin-top: 12px;
+    }
+
+    .damage-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .damage-value {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--accent-yellow);
+    }
+
+    /* ===================================================
+       3. MECHANICS CALLOUT SECTION
+       =================================================== */
+    .mechanic-banner {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .mechanic-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent-yellow);
+      margin-bottom: 8px;
+    }
+
+    .mechanic-list {
+      list-style-type: none;
+      margin-top: 12px;
+    }
+
+    .mechanic-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 8px;
+      color: #c9d1d9;
+      font-size: 0.95rem;
+    }
+
+    .mechanic-list li::before {
+      content: '◈';
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
+    }
+
+    /* ===================================================
+       4. YOUTUBE CHANNEL CALLOUT FOOTER BANNER
+       =================================================== */
+    .youtube-banner {
+      background: linear-gradient(135deg, #141921 0%, #0d1117 100%);
+      border: 1px solid var(--accent-yellow);
+      padding: 24px;
+      text-align: center;
       position: relative;
     }
 
-    .hud-card::before {
-      content: '';
-      position: absolute;
-      top: -1px; left: -1px;
-      width: 8px; height: 8px;
-      border-top: 2px solid #3b82f6;
-      border-left: 2px solid #3b82f6;
+    .yt-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
     }
 
-    .hud-card::after {
-      content: '';
-      position: absolute;
-      bottom: -1px; right: -1px;
-      width: 8px; height: 8px;
-      border-bottom: 2px solid #3b82f6;
-      border-right: 2px solid #3b82f6;
+    .yt-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
     }
 
-    .hud-card:hover {
-      border-color: rgba(59, 130, 246, 0.6);
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+    .yt-button {
+      display: inline-block;
+      background-color: var(--accent-yellow);
+      color: #000000;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 10px 24px;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+      transition: background-color 0.2s;
     }
 
-    /* Scrollbar Polish for Mobile Popovers */
-    ::-webkit-scrollbar {
-      width: 4px;
+    .yt-button:hover {
+      background-color: #e0a200;
     }
-    ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #3b82f6;
-      border-radius: 2px;
+
+    /* Keyframe Animations */
+    @keyframes pulse {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
     }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen p-3 sm:p-6 md:p-8 font-mono">
+<body>
 
-  <div class="max-w-6xl mx-auto space-y-6 sm:space-y-8">
-    
-    <!-- Top Header / Tactical Interface Banner -->
-    <header class="border-b-2 border-blue-500/40 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-2.5 h-7 sm:w-3 sm:h-8 bg-blue-500 rounded-sm animate-pulse"></div>
-        <div>
-          <h1 class="text-lg sm:text-2xl font-black tracking-wider sm:tracking-widest text-blue-400 uppercase">ESSENCE SOLVER // OVERRIDE</h1>
-          <p class="text-[10px] sm:text-[11px] text-slate-400 tracking-wider">END FIELD INDUSTRIES &bull; ALLUVIUM RECON SYSTEM</p>
+  <div class="container">
+
+    <!-- HERO TITLE BANNER -->
+    <section class="endfield-hero-banner">
+      <div class="telemetry-strip">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span class="status-text">SYSTEM ONLINE // SSL ENFORCED</span>
         </div>
-      </div>
-      <div class="text-[11px] sm:text-xs bg-slate-900/90 border border-blue-500/30 px-3 py-1.5 rounded text-slate-300 font-sans flex items-center gap-2 self-stretch sm:self-auto justify-center">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        DATABASE ONLINE: <span class="text-emerald-400 font-bold">11 NODES</span>
-      </div>
-    </header>
-
-    <!-- Interactive Control Deck (Mobile 1-col -> Tablet 2-col -> Desktop 4-col) -->
-    <section class="hud-card p-4 sm:p-6 rounded-lg grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      
-      <!-- [01] Weapon Search Quick-Select -->
-      <div class="relative">
-        <label class="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-1.5">
-          [01] WEAPON PRESET
-        </label>
-        <input 
-          type="text" 
-          id="weaponSearch" 
-          placeholder="SEARCH WEAPON..." 
-          class="w-full bg-slate-950/90 border border-slate-700/80 rounded px-3 py-2.5 sm:py-2 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-blue-400 font-mono tracking-wider transition"
-        >
-        <div id="weaponSuggestions" class="hidden absolute top-full left-0 right-0 mt-2 bg-slate-950/95 backdrop-blur-md border border-blue-500/60 rounded-lg shadow-2xl max-h-60 overflow-y-auto z-50 divide-y divide-slate-800"></div>
+        <div class="domain-tag">ENDFIELDSOLVER.COM</div>
       </div>
 
-      <!-- [02] Attribute Stat Select -->
-      <div>
-        <label class="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-1.5">
-          [02] ATTRIBUTE STAT
-        </label>
-        <select id="attributeSelect" class="w-full bg-slate-950/90 border border-slate-700/80 rounded px-3 py-2.5 sm:py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-400 font-mono transition">
-          <option value="">-- SELECT ATTRIBUTE --</option>
-          <option value="Agility Boost">Agility Boost</option>
-          <option value="Strength Boost">Strength Boost</option>
-          <option value="Will Boost">Will Boost</option>
-          <option value="Intellect Boost">Intellect Boost</option>
-          <option value="Main Attribute Boost">Main Attribute Boost</option>
-        </select>
+      <div class="banner-content">
+        <div class="subtitle-tag">TACTICAL DAMAGE CALCULATOR & ROTATION ADVISOR</div>
+        <h1 class="main-title">ESSENCE SOLVER</h1>
+        <p class="description-text">
+          Optimized rotation models, build thresholds, and corrosion mechanics for Arknights: Endfield.
+        </p>
       </div>
 
-      <!-- [03] Secondary Stat Select -->
-      <div>
-        <label class="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-1.5">
-          [03] SECONDARY STAT
-        </label>
-        <select id="secondarySelect" class="w-full bg-slate-950/90 border border-slate-700/80 rounded px-3 py-2.5 sm:py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-400 font-mono transition">
-          <option value="">-- SELECT SECONDARY --</option>
-          <option value="Attack Boost">Attack Boost</option>
-          <option value="HP Boost">HP Boost</option>
-          <option value="Physical DMG Boost">Physical DMG Boost</option>
-          <option value="Heat DMG Boost">Heat DMG Boost</option>
-          <option value="Electric DMG Boost">Electric DMG Boost</option>
-          <option value="Cryo DMG Boost">Cryo DMG Boost</option>
-          <option value="Nature DMG Boost">Nature DMG Boost</option>
-          <option value="Arts DMG Boost">Arts DMG Boost</option>
-          <option value="Arts Intensity Boost">Arts Intensity Boost</option>
-          <option value="Critical Rate Boost">Critical Rate Boost</option>
-          <option value="Ultimate Gain Efficiency Boost">Ultimate Gain Efficiency Boost</option>
-          <option value="Treatment Efficiency Boost">Treatment Efficiency Boost</option>
-        </select>
-      </div>
-
-      <!-- [04] Skill Stat Select -->
-      <div>
-        <label class="block text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-1.5">
-          [04] SKILL STAT
-        </label>
-        <select id="skillSelect" class="w-full bg-slate-950/90 border border-slate-700/80 rounded px-3 py-2.5 sm:py-2 text-xs text-slate-200 focus:outline-none focus:border-blue-400 font-mono transition">
-          <option value="">-- SELECT SKILL --</option>
-          <option value="Assault">Assault</option>
-          <option value="Suppression">Suppression</option>
-          <option value="Pursuit">Pursuit</option>
-          <option value="Crusher">Crusher</option>
-          <option value="Combative">Combative</option>
-          <option value="Brutality">Brutality</option>
-          <option value="Infliction">Infliction</option>
-          <option value="Inspiring">Inspiring</option>
-          <option value="Medicant">Medicant</option>
-          <option value="Fracture">Fracture</option>
-          <option value="Detonate">Detonate</option>
-          <option value="Twilight">Twilight</option>
-          <option value="Flow">Flow</option>
-          <option value="Efficacy">Efficacy</option>
-        </select>
-      </div>
-
+      <div class="hazard-stripe"></div>
+      <div class="bracket top-left"></div>
+      <div class="bracket top-right"></div>
+      <div class="bracket bottom-left"></div>
+      <div class="bracket bottom-right"></div>
     </section>
 
-    <!-- Farming Results Display -->
-    <main class="space-y-6">
-      
-      <!-- Optimal 100% Drops -->
-      <div>
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 border-b border-emerald-500/30 pb-2 gap-1">
-          <h2 class="text-xs font-bold uppercase text-emerald-400 tracking-widest flex items-center gap-2">
-            <span class="inline-block w-2 h-2 bg-emerald-400 rounded-full flex-shrink-0"></span> 
-            OPTIMAL TARGET NODES (100% MATCH)
-          </h2>
-          <span class="text-[10px] text-emerald-500/80 uppercase">BOTH STATS DROP HERE</span>
+    <!-- OPERATOR SHOWCASE SECTION -->
+    <div class="section-header">TEAM SHOWCASES & PEAK OUTPUTS</div>
+
+    <div class="operator-grid">
+      <!-- Akekuri Card -->
+      <div class="op-card">
+        <div class="op-header">
+          <span class="op-name">Akekuri</span>
+          <span class="op-tag">TEAM LEAD</span>
         </div>
-        <div id="optimalResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <p class="text-xs text-slate-500 italic col-span-full">Awaiting stat selection or weapon preset input...</p>
+        <p class="description-text" style="font-size: 0.85rem;">
+          Budget Peak Rotation setup utilizing optimal node synchronization.
+        </p>
+        <div class="damage-stat">
+          <div class="damage-label">BUDGET PEAK OUTPUT</div>
+          <div class="damage-value">953,981</div>
         </div>
       </div>
 
-      <!-- Partial Matches -->
-      <div>
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-3 border-b border-amber-500/30 pb-2 gap-1">
-          <h2 class="text-xs font-bold uppercase text-amber-400 tracking-widest flex items-center gap-2">
-            <span class="inline-block w-2 h-2 bg-amber-400 rounded-full flex-shrink-0"></span> 
-            PARTIAL TARGET NODES (SINGLE STAT DROP)
-          </h2>
-          <span class="text-[10px] text-amber-500/80 uppercase">50% STAT MATCH</span>
+      <!-- Lifeng Card -->
+      <div class="op-card">
+        <div class="op-header">
+          <span class="op-name">Lifeng</span>
+          <span class="op-tag">TEAM LEAD</span>
         </div>
-        <div id="partialResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <p class="text-xs text-slate-500 italic col-span-full">No partial node calculations loaded.</p>
+        <p class="description-text" style="font-size: 0.85rem;">
+          High-frequency skill sequence with Energy Alluvium integration.
+        </p>
+        <div class="damage-stat">
+          <div class="damage-label">ROTATION THRESHOLD</div>
+          <div class="damage-value">OPTIMIZED</div>
         </div>
       </div>
 
-    </main>
+      <!-- Chen Qianyu Card -->
+      <div class="op-card">
+        <div class="op-header">
+          <span class="op-name">Chen Qianyu</span>
+          <span class="op-tag">TEAM LEAD</span>
+        </div>
+        <p class="description-text" style="font-size: 0.85rem;">
+          Corrosion trigger build maximizing elemental multiplier scaling.
+        </p>
+        <div class="damage-stat">
+          <div class="damage-label">CORROSION SCALING</div>
+          <div class="damage-value">MAX TIER</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CORROSION MECHANICS BREAKDOWN BANNER -->
+    <div class="section-header">MECHANICS BREAKDOWN</div>
+
+    <section class="mechanic-banner">
+      <div class="mechanic-title">CORROSION MECHANIC OVERVIEW</div>
+      <p class="description-text">
+        Understanding elemental stack windows and threshold scaling ensures maximum output during burst cycles:
+      </p>
+      <ul class="mechanic-list">
+        <li><strong>Application Phase:</strong> Stacking debuffs increases elemental vulnerability before ultimate activation.</li>
+        <li><strong>Multiplier Zone:</strong> Energy Alluvium Node 04 amplifies peak damage ticks during frozen frames.</li>
+        <li><strong>Rotation Timing:</strong> Always sequence team buffs prior to triggering the primary corrosion explosion.</li>
+      </ul>
+    </section>
+
+    <!-- YOUTUBE VIDEO PROMO BANNER -->
+    <section class="youtube-banner">
+      <div class="yt-title">FULL GAMEPLAY & DAMAGE SHOWCASES</div>
+      <div class="yt-subtitle">Watch complete rotation breakdowns, freeze-frame analysis, and build guides on YouTube.</div>
+      <a href="https://youtube.com" target="_blank" class="yt-button">WATCH SHOWCASES</a>
+    </section>
 
   </div>
 
-  <!-- Connected Scripts inside Endfield Folder -->
-  <script src="essenceSolver.js"></script>
-  <script src="weaponDatabase.js"></script>
-  <script src="solverUI.js"></script>
 </body>
 </html>
