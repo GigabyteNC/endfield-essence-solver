@@ -44,47 +44,31 @@
 
     <!-- Header Banner -->
     <header class="hud-card p-6 relative">
-      <div class="text-[#FFB800] text-xs font-bold tracking-widest mb-1">// WEAPON ESSENCE FINDER</div>
+      <div class="text-[#FFB800] text-xs font-bold tracking-widest mb-1">// WEAPON ESSENCE MATCHING</div>
       <h1 class="text-2xl md:text-3xl font-black text-white tracking-wide">ENERGY ALLUVIUM LOCATOR</h1>
-      <p class="text-gray-400 text-xs mt-1">Select weapon stats or search by weapon name to list matching Energy Alluvium farming locations.</p>
+      <p class="text-gray-400 text-xs mt-1">Select weapon attributes to find matching Energy Alluvium farming locations.</p>
     </header>
 
-    <!-- Controls Section: Dropdowns & Weapon Search -->
+    <!-- Controls Section: Strict 1-Attribute, 1-Secondary, 1-Skill Dropdowns -->
     <section class="hud-card p-6 space-y-6">
       
       <!-- Weapon Search Input -->
       <div>
-        <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon Name</label>
+        <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon Name (Optional)</label>
         <input type="text" id="weaponSearch" placeholder="Type weapon name (e.g. Valley Cleaver)..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#00F0FF] focus:outline-none font-semibold">
       </div>
 
-      <!-- Attribute Stats Dropdowns (Select 3) -->
-      <div>
-        <div class="text-xs font-bold text-[#00F0FF] uppercase mb-2 tracking-wider flex items-center gap-2">
-          <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
-          Select 3 Attribute Stats
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <select id="attr1" onchange="filterLocations()" class="bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
-            <option value="any">Attribute Stat 1 (Any)</option>
-            <option value="Agility Boost">Agility Boost</option>
-            <option value="Strength Boost">Strength Boost</option>
-            <option value="Will Boost">Will Boost</option>
-            <option value="Intellect Boost">Intellect Boost</option>
-            <option value="Main Attribute Boost">Main Attribute Boost</option>
-          </select>
-
-          <select id="attr2" onchange="filterLocations()" class="bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
-            <option value="any">Attribute Stat 2 (Any)</option>
-            <option value="Agility Boost">Agility Boost</option>
-            <option value="Strength Boost">Strength Boost</option>
-            <option value="Will Boost">Will Boost</option>
-            <option value="Intellect Boost">Intellect Boost</option>
-            <option value="Main Attribute Boost">Main Attribute Boost</option>
-          </select>
-
-          <select id="attr3" onchange="filterLocations()" class="bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
-            <option value="any">Attribute Stat 3 (Any)</option>
+      <!-- 3 Specific Category Dropdowns -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- 1. Attribute Stat -->
+        <div>
+          <label class="block text-xs font-bold text-[#00F0FF] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
+            1. Attribute Stat
+          </label>
+          <select id="attrStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
+            <option value="any">Any Attribute Stat</option>
             <option value="Agility Boost">Agility Boost</option>
             <option value="Strength Boost">Strength Boost</option>
             <option value="Will Boost">Will Boost</option>
@@ -92,17 +76,15 @@
             <option value="Main Attribute Boost">Main Attribute Boost</option>
           </select>
         </div>
-      </div>
 
-      <!-- Secondary / Skill Stat Dropdown (Select 1) -->
-      <div>
-        <div class="text-xs font-bold text-[#FFB800] uppercase mb-2 tracking-wider flex items-center gap-2">
-          <span class="w-2 h-2 bg-[#FFB800] inline-block"></span>
-          Select 1 Secondary or Skill Stat
-        </div>
-        <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
-          <option value="any">Secondary or Skill Stat (Any)</option>
-          <optgroup label="Secondary Stats">
+        <!-- 2. Secondary Stat -->
+        <div>
+          <label class="block text-xs font-bold text-[#FFB800] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-[#FFB800] inline-block"></span>
+            2. Secondary Stat
+          </label>
+          <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
+            <option value="any">Any Secondary Stat</option>
             <option value="HP Boost">HP Boost</option>
             <option value="Physical DMG Boost">Physical DMG Boost</option>
             <option value="Heat DMG Boost">Heat DMG Boost</option>
@@ -111,8 +93,17 @@
             <option value="Arts Intensity Boost">Arts Intensity Boost</option>
             <option value="Arts DMG Boost">Arts DMG Boost</option>
             <option value="Treatment Efficiency Boost">Treatment Efficiency Boost</option>
-          </optgroup>
-          <optgroup label="Skill Stats">
+          </select>
+        </div>
+
+        <!-- 3. Skill Stat -->
+        <div>
+          <label class="block text-xs font-bold text-[#00F0FF] mb-2 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
+            3. Skill Stat
+          </label>
+          <select id="skillStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
+            <option value="any">Any Skill Stat</option>
             <option value="Assault">Assault</option>
             <option value="Suppression">Suppression</option>
             <option value="Pursuit">Pursuit</option>
@@ -121,13 +112,14 @@
             <option value="Infliction">Infliction</option>
             <option value="Medicant">Medicant</option>
             <option value="Efficacy">Efficacy</option>
-          </optgroup>
-        </select>
+          </select>
+        </div>
+
       </div>
 
     </section>
 
-    <!-- Results Section: Matching Locations with Icon -->
+    <!-- Results Section: Matching Energy Alluvium Locations -->
     <section class="hud-card p-6 border-t-2 border-[#00F0FF]">
       <h2 class="text-sm font-bold text-[#00F0FF] mb-4 uppercase tracking-wider flex items-center gap-2">
         <span>// MATCHING ENERGY ALLUVIUM LOCATIONS</span>
@@ -141,7 +133,7 @@
   </div>
 
   <script>
-    // Database mapping Energy Alluvium locations to weapon names and available stats
+    // Database mapping locations to their allowed Attribute, Secondary, and Skill stats
     const alluviumLocations = [
       {
         id: "loc-01",
@@ -149,7 +141,8 @@
         zone: "Valley Outpost",
         weapons: ["Valley Cleaver", "Rift Blade"],
         attributes: ["Agility Boost", "Strength Boost", "Main Attribute Boost"],
-        secondaryStats: ["Physical DMG Boost", "Critical Rate Boost", "Assault"]
+        secondaryStats: ["Physical DMG Boost", "Critical Rate Boost"],
+        skillStats: ["Assault", "Pursuit"]
       },
       {
         id: "loc-02",
@@ -157,7 +150,8 @@
         zone: "Central Ruins",
         weapons: ["Budget Peak Blade", "Guardian Broadsword"],
         attributes: ["Strength Boost", "Will Boost", "Intellect Boost"],
-        secondaryStats: ["HP Boost", "Treatment Efficiency Boost", "Suppression", "Medicant"]
+        secondaryStats: ["HP Boost", "Treatment Efficiency Boost"],
+        skillStats: ["Suppression", "Medicant"]
       },
       {
         id: "loc-03",
@@ -165,11 +159,12 @@
         zone: "Highland Spire",
         weapons: ["Alluvium Staff", "Caster Wand"],
         attributes: ["Intellect Boost", "Will Boost", "Agility Boost"],
-        secondaryStats: ["Arts DMG Boost", "Arts Intensity Boost", "Nature DMG Boost", "Efficacy"]
+        secondaryStats: ["Arts DMG Boost", "Arts Intensity Boost", "Nature DMG Boost"],
+        skillStats: ["Efficacy", "Inspiring"]
       }
     ];
 
-    // SVG Location Pin Icon
+    // Location Icon SVG
     const locationIconSVG = `
       <svg class="w-6 h-6 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -179,12 +174,10 @@
 
     function filterLocations() {
       const searchVal = document.getElementById('weaponSearch').value.toLowerCase();
-      const a1 = document.getElementById('attr1').value;
-      const a2 = document.getElementById('attr2').value;
-      const a3 = document.getElementById('attr3').value;
+      const attr = document.getElementById('attrStat').value;
       const sec = document.getElementById('secStat').value;
+      const skill = document.getElementById('skillStat').value;
 
-      const selectedAttrs = [a1, a2, a3].filter(a => a !== 'any');
       const container = document.getElementById('resultsList');
       container.innerHTML = "";
 
@@ -192,19 +185,18 @@
         // Weapon Name Match
         const matchesWeapon = searchVal === "" || loc.weapons.some(w => w.toLowerCase().includes(searchVal));
 
-        // Attribute Stats Match
-        const matchesAttr = selectedAttrs.length === 0 || selectedAttrs.some(attr => loc.attributes.includes(attr));
-
-        // Secondary Stat Match
+        // Strict 1-to-1 Stat Category Matches
+        const matchesAttr = attr === 'any' || loc.attributes.includes(attr);
         const matchesSec = sec === 'any' || loc.secondaryStats.includes(sec);
+        const matchesSkill = skill === 'any' || loc.skillStats.includes(skill);
 
-        return matchesWeapon && matchesAttr && matchesSec;
+        return matchesWeapon && matchesAttr && matchesSec && matchesSkill;
       });
 
       if (filtered.length === 0) {
         container.innerHTML = `
           <div class="bg-[#05080c] p-6 text-center text-gray-500 text-xs font-bold uppercase tracking-wider">
-            No matching Energy Alluvium locations found.
+            No matching Energy Alluvium locations found for this exact combination.
           </div>
         `;
         return;
