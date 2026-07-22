@@ -164,26 +164,11 @@
 
   </div>
 
-  <script>
-    // Master Weapon List across all 5 official types: Sword, Greatsword, Polearm, Handcannon, Arts Unit
-    const masterWeapons = [
-      { name: "Valley Cleaver", type: "Sword", location: "Origin Lodesprings", attr: "Strength Boost", sec: "Physical DMG Boost", skill: "Assault" },
-      { name: "Standard Core Blade", type: "Sword", location: "The Hub", attr: "Agility Boost", sec: "Attack Boost", skill: "Assault" },
-      { name: "Wuling Honor Blade", type: "Sword", location: "Wuling City", attr: "Intellect Boost", sec: "Electric DMG Boost", skill: "Assault" },
-      { name: "Pioneer Claymore", type: "Greatsword", location: "The Hub", attr: "Strength Boost", sec: "HP Boost", skill: "Crusher" },
-      { name: "Stockade Bastion", type: "Greatsword", location: "Qingbo Stockade", attr: "Will Boost", sec: "Physical DMG Boost", skill: "Suppression" },
-      { name: "Heavy Overdrive", type: "Greatsword", location: "Power Plateau", attr: "Strength Boost", sec: "Heat DMG Boost", skill: "Brutality" },
-      { name: "Rift Spear", type: "Polearm", location: "Originium Science Park", attr: "Agility Boost", sec: "Critical Rate Boost", skill: "Pursuit" },
-      { name: "Yinglung Pike", type: "Polearm", location: "Yinglung Pass", attr: "Agility Boost", sec: "Physical DMG Boost", skill: "Combative" },
-      { name: "Marker Edge", type: "Polearm", location: "Marker Stone", attr: "Intellect Boost", sec: "Attack Boost", skill: "Brutality" },
-      { name: "Precision Caliber", type: "Handcannon", location: "Originium Science Park", attr: "Main Attribute Boost", sec: "Physical DMG Boost", skill: "Suppression" },
-      { name: "Pass Finder", type: "Handcannon", location: "Yinglung Pass", attr: "Agility Boost", sec: "Critical Rate Boost", skill: "Detonate" },
-      { name: "Dale Stalker", type: "Handcannon", location: "Sword Vault Dale", attr: "Agility Boost", sec: "Attack Boost", skill: "Pursuit" },
-      { name: "Alluvium Staff", type: "Arts Unit", location: "Marker Stone", attr: "Intellect Boost", sec: "Arts DMG Boost", skill: "Efficacy" },
-      { name: "Storm Scepter", type: "Arts Unit", location: "Wuling City", attr: "Intellect Boost", sec: "Cryo DMG Boost", skill: "Flow" },
-      { name: "Prototype Conduit", type: "Arts Unit", location: "Test Area", attr: "Will Boost", sec: "Arts Intensity Boost", skill: "Infliction" }
-    ];
+  <!-- LINK TO YOUR MASTER WEAPON DATABASE JS FILE -->
+  <script src="weaponDatabase.js"></script>
 
+  <script>
+    // 11 Verified Energy Alluvium farming locations
     const alluviumLocations = [
       { name: "The Hub", zone: "The Hub", secondaryStats: ["Attack Boost", "HP Boost"], skillStats: ["Assault", "Suppression", "Pursuit", "Crusher", "Combative", "Detonate", "Flow", "Efficacy"] },
       { name: "Originium Science Park", zone: "Originium Science Park", secondaryStats: ["Physical DMG Boost", "Critical Rate Boost"], skillStats: ["Suppression", "Pursuit", "Inspiring", "Combative", "Infliction", "Medicant", "Fracture", "Efficacy"] },
@@ -218,36 +203,44 @@
       weaponsContainer.innerHTML = "";
       locationsContainer.innerHTML = "";
 
-      // Filter weapons matching search, type, and attribute specs
-      const matchingWeapons = masterWeapons.filter(w => {
-        const matchesName = searchVal === "" || w.name.toLowerCase().includes(searchVal);
-        const matchesType = typeVal === "any" || w.type === typeVal;
-        const matchesAttr = attr === "any" || w.attr === attr;
-        const matchesSec = sec === "any" || w.sec === sec;
-        const matchesSkill = skill === "any" || w.skill === skill;
-        return matchesName && matchesType && matchesAttr && matchesSec && matchesSkill;
+      // Pull from the linked weaponDatabase array (or fallback if loading locally)
+      const dataset = (typeof weaponDatabase !== 'undefined') ? weaponDatabase : [];
+
+      // Filter matching weapons
+      const matchingWeapons = dataset.filter(w => {
+        const nameMatch = searchVal === "" || (w.name && w.name.toLowerCase().includes(searchVal));
+        const typeMatch = typeVal === "any" || w.type === typeVal || w.category === typeVal;
+        
+        // Attribute matching
+        const attrMatch = attr === "any" || (w.attributes && w.attributes.includes(attr)) || w.primaryStat === attr || w.attr === attr;
+        const secMatch = sec === "any" || (w.secondaryStats && w.secondaryStats.includes(sec)) || w.secondaryStat === sec || w.sec === sec;
+        const skillMatch = skill === "any" || (w.skillStats && w.skillStats.includes(skill)) || w.skillStat === skill || w.skill === skill;
+
+        return nameMatch && typeMatch && attrMatch && secMatch && skillMatch;
       });
 
       if (matchingWeapons.length === 0) {
-        weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found.</span>`;
+        weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found in database.</span>`;
       } else {
         matchingWeapons.forEach(w => {
+          const locName = w.location || w.farmingLocation || "Energy Alluvium Node";
+          const wType = w.type || w.category || "Weapon";
           weaponsContainer.innerHTML += `
             <div class="bg-[#05080c] border border-[#FFB800]/50 p-3 flex justify-between items-center">
               <div>
                 <div class="text-white font-bold text-xs">${w.name}</div>
-                <div class="text-[10px] text-gray-400 mt-0.5">Location: <span class="text-[#00F0FF]">${w.location}</span></div>
+                <div class="text-[10px] text-gray-400 mt-0.5">Location: <span class="text-[#00F0FF]">${locName}</span></div>
               </div>
               <span class="bg-[#FFB800]/10 text-[#FFB800] border border-[#FFB800]/40 text-[9px] font-bold px-1.5 py-0.5 uppercase">
-                ${w.type}
+                ${wType}
               </span>
             </div>
           `;
         });
       }
 
-      // Filter Energy Alluvium farming locations
-      const matchingLocationNames = new Set(matchingWeapons.map(w => w.location));
+      // Filter Energy Alluvium farming locations based on selected stats
+      const matchingLocationNames = new Set(matchingWeapons.map(w => w.location || w.farmingLocation));
       const filteredLocations = alluviumLocations.filter(loc => {
         const matchesSec = sec === 'any' || loc.secondaryStats.includes(sec);
         const matchesSkill = skill === 'any' || loc.skillStats.includes(skill);
@@ -265,6 +258,7 @@
       }
 
       filteredLocations.forEach(loc => {
+        const secText = loc.secondaryStats.length > 0 ? loc.secondaryStats.join(', ') : 'None';
         locationsContainer.innerHTML += `
           <div class="bg-[#05080c] p-4 border-l-4 border-[#00F0FF] flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
@@ -272,7 +266,7 @@
               <div>
                 <div class="text-white font-bold text-sm">${loc.name}</div>
                 <div class="text-[11px] text-gray-400 mt-1">
-                  <strong class="text-gray-300">Secondary Stats:</strong> ${loc.secondaryStats.join(', ')}
+                  <strong class="text-gray-300">Secondary Stats:</strong> ${secText}
                 </div>
               </div>
             </div>
@@ -286,6 +280,7 @@
       });
     }
 
+    // Initial render
     filterLocations();
   </script>
 
