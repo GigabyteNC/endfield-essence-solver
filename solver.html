@@ -84,11 +84,11 @@
           </label>
           <select id="attrStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
             <option value="any">Any Attribute Stat</option>
-            <option value="Agility Boost">Agility Boost</option>
-            <option value="Strength Boost">Strength Boost</option>
-            <option value="Will Boost">Will Boost</option>
-            <option value="Intellect Boost">Intellect Boost</option>
-            <option value="Main Attribute Boost">Main Attribute Boost</option>
+            <option value="Agility">Agility Boost</option>
+            <option value="Strength">Strength Boost</option>
+            <option value="Will">Will Boost</option>
+            <option value="Intellect">Intellect Boost</option>
+            <option value="Main Attribute">Main Attribute Boost</option>
           </select>
         </div>
 
@@ -100,18 +100,18 @@
           </label>
           <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
             <option value="any">Any Secondary Stat</option>
-            <option value="Attack Boost">Attack Boost</option>
-            <option value="HP Boost">HP Boost</option>
-            <option value="Physical DMG Boost">Physical DMG Boost</option>
-            <option value="Heat DMG Boost">Heat DMG Boost</option>
-            <option value="Electric DMG Boost">Electric DMG Boost</option>
-            <option value="Cryo DMG Boost">Cryo DMG Boost</option>
-            <option value="Nature DMG Boost">Nature DMG Boost</option>
-            <option value="Critical Rate Boost">Critical Rate Boost</option>
-            <option value="Arts Intensity Boost">Arts Intensity Boost</option>
-            <option value="Arts DMG Boost">Arts DMG Boost</option>
-            <option value="Ultimate Energy Gain Boost">Ultimate Energy Gain Boost</option>
-            <option value="Treatment Efficiency Boost">Treatment Efficiency Boost</option>
+            <option value="Attack">Attack Boost</option>
+            <option value="HP">HP Boost</option>
+            <option value="Physical">Physical DMG Boost</option>
+            <option value="Heat">Heat DMG Boost</option>
+            <option value="Electric">Electric DMG Boost</option>
+            <option value="Cryo">Cryo DMG Boost</option>
+            <option value="Nature">Nature DMG Boost</option>
+            <option value="Critical">Critical Rate Boost</option>
+            <option value="Arts Intensity">Arts Intensity Boost</option>
+            <option value="Arts DMG">Arts DMG Boost</option>
+            <option value="Ultimate Energy">Ultimate Energy Gain Boost</option>
+            <option value="Treatment">Treatment Efficiency Boost</option>
           </select>
         </div>
 
@@ -189,6 +189,20 @@
       </svg>
     `;
 
+    // Helper function to check if target search value matches item (string or array) flexibly
+    function isFlexibleMatch(target, searchVal) {
+      if (!searchVal || searchVal === "any") return true;
+      const lowerSearch = searchVal.toLowerCase();
+
+      if (Array.isArray(target)) {
+        return target.some(item => String(item).toLowerCase().includes(lowerSearch));
+      }
+      if (typeof target === 'string') {
+        return target.toLowerCase().includes(lowerSearch);
+      }
+      return false;
+    }
+
     function filterLocations() {
       const searchVal = document.getElementById('weaponSearch').value.toLowerCase();
       const typeVal = document.getElementById('typeFilter').value;
@@ -202,7 +216,6 @@
       weaponsContainer.innerHTML = "";
       locationsContainer.innerHTML = "";
 
-      // Smart Dataset Lookup: Checks all common global database variable names
       let dataset = [];
       if (typeof weaponDatabase !== 'undefined') dataset = weaponDatabase;
       else if (typeof window.weaponDatabase !== 'undefined') dataset = window.weaponDatabase;
@@ -212,29 +225,29 @@
       let matchingWeapons = [];
 
       if (dataset.length === 0) {
-        weaponsContainer.innerHTML = `<span class="text-xs text-red-400 font-semibold col-span-3">Could not load weapon dataset. Check weaponDatabase.js format or browser console (F12) for syntax errors.</span>`;
+        weaponsContainer.innerHTML = `<span class="text-xs text-red-400 font-semibold col-span-3">Could not load weapon dataset. Check weaponDatabase.js format.</span>`;
       } else {
-        // Filter matching weapons
+        // Filter matching weapons using flexible case-insensitive substring checks
         matchingWeapons = dataset.filter(w => {
           const wName = w.name || w.weaponName || w.title || "";
           const wType = w.type || w.category || w.weaponType || "";
           
-          const wAttr = w.attributes || w.primaryStat || w.attr || [];
+          const wAttr = w.attributes || w.primaryStat || w.attr || w.attribute || [];
           const wSec = w.secondaryStats || w.secondaryStat || w.sec || [];
           const wSkill = w.skillStats || w.skillStat || w.skill || [];
 
           const nameMatch = searchVal === "" || wName.toLowerCase().includes(searchVal);
           const typeMatch = typeVal === "any" || wType.toLowerCase() === typeVal.toLowerCase();
           
-          const attrMatch = attr === "any" || (Array.isArray(wAttr) ? wAttr.includes(attr) : wAttr === attr);
-          const secMatch = sec === "any" || (Array.isArray(wSec) ? wSec.includes(sec) : wSec === sec);
-          const skillMatch = skill === "any" || (Array.isArray(wSkill) ? wSkill.includes(skill) : wSkill === skill);
+          const attrMatch = isFlexibleMatch(wAttr, attr);
+          const secMatch = isFlexibleMatch(wSec, sec);
+          const skillMatch = isFlexibleMatch(wSkill, skill);
 
           return nameMatch && typeMatch && attrMatch && secMatch && skillMatch;
         });
 
         if (matchingWeapons.length === 0) {
-          weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found.</span>`;
+          weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found for selected filters.</span>`;
         } else {
           matchingWeapons.forEach(w => {
             const wName = w.name || w.weaponName || w.title || "Unknown Weapon";
@@ -256,11 +269,11 @@
         }
       }
 
-      // Filter Energy Alluvium locations independently so they render regardless of JS file issues
+      // Filter Energy Alluvium locations flexible match
       const matchingLocationNames = new Set(matchingWeapons.map(w => w.location || w.farmingLocation || w.zone));
       const filteredLocations = alluviumLocations.filter(loc => {
-        const matchesSec = sec === 'any' || loc.secondaryStats.includes(sec);
-        const matchesSkill = skill === 'any' || loc.skillStats.includes(skill);
+        const matchesSec = isFlexibleMatch(loc.secondaryStats, sec);
+        const matchesSkill = isFlexibleMatch(loc.skillStats, skill);
         const matchesWeaponLoc = matchingWeapons.length === 0 || matchingLocationNames.has(loc.name);
         return matchesSec && matchesSkill && matchesWeaponLoc;
       });
@@ -297,7 +310,6 @@
       });
     }
 
-    // Execute script on DOM load
     document.addEventListener('DOMContentLoaded', filterLocations);
   </script>
 
