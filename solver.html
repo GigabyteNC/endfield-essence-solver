@@ -77,7 +77,7 @@
           </select>
         </div>
 
-        <!-- 2. Secondary Stat Dropdown (FULL BOOST NAMES) -->
+        <!-- 2. Secondary Stat Dropdown -->
         <div>
           <label class="block text-xs font-bold text-[#FFB800] mb-2 uppercase tracking-wider flex items-center gap-1.5">
             <span class="w-2 h-2 bg-[#FFB800] inline-block"></span>
@@ -85,7 +85,6 @@
           </label>
           <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
             <option value="any">Any Secondary Stat</option>
-            <option value="Generalist / Core Stats">Generalist / Core Stats</option>
             <option value="Attack Boost">Attack Boost</option>
             <option value="HP Boost">HP Boost</option>
             <option value="Physical DMG Boost">Physical DMG Boost</option>
@@ -153,14 +152,13 @@
   </div>
 
   <script>
-    // Complete mapping of all 11 locations with FULL attribute names and weapons
     const alluviumLocations = [
       {
         name: "The Hub",
         zone: "The Hub",
         weapons: ["Standard Core Blade", "Pioneer Claymore"],
         attributes: ["Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost"],
-        secondaryStats: ["Generalist / Core Stats"],
+        secondaryStats: [],
         skillStats: ["Assault", "Suppression", "Pursuit", "Crusher", "Combative", "Detonate", "Flow", "Efficacy"]
       },
       {
@@ -245,7 +243,6 @@
       }
     ];
 
-    // Location SVG Icon
     const locationIconSVG = `
       <svg class="w-6 h-6 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -287,7 +284,6 @@
         return;
       }
 
-      // Extract unique list of matching weapons across filtered locations
       const matchingWeaponsSet = new Set();
       filtered.forEach(loc => {
         loc.weapons.forEach(w => {
@@ -297,7 +293,6 @@
         });
       });
 
-      // Render Matching Weapons Section
       matchingWeaponsSet.forEach(weaponName => {
         weaponsContainer.innerHTML += `
           <div class="bg-[#05080c] border border-[#FFB800] text-[#FFB800] text-xs font-bold px-3 py-1.5 flex items-center gap-1.5">
@@ -307,8 +302,8 @@
         `;
       });
 
-      // Render Locations Section
       filtered.forEach(loc => {
+        const secText = loc.secondaryStats.length > 0 ? loc.secondaryStats.join(', ') : 'None';
         locationsContainer.innerHTML += `
           <div class="bg-[#05080c] p-4 border-l-4 border-[#00F0FF] flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
@@ -316,7 +311,7 @@
               <div>
                 <div class="text-white font-bold text-sm">${loc.name}</div>
                 <div class="text-[11px] text-gray-400 mt-1">
-                  <strong class="text-gray-300">Secondary Stats:</strong> ${loc.secondaryStats.join(', ')}
+                  <strong class="text-gray-300">Secondary Stats:</strong> ${secText}
                 </div>
               </div>
             </div>
