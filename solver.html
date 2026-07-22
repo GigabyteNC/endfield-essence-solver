@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Essence Solver | Arknights: Endfield</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- LINK TO MASTER WEAPON DATABASE JS FILE -->
+  <script src="weaponDatabase.js"></script>
   <style>
     :root {
       --bg-dark: #090d12;
@@ -164,9 +166,6 @@
 
   </div>
 
-  <!-- LINK TO EXTERNAL DATABASE FILE -->
-  <script src="weaponDatabase.js"></script>
-
   <script>
     // 11 Verified Energy Alluvium farming locations
     const alluviumLocations = [
@@ -203,60 +202,61 @@
       weaponsContainer.innerHTML = "";
       locationsContainer.innerHTML = "";
 
-      // Safe lookup for weapon array in weaponDatabase.js
+      // Smart Dataset Lookup: Checks all common global database variable names
       let dataset = [];
       if (typeof weaponDatabase !== 'undefined') dataset = weaponDatabase;
+      else if (typeof window.weaponDatabase !== 'undefined') dataset = window.weaponDatabase;
       else if (typeof masterWeapons !== 'undefined') dataset = masterWeapons;
       else if (typeof weapons !== 'undefined') dataset = weapons;
 
+      let matchingWeapons = [];
+
       if (dataset.length === 0) {
-        weaponsContainer.innerHTML = `<span class="text-xs text-red-400 font-semibold col-span-3">Could not load dataset. Ensure weaponDatabase.js defines an array named 'weaponDatabase'.</span>`;
-        return;
-      }
-
-      // Flexible filter matching regardless of property naming scheme used in weaponDatabase.js
-      const matchingWeapons = dataset.filter(w => {
-        const wName = w.name || w.weaponName || w.title || "";
-        const wType = w.type || w.category || w.weaponType || "";
-        
-        // Normalize attribute values (handles single strings or arrays)
-        const wAttr = w.attributes || w.primaryStat || w.attr || [];
-        const wSec = w.secondaryStats || w.secondaryStat || w.sec || [];
-        const wSkill = w.skillStats || w.skillStat || w.skill || [];
-
-        const nameMatch = searchVal === "" || wName.toLowerCase().includes(searchVal);
-        const typeMatch = typeVal === "any" || wType.toLowerCase() === typeVal.toLowerCase();
-        
-        const attrMatch = attr === "any" || (Array.isArray(wAttr) ? wAttr.includes(attr) : wAttr === attr);
-        const secMatch = sec === "any" || (Array.isArray(wSec) ? wSec.includes(sec) : wSec === sec);
-        const skillMatch = skill === "any" || (Array.isArray(wSkill) ? wSkill.includes(skill) : wSkill === skill);
-
-        return nameMatch && typeMatch && attrMatch && secMatch && skillMatch;
-      });
-
-      if (matchingWeapons.length === 0) {
-        weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found.</span>`;
+        weaponsContainer.innerHTML = `<span class="text-xs text-red-400 font-semibold col-span-3">Could not load weapon dataset. Check weaponDatabase.js format or browser console (F12) for syntax errors.</span>`;
       } else {
-        matchingWeapons.forEach(w => {
-          const wName = w.name || w.weaponName || w.title || "Unknown Weapon";
-          const locName = w.location || w.farmingLocation || w.zone || "Energy Alluvium Node";
-          const wType = w.type || w.category || w.weaponType || "Weapon";
+        // Filter matching weapons
+        matchingWeapons = dataset.filter(w => {
+          const wName = w.name || w.weaponName || w.title || "";
+          const wType = w.type || w.category || w.weaponType || "";
+          
+          const wAttr = w.attributes || w.primaryStat || w.attr || [];
+          const wSec = w.secondaryStats || w.secondaryStat || w.sec || [];
+          const wSkill = w.skillStats || w.skillStat || w.skill || [];
 
-          weaponsContainer.innerHTML += `
-            <div class="bg-[#05080c] border border-[#FFB800]/50 p-3 flex justify-between items-center">
-              <div>
-                <div class="text-white font-bold text-xs">${wName}</div>
-                <div class="text-[10px] text-gray-400 mt-0.5">Location: <span class="text-[#00F0FF]">${locName}</span></div>
-              </div>
-              <span class="bg-[#FFB800]/10 text-[#FFB800] border border-[#FFB800]/40 text-[9px] font-bold px-1.5 py-0.5 uppercase">
-                ${wType}
-              </span>
-            </div>
-          `;
+          const nameMatch = searchVal === "" || wName.toLowerCase().includes(searchVal);
+          const typeMatch = typeVal === "any" || wType.toLowerCase() === typeVal.toLowerCase();
+          
+          const attrMatch = attr === "any" || (Array.isArray(wAttr) ? wAttr.includes(attr) : wAttr === attr);
+          const secMatch = sec === "any" || (Array.isArray(wSec) ? wSec.includes(sec) : wSec === sec);
+          const skillMatch = skill === "any" || (Array.isArray(wSkill) ? wSkill.includes(skill) : wSkill === skill);
+
+          return nameMatch && typeMatch && attrMatch && secMatch && skillMatch;
         });
+
+        if (matchingWeapons.length === 0) {
+          weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found.</span>`;
+        } else {
+          matchingWeapons.forEach(w => {
+            const wName = w.name || w.weaponName || w.title || "Unknown Weapon";
+            const locName = w.location || w.farmingLocation || w.zone || "Energy Alluvium Node";
+            const wType = w.type || w.category || w.weaponType || "Weapon";
+
+            weaponsContainer.innerHTML += `
+              <div class="bg-[#05080c] border border-[#FFB800]/50 p-3 flex justify-between items-center">
+                <div>
+                  <div class="text-white font-bold text-xs">${wName}</div>
+                  <div class="text-[10px] text-gray-400 mt-0.5">Location: <span class="text-[#00F0FF]">${locName}</span></div>
+                </div>
+                <span class="bg-[#FFB800]/10 text-[#FFB800] border border-[#FFB800]/40 text-[9px] font-bold px-1.5 py-0.5 uppercase">
+                  ${wType}
+                </span>
+              </div>
+            `;
+          });
+        }
       }
 
-      // Filter Energy Alluvium locations based on matched weapons or selected stats
+      // Filter Energy Alluvium locations independently so they render regardless of JS file issues
       const matchingLocationNames = new Set(matchingWeapons.map(w => w.location || w.farmingLocation || w.zone));
       const filteredLocations = alluviumLocations.filter(loc => {
         const matchesSec = sec === 'any' || loc.secondaryStats.includes(sec);
@@ -297,7 +297,7 @@
       });
     }
 
-    // Run filter automatically once DOM content is ready
+    // Execute script on DOM load
     document.addEventListener('DOMContentLoaded', filterLocations);
   </script>
 
