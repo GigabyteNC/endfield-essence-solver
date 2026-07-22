@@ -1,5 +1,5 @@
 // Master Weapon Database Array (75 Weapons Mapped)
-const WEAPON_DATABASE = [
+const weaponDatabase = [
   // --- ARTS UNITS ---
   { name: "Oblivion", category: "Arts Units", secondaryStat: "Arts DMG Boost", skillStat: "Twilight" },
   { name: "Resonant Echo", category: "Arts Units", secondaryStat: "Arts Intensity Boost", skillStat: "Infliction" },
