@@ -1,87 +1,90 @@
-// Master Weapon Database Array (75 Weapons Mapped)
+/**
+ * weaponDatabase.js
+ * Central database mapping Arknights: Endfield weapons for Essence Solver
+ */
+
 const weaponDatabase = [
-  // --- ARTS UNITS ---
-  { name: "Oblivion", category: "Arts Units", secondaryStat: "Arts DMG Boost", skillStat: "Twilight" },
-  { name: "Resonant Echo", category: "Arts Units", secondaryStat: "Arts Intensity Boost", skillStat: "Infliction" },
-  { name: "Astral Compass", category: "Arts Units", secondaryStat: "Arts DMG Boost", skillStat: "Efficacy" },
-  { name: "Prismatic Core", category: "Arts Units", secondaryStat: "Critical Rate Boost", skillStat: "Combative" },
-  { name: "Pulse Transmitter", category: "Arts Units", secondaryStat: "Electric DMG Boost", skillStat: "Detonate" },
-  { name: "Frostbite Conduit", category: "Arts Units", secondaryStat: "Cryo DMG Boost", skillStat: "Suppression" },
-  { name: "Thermal Amplifier", category: "Arts Units", secondaryStat: "Heat DMG Boost", skillStat: "Fracture" },
-  { name: "Verdant Prism", category: "Arts Units", secondaryStat: "Nature DMG Boost", skillStat: "Inspiring" },
-  { name: "Chrono Relay", category: "Arts Units", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Flow" },
-  { name: "Lifesovereign Staff", category: "Arts Units", secondaryStat: "Treatment Efficiency Boost", skillStat: "Medicant" },
-  { name: "Aetherial Focus", category: "Arts Units", secondaryStat: "Attack Boost", skillStat: "Assault" },
-  { name: "Aegis Weaver", category: "Arts Units", secondaryStat: "HP Boost", skillStat: "Brutality" },
-  { name: "Cataclysm Emitter", category: "Arts Units", secondaryStat: "Arts DMG Boost", skillStat: "Crusher" },
-  { name: "Null-Zone Catalyst", category: "Arts Units", secondaryStat: "Arts Intensity Boost", skillStat: "Pursuit" },
-  { name: "Singularity Iris", category: "Arts Units", secondaryStat: "Critical Rate Boost", skillStat: "Twilight" },
+  // ==========================================
+  // SWORDS
+  // ==========================================
+  { name: "Peco 1", category: "Sword", primaryStat: "Main Attribute Boost", secondaryStat: "ATK", skillStat: "Assault" },
+  { name: "Frontier Messenger", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "ATK Boost", skillStat: "Suppression" },
+  { name: "Order's Echo", category: "Sword", primaryStat: "Agility Boost", secondaryStat: "Arts Boost", skillStat: "Inspiring" },
+  { name: "Opus: Standard", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "Physical DMG Boost", skillStat: "Brutality" },
+  { name: "OBJ Blade", category: "Sword", primaryStat: "Agility Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Detonate" },
+  { name: "Iron Oath", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "Electric DMG Boost", skillStat: "Suppression" },
+  { name: "Radiant Feather", category: "Sword", primaryStat: "Agility Boost", secondaryStat: "Critical Rate Boost", skillStat: "Efficacy" },
+  { name: "Steel Tempest", category: "Sword", primaryStat: "Agility Boost", secondaryStat: "Physical DMG Boost", skillStat: "Combative" },
+  { name: "Silver Light", category: "Sword", primaryStat: "Main Attribute Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
+  { name: "Sunblade", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "Heat DMG Boost", skillStat: "Efficacy" },
 
-  // --- GREATSWORDS ---
-  { name: "Eminent Repute", category: "Greatswords", secondaryStat: "Physical DMG Boost", skillStat: "Twilight" },
-  { name: "Titan's Cleaver", category: "Greatswords", secondaryStat: "Attack Boost", skillStat: "Crusher" },
-  { name: "Ironclad Slicer", category: "Greatswords", secondaryStat: "HP Boost", skillStat: "Brutality" },
-  { name: "Infernal Blade", category: "Greatswords", secondaryStat: "Heat DMG Boost", skillStat: "Detonate" },
-  { name: "Glacial Edge", category: "Greatswords", secondaryStat: "Cryo DMG Boost", skillStat: "Fracture" },
-  { name: "Storm Splitter", category: "Greatswords", secondaryStat: "Electric DMG Boost", skillStat: "Assault" },
-  { name: "Gaia's Might", category: "Greatswords", secondaryStat: "Nature DMG Boost", skillStat: "Combative" },
-  { name: "Ruins Breaker", category: "Greatswords", secondaryStat: "Physical DMG Boost", skillStat: "Suppression" },
-  { name: "Sovereign Greatsword", category: "Greatswords", secondaryStat: "Critical Rate Boost", skillStat: "Pursuit" },
-  { name: "Bloodline Claymore", category: "Greatswords", secondaryStat: "HP Boost", skillStat: "Medicant" },
-  { name: "Abyssal Sever", category: "Greatswords", secondaryStat: "Arts DMG Boost", skillStat: "Infliction" },
-  { name: "Vanguard Bastion", category: "Greatswords", secondaryStat: "Attack Boost", skillStat: "Inspiring" },
-  { name: "Executioner's Toll", category: "Greatswords", secondaryStat: "Critical Rate Boost", skillStat: "Crusher" },
-  { name: "Dominion Sword", category: "Greatswords", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Flow" },
-  { name: "Zero Impact", category: "Greatswords", secondaryStat: "Arts Intensity Boost", skillStat: "Efficacy" },
+  // ==========================================
+  // GREATSWORDS
+  // ==========================================
+  { name: "Peco 3", category: "Greatsword", primaryStat: "Main Attribute Boost", secondaryStat: "ATK", skillStat: "Assault" },
+  { name: "Heavy Cleaver", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "ATK Boost", skillStat: "Suppression" },
+  { name: "Titan's Spine", category: "Greatsword", primaryStat: "Will Boost", secondaryStat: "Arts Boost", skillStat: "Inspiring" },
+  { name: "Opus: Heavy", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Physical DMG Boost", skillStat: "Brutality" },
+  { name: "OBJ Greatsword", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Detonate" },
+  { name: "Shattered Mountain", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Physical DMG Boost", skillStat: "Suppression" },
+  { name: "Earthshaker", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Critical Rate Boost", skillStat: "Efficacy" },
+  { name: "Colossus", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Physical DMG Boost", skillStat: "Combative" },
 
-  // --- SWORDS ---
-  { name: "Blessing of Lustrous Carmine", category: "Swords", secondaryStat: "Heat DMG Boost", skillStat: "Flow" },
-  { name: "Swiftwing Rapier", category: "Swords", secondaryStat: "Critical Rate Boost", skillStat: "Pursuit" },
-  { name: "Vanguard Saber", category: "Swords", secondaryStat: "Attack Boost", skillStat: "Assault" },
-  { name: "Frost Fang", category: "Swords", secondaryStat: "Cryo DMG Boost", skillStat: "Suppression" },
-  { name: "Thunderflash Blade", category: "Swords", secondaryStat: "Electric DMG Boost", skillStat: "Detonate" },
-  { name: "Verdant Scimitar", category: "Swords", secondaryStat: "Nature DMG Boost", skillStat: "Inspiring" },
-  { name: "Iron Sentinel", category: "Swords", secondaryStat: "HP Boost", skillStat: "Medicant" },
-  { name: "Arcane Needle", category: "Swords", secondaryStat: "Arts DMG Boost", skillStat: "Twilight" },
-  { name: "Null-Edge", category: "Swords", secondaryStat: "Arts Intensity Boost", skillStat: "Infliction" },
-  { name: "Radiant Estoc", category: "Swords", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Efficacy" },
-  { name: "Shatterglass Blade", category: "Swords", secondaryStat: "Physical DMG Boost", skillStat: "Fracture" },
-  { name: "Honor Guard Sword", category: "Swords", secondaryStat: "Treatment Efficiency Boost", skillStat: "Combative" },
-  { name: "Eclipse Longsword", category: "Swords", secondaryStat: "Critical Rate Boost", skillStat: "Brutality" },
-  { name: "Tempest Katana", category: "Swords", secondaryStat: "Attack Boost", skillStat: "Crusher" },
-  { name: "Phantom Grace", category: "Swords", secondaryStat: "Physical DMG Boost", skillStat: "Flow" },
+  // ==========================================
+  // POLEARMS
+  // ==========================================
+  { name: "Opero 77", category: "Polearm", primaryStat: "Main Attribute Boost", secondaryStat: "ATK", skillStat: "Assault" },
+  { name: "Pathfinder's Beacon", category: "Polearm", primaryStat: "Agility Boost", secondaryStat: "Attack Boost", skillStat: "Inspiring" },
+  { name: "Aggeloslayer", category: "Polearm", primaryStat: "Will Boost", secondaryStat: "Arts Boost", skillStat: "Suppression" },
+  { name: "Chimeric Justice", category: "Polearm", primaryStat: "Strength Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Brutality" },
+  { name: "OBJ Razorhorn", category: "Polearm", primaryStat: "Will Boost", secondaryStat: "Physical DMG Boost", skillStat: "Infliction" },
+  { name: "Cohesive Traction", category: "Polearm", primaryStat: "Will Boost", secondaryStat: "Electric DMG Boost", skillStat: "Suppression" },
+  { name: "Mountain Bearer", category: "Polearm", primaryStat: "Agility Boost", secondaryStat: "Physical DMG Boost", skillStat: "Efficacy" },
+  { name: "Valiant", category: "Polearm", primaryStat: "Agility Boost", secondaryStat: "Physical DMG Boost", skillStat: "Combative" },
+  { name: "JET", category: "Polearm", primaryStat: "Main Attribute Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
+  { name: "Beacon of Duty", category: "Polearm", primaryStat: "Agility Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Efficacy" },
+  { name: "Blessing of Lustrous Carmine", category: "Polearm", primaryStat: "Agility Boost", secondaryStat: "Heat DMG Boost", skillStat: "Flow" },
+  { name: "Golden Age", category: "Polearm", primaryStat: "Will Boost", secondaryStat: "Treatment Efficiency Boost", skillStat: "Pursuit" },
 
-  // --- HANDCANNONS ---
-  { name: "Foundational Code", category: "Handcannons", secondaryStat: "Electric DMG Boost", skillStat: "Efficacy" },
-  { name: "Wildfire Revolver", category: "Handcannons", secondaryStat: "Heat DMG Boost", skillStat: "Detonate" },
-  { name: "Precision Deadeye", category: "Handcannons", secondaryStat: "Critical Rate Boost", skillStat: "Pursuit" },
-  { name: "Heavy Magnum", category: "Handcannons", secondaryStat: "Physical DMG Boost", skillStat: "Crusher" },
-  { name: "Cryo Sidearm", category: "Handcannons", secondaryStat: "Cryo DMG Boost", skillStat: "Suppression" },
-  { name: "Bio-Hazard Pistol", category: "Handcannons", secondaryStat: "Nature DMG Boost", skillStat: "Infliction" },
-  { name: "Overclock Blaster", category: "Handcannons", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Flow" },
-  { name: "Aegis Defender Pistol", category: "Handcannons", secondaryStat: "HP Boost", skillStat: "Brutality" },
-  { name: "Arc Pulse Handcannon", category: "Handcannons", secondaryStat: "Arts DMG Boost", skillStat: "Twilight" },
-  { name: "Enforcer 9mm", category: "Handcannons", secondaryStat: "Attack Boost", skillStat: "Assault" },
-  { name: "Signal Flare", category: "Handcannons", secondaryStat: "Arts Intensity Boost", skillStat: "Inspiring" },
-  { name: "Lifeline Injector Pistol", category: "Handcannons", secondaryStat: "Treatment Efficiency Boost", skillStat: "Medicant" },
-  { name: "Fracture Cannon", category: "Handcannons", secondaryStat: "Physical DMG Boost", skillStat: "Fracture" },
-  { name: "Apex Marksman", category: "Handcannons", secondaryStat: "Critical Rate Boost", skillStat: "Combative" },
-  { name: "Void Trigger", category: "Handcannons", secondaryStat: "Arts DMG Boost", skillStat: "Efficacy" },
+  // ==========================================
+  // HANDCANNONS
+  // ==========================================
+  { name: "Peco 5", category: "Handcannon", primaryStat: "Main Attribute Boost", secondaryStat: "ATK", skillStat: "Assault" },
+  { name: "Howling Guard", category: "Handcannon", primaryStat: "Intellect Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
+  { name: "Long Road", category: "Handcannon", primaryStat: "Strength Boost", secondaryStat: "Arts Boost", skillStat: "Pursuit" },
+  { name: "Opus: The Living", category: "Handcannon", primaryStat: "Agility Boost", secondaryStat: "Arts Boost", skillStat: "Infliction" },
+  { name: "OBJ Velocitous", category: "Handcannon", primaryStat: "Agility Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Detonate" },
+  { name: "Rational Farewell", category: "Handcannon", primaryStat: "Strength Boost", secondaryStat: "Heat DMG Boost", skillStat: "Pursuit" },
+  { name: "Artzy Tyrannical", category: "Handcannon", primaryStat: "Intellect Boost", secondaryStat: "Critical Rate Boost", skillStat: "Fracture" },
+  { name: "Navigator", category: "Handcannon", primaryStat: "Intellect Boost", secondaryStat: "Cryo DMG Boost", skillStat: "Infliction" },
+  { name: "Wedge", category: "Handcannon", primaryStat: "Main Attribute Boost", secondaryStat: "Critical Rate Boost", skillStat: "Infliction" },
+  { name: "Clannibal", category: "Handcannon", primaryStat: "Main Attribute Boost", secondaryStat: "Arts Boost", skillStat: "Infliction" },
+  { name: "Brigand's Calling", category: "Handcannon", primaryStat: "Agility Boost", secondaryStat: "Attack Boost", skillStat: "Detonate" },
+  { name: "Home Longing", category: "Handcannon", primaryStat: "Agility Boost", secondaryStat: "Cryo DMG Boost", skillStat: "Suppression" },
 
-  // --- POLEARMS ---
-  { name: "Wilderness Echo", category: "Polearms", secondaryStat: "Critical Rate Boost", skillStat: "Pursuit" },
-  { name: "Vanguard Lance", category: "Polearms", secondaryStat: "Attack Boost", skillStat: "Assault" },
-  { name: "Dragon-Spine Spear", category: "Polearms", secondaryStat: "Physical DMG Boost", skillStat: "Brutality" },
-  { name: "Inferno Halberd", category: "Polearms", secondaryStat: "Heat DMG Boost", skillStat: "Detonate" },
-  { name: "Glacial Trident", category: "Polearms", secondaryStat: "Cryo DMG Boost", skillStat: "Suppression" },
-  { name: "Storm-Caller Spear", category: "Polearms", secondaryStat: "Electric DMG Boost", skillStat: "Flow" },
-  { name: "Verdant Partisan", category: "Polearms", secondaryStat: "Nature DMG Boost", skillStat: "Inspiring" },
-  { name: "Iron Glaive", category: "Polearms", secondaryStat: "HP Boost", skillStat: "Combative" },
-  { name: "Arcane Naginata", category: "Polearms", secondaryStat: "Arts DMG Boost", skillStat: "Twilight" },
-  { name: "Null-Point Lance", category: "Polearms", secondaryStat: "Arts Intensity Boost", skillStat: "Infliction" },
-  { name: "Sovereign Pike", category: "Polearms", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Crusher" },
-  { name: "Medic Halberd", category: "Polearms", secondaryStat: "Treatment Efficiency Boost", skillStat: "Medicant" },
-  { name: "Armor-Piercer Spear", category: "Polearms", secondaryStat: "Physical DMG Boost", skillStat: "Fracture" },
-  { name: "Celestial Reach", category: "Polearms", secondaryStat: "Critical Rate Boost", skillStat: "Efficacy" },
-  { name: "Titan's Pillar", category: "Polearms", secondaryStat: "HP Boost", skillStat: "Brutality" }
+  // ==========================================
+  // ARTS UNITS
+  // ==========================================
+  { name: "Jiminy 12", category: "Arts Unit", primaryStat: "Main Attribute Boost", secondaryStat: "ATK", skillStat: "Assault" },
+  { name: "Hypernova Auto", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Arts Boost", skillStat: "Inspiring" },
+  { name: "Fluorescent Roc", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
+  { name: "Stanza of Memorials", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Attack Boost", skillStat: "Twilight" },
+  { name: "Monaihe", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Inspiring" },
+  { name: "Wild Wanderer", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Electric DMG Boost", skillStat: "Infliction" },
+  { name: "Freedom to Proselytize", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Treatment Efficiency Boost", skillStat: "Medicant" },
+  { name: "OBJ Arts Identifier", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Arts Intensity Boost", skillStat: "Pursuit" },
+  { name: "Delivery Guaranteed", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Pursuit" },
+  { name: "Dreams of the Starry Beach", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Treatment Efficiency Boost", skillStat: "Infliction" },
+  { name: "Opus: Etch Figure", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Nature DMG Boost", skillStat: "Suppression" },
+  { name: "Detonation Unit", category: "Arts Unit", primaryStat: "Main Attribute Boost", secondaryStat: "Arts Intensity Boost", skillStat: "Detonate" },
+  { name: "Oblivion", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Arts Boost", skillStat: "Twilight" },
+  { name: "Chivalric Virtues", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "HP Boost", skillStat: "Medicant" },
+  { name: "Lone Barge", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
+  { name: "Flickers in the Mist", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Electric DMG Boost", skillStat: "Efficacy" },
+  { name: "Type 42: Solemn Phalanx", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Detonate" },
+  { name: "Junction Point", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Efficacy" }
 ];
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = weaponDatabase;
+}
