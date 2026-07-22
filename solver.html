@@ -58,7 +58,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div class="md:col-span-2">
           <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon Name</label>
-          <input type="text" id="weaponSearch" placeholder="Type weapon name (e.g., Valley Cleaver)..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#00F0FF] focus:outline-none font-semibold">
+          <input type="text" id="weaponSearch" placeholder="Type weapon name (e.g., Oblivion)..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#00F0FF] focus:outline-none font-semibold">
         </div>
         <div>
           <label class="block text-xs font-bold text-[#FFB800] mb-2 uppercase tracking-wider">Weapon Type (5 Types)</label>
@@ -100,18 +100,18 @@
           </label>
           <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
             <option value="any">Any Secondary Stat</option>
-            <option value="Attack">Attack Boost</option>
-            <option value="HP">HP Boost</option>
-            <option value="Physical">Physical DMG Boost</option>
-            <option value="Heat">Heat DMG Boost</option>
-            <option value="Electric">Electric DMG Boost</option>
-            <option value="Cryo">Cryo DMG Boost</option>
-            <option value="Nature">Nature DMG Boost</option>
-            <option value="Critical">Critical Rate Boost</option>
-            <option value="Arts Intensity">Arts Intensity Boost</option>
-            <option value="Arts DMG">Arts DMG Boost</option>
-            <option value="Ultimate Energy">Ultimate Energy Gain Boost</option>
-            <option value="Treatment">Treatment Efficiency Boost</option>
+            <option value="Attack Boost">Attack Boost</option>
+            <option value="HP Boost">HP Boost</option>
+            <option value="Physical DMG Boost">Physical DMG Boost</option>
+            <option value="Heat DMG Boost">Heat DMG Boost</option>
+            <option value="Electric DMG Boost">Electric DMG Boost</option>
+            <option value="Cryo DMG Boost">Cryo DMG Boost</option>
+            <option value="Nature DMG Boost">Nature DMG Boost</option>
+            <option value="Critical Rate Boost">Critical Rate Boost</option>
+            <option value="Arts Intensity Boost">Arts Intensity Boost</option>
+            <option value="Arts DMG Boost">Arts DMG Boost</option>
+            <option value="Ultimate Gain Efficiency Boost">Ultimate Energy Gain Boost</option>
+            <option value="Treatment Efficiency Boost">Treatment Efficiency Boost</option>
           </select>
         </div>
 
@@ -173,10 +173,10 @@
       { name: "Originium Science Park", zone: "Originium Science Park", secondaryStats: ["Physical DMG Boost", "Critical Rate Boost"], skillStats: ["Suppression", "Pursuit", "Inspiring", "Combative", "Infliction", "Medicant", "Fracture", "Efficacy"] },
       { name: "Origin Lodesprings", zone: "Origin Lodesprings", secondaryStats: ["HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Suppression", "Combative", "Brutality", "Infliction", "Detonate", "Twilight", "Efficacy"] },
       { name: "Power Plateau", zone: "Power Plateau", secondaryStats: ["HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Treatment Efficiency Boost"], skillStats: ["Pursuit", "Crusher", "Inspiring", "Brutality", "Infliction", "Medicant", "Fracture", "Flow"] },
-      { name: "Wuling City", zone: "Wuling City", secondaryStats: ["HP Boost", "Electric DMG Boost", "Cryo DMG Boost", "Critical Rate Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Crusher", "Brutality", "Medicant", "Fracture", "Detonate", "Twilight", "Flow"] },
-      { name: "Qingbo Stockade", zone: "Qingbo Stockade", secondaryStats: ["HP Boost", "Physical DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Arts Intensity Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Suppression", "Crusher", "Inspiring", "Combative", "Medicant", "Fracture", "Detonate", "Twilight"] },
-      { name: "Marker Stone", zone: "Marker Stone", secondaryStats: ["Attack Boost", "Physical DMG Boost", "Heat DMG Boost", "Electric DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost"], skillStats: ["Assault", "Pursuit", "Inspiring", "Brutality", "Infliction", "Twilight", "Flow", "Efficacy"] },
-      { name: "Test Area", zone: "Test Area", secondaryStats: ["HP Boost", "Heat DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Arts Intensity Boost", "Ultimate Energy Gain Boost", "Treatment Efficiency Boost"], skillStats: ["Suppression", "Crusher", "Combative", "Brutality", "Infliction", "Fracture", "Twilight", "Flow"] },
+      { name: "Wuling City", zone: "Wuling City", secondaryStats: ["HP Boost", "Electric DMG Boost", "Cryo DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Crusher", "Brutality", "Medicant", "Fracture", "Detonate", "Twilight", "Flow"] },
+      { name: "Qingbo Stockade", zone: "Qingbo Stockade", secondaryStats: ["HP Boost", "Physical DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Suppression", "Crusher", "Inspiring", "Combative", "Medicant", "Fracture", "Detonate", "Twilight"] },
+      { name: "Marker Stone", zone: "Marker Stone", secondaryStats: ["Attack Boost", "Physical DMG Boost", "Heat DMG Boost", "Electric DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost"], skillStats: ["Assault", "Pursuit", "Inspiring", "Brutality", "Infliction", "Twilight", "Flow", "Efficacy"] },
+      { name: "Test Area", zone: "Test Area", secondaryStats: ["HP Boost", "Heat DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Treatment Efficiency Boost"], skillStats: ["Suppression", "Crusher", "Combative", "Brutality", "Infliction", "Fracture", "Twilight", "Flow"] },
       { name: "Sword Vault Dale", zone: "Sword Vault Dale", secondaryStats: ["Attack Boost", "HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Arts Intensity Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Pursuit", "Inspiring", "Combative", "Medicant", "Fracture", "Detonate", "Efficacy"] },
       { name: "Yinglung Pass", zone: "Yinglung Pass", secondaryStats: ["Attack Boost", "Physical DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Arts DMG Boost"], skillStats: ["Suppression", "Pursuit", "Combative", "Brutality", "Infliction", "Detonate", "Flow", "Efficacy"] },
       { name: "North Wuling EZ", zone: "North Wuling EZ", secondaryStats: ["HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Suppression", "Pursuit", "Crusher", "Inspiring", "Infliction", "Medicant", "Efficacy"] }
@@ -189,18 +189,23 @@
       </svg>
     `;
 
-    // Helper function to check if target search value matches item (string or array) flexibly
+    // Helper for fuzzy string comparisons (ignores trailing 's', case differences, and extra spacing)
+    function normalizeStr(str) {
+      if (!str) return "";
+      return String(str).toLowerCase().trim().replace(/s$/, "");
+    }
+
     function isFlexibleMatch(target, searchVal) {
       if (!searchVal || searchVal === "any") return true;
-      const lowerSearch = searchVal.toLowerCase();
+      if (!target) return false;
+
+      const normSearch = normalizeStr(searchVal);
 
       if (Array.isArray(target)) {
-        return target.some(item => String(item).toLowerCase().includes(lowerSearch));
+        return target.some(item => normalizeStr(item).includes(normSearch) || normSearch.includes(normalizeStr(item)));
       }
-      if (typeof target === 'string') {
-        return target.toLowerCase().includes(lowerSearch);
-      }
-      return false;
+      const normTarget = normalizeStr(target);
+      return normTarget.includes(normSearch) || normSearch.includes(normTarget);
     }
 
     function filterLocations() {
@@ -225,21 +230,21 @@
       let matchingWeapons = [];
 
       if (dataset.length === 0) {
-        weaponsContainer.innerHTML = `<span class="text-xs text-red-400 font-semibold col-span-3">Could not load weapon dataset. Check weaponDatabase.js format.</span>`;
+        weaponsContainer.innerHTML = `<span class="text-xs text-red-400 font-semibold col-span-3">Could not load weapon dataset. Check weaponDatabase.js.</span>`;
       } else {
-        // Filter matching weapons using flexible case-insensitive substring checks
         matchingWeapons = dataset.filter(w => {
           const wName = w.name || w.weaponName || w.title || "";
-          const wType = w.type || w.category || w.weaponType || "";
+          const wType = w.category || w.type || w.weaponType || "";
           
-          const wAttr = w.attributes || w.primaryStat || w.attr || w.attribute || [];
-          const wSec = w.secondaryStats || w.secondaryStat || w.sec || [];
-          const wSkill = w.skillStats || w.skillStat || w.skill || [];
+          const wAttr = w.attributes || w.primaryStat || w.attr || w.attribute || null;
+          const wSec = w.secondaryStat || w.secondaryStats || w.sec || null;
+          const wSkill = w.skillStat || w.skillStats || w.skill || null;
 
           const nameMatch = searchVal === "" || wName.toLowerCase().includes(searchVal);
-          const typeMatch = typeVal === "any" || wType.toLowerCase() === typeVal.toLowerCase();
+          const typeMatch = typeVal === "any" || isFlexibleMatch(wType, typeVal);
           
-          const attrMatch = isFlexibleMatch(wAttr, attr);
+          // If database item doesn't specify an attribute, don't reject it on attribute search unless explicitly defined
+          const attrMatch = attr === "any" || !wAttr || isFlexibleMatch(wAttr, attr);
           const secMatch = isFlexibleMatch(wSec, sec);
           const skillMatch = isFlexibleMatch(wSkill, skill);
 
@@ -250,9 +255,9 @@
           weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found for selected filters.</span>`;
         } else {
           matchingWeapons.forEach(w => {
-            const wName = w.name || w.weaponName || w.title || "Unknown Weapon";
+            const wName = w.name || w.weaponName || "Unknown Weapon";
             const locName = w.location || w.farmingLocation || w.zone || "Energy Alluvium Node";
-            const wType = w.type || w.category || w.weaponType || "Weapon";
+            const wType = w.category || w.type || "Weapon";
 
             weaponsContainer.innerHTML += `
               <div class="bg-[#05080c] border border-[#FFB800]/50 p-3 flex justify-between items-center">
@@ -269,7 +274,7 @@
         }
       }
 
-      // Filter Energy Alluvium locations flexible match
+      // Filter Energy Alluvium farming locations
       const matchingLocationNames = new Set(matchingWeapons.map(w => w.location || w.farmingLocation || w.zone));
       const filteredLocations = alluviumLocations.filter(loc => {
         const matchesSec = isFlexibleMatch(loc.secondaryStats, sec);
