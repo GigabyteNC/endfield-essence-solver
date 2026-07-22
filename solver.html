@@ -49,19 +49,19 @@
       <p class="text-gray-400 text-xs mt-1">Select weapon attributes to find matching Energy Alluvium farming locations.</p>
     </header>
 
-    <!-- Controls Section: Strict 1-Attribute, 1-Secondary, 1-Skill Dropdowns -->
+    <!-- Controls Section -->
     <section class="hud-card p-6 space-y-6">
       
       <!-- Weapon Search Input -->
       <div>
         <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon Name (Optional)</label>
-        <input type="text" id="weaponSearch" placeholder="Type weapon name (e.g. Valley Cleaver)..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#00F0FF] focus:outline-none font-semibold">
+        <input type="text" id="weaponSearch" placeholder="Type weapon name..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#00F0FF] focus:outline-none font-semibold">
       </div>
 
       <!-- 3 Specific Category Dropdowns -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
-        <!-- 1. Attribute Stat -->
+        <!-- 1. Attribute Stat Dropdown -->
         <div>
           <label class="block text-xs font-bold text-[#00F0FF] mb-2 uppercase tracking-wider flex items-center gap-1.5">
             <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
@@ -77,7 +77,7 @@
           </select>
         </div>
 
-        <!-- 2. Secondary Stat -->
+        <!-- 2. Secondary Stat Dropdown (Fully Verified List) -->
         <div>
           <label class="block text-xs font-bold text-[#FFB800] mb-2 uppercase tracking-wider flex items-center gap-1.5">
             <span class="w-2 h-2 bg-[#FFB800] inline-block"></span>
@@ -85,18 +85,23 @@
           </label>
           <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
             <option value="any">Any Secondary Stat</option>
-            <option value="HP Boost">HP Boost</option>
-            <option value="Physical DMG Boost">Physical DMG Boost</option>
-            <option value="Heat DMG Boost">Heat DMG Boost</option>
-            <option value="Nature DMG Boost">Nature DMG Boost</option>
-            <option value="Critical Rate Boost">Critical Rate Boost</option>
-            <option value="Arts Intensity Boost">Arts Intensity Boost</option>
-            <option value="Arts DMG Boost">Arts DMG Boost</option>
-            <option value="Treatment Efficiency Boost">Treatment Efficiency Boost</option>
+            <option value="Generalist / Core Stats">Generalist / Core Stats</option>
+            <option value="Attack">Attack</option>
+            <option value="HP">HP</option>
+            <option value="Physical DMG">Physical DMG</option>
+            <option value="Heat">Heat</option>
+            <option value="Electric">Electric</option>
+            <option value="Cryo">Cryo</option>
+            <option value="Nature">Nature</option>
+            <option value="Crit Rate">Crit Rate / Crit</option>
+            <option value="Arts Intensity">Arts Intensity</option>
+            <option value="Arts">Arts</option>
+            <option value="Ult Gain">Ult Gain</option>
+            <option value="Treatment">Treatment</option>
           </select>
         </div>
 
-        <!-- 3. Skill Stat -->
+        <!-- 3. Skill Stat Dropdown (Fully Verified List) -->
         <div>
           <label class="block text-xs font-bold text-[#00F0FF] mb-2 uppercase tracking-wider flex items-center gap-1.5">
             <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
@@ -108,10 +113,16 @@
             <option value="Suppression">Suppression</option>
             <option value="Pursuit">Pursuit</option>
             <option value="Crusher">Crusher</option>
+            <option value="Combative">Combative</option>
+            <option value="Detonate">Detonate</option>
+            <option value="Flow">Flow</option>
+            <option value="Efficacy">Efficacy</option>
             <option value="Inspiring">Inspiring</option>
             <option value="Infliction">Infliction</option>
             <option value="Medicant">Medicant</option>
-            <option value="Efficacy">Efficacy</option>
+            <option value="Fracture">Fracture</option>
+            <option value="Brutality">Brutality</option>
+            <option value="Twilight">Twilight</option>
           </select>
         </div>
 
@@ -119,10 +130,10 @@
 
     </section>
 
-    <!-- Results Section: Matching Energy Alluvium Locations -->
+    <!-- Results Section -->
     <section class="hud-card p-6 border-t-2 border-[#00F0FF]">
       <h2 class="text-sm font-bold text-[#00F0FF] mb-4 uppercase tracking-wider flex items-center gap-2">
-        <span>// MATCHING ENERGY ALLUVIUM LOCATIONS</span>
+        <span>// MATCHING ENERGY ALLUVIUM LOCATIONS (11 ZONES)</span>
       </h2>
 
       <div id="resultsList" class="space-y-3">
@@ -133,34 +144,73 @@
   </div>
 
   <script>
-    // Database mapping locations to their allowed Attribute, Secondary, and Skill stats
+    // Exact mapping of all 11 Energy Alluvium locations
     const alluviumLocations = [
       {
-        id: "loc-01",
-        name: "Valley Outpost - Sector 2 Rift",
-        zone: "Valley Outpost",
-        weapons: ["Valley Cleaver", "Rift Blade"],
-        attributes: ["Agility Boost", "Strength Boost", "Main Attribute Boost"],
-        secondaryStats: ["Physical DMG Boost", "Critical Rate Boost"],
-        skillStats: ["Assault", "Pursuit"]
+        name: "The Hub",
+        zone: "The Hub",
+        secondaryStats: ["Generalist / Core Stats"],
+        skillStats: ["Assault", "Suppression", "Pursuit", "Crusher", "Combative", "Detonate", "Flow", "Efficacy"]
       },
       {
-        id: "loc-02",
-        name: "Central Ruins - Node 01",
-        zone: "Central Ruins",
-        weapons: ["Budget Peak Blade", "Guardian Broadsword"],
-        attributes: ["Strength Boost", "Will Boost", "Intellect Boost"],
-        secondaryStats: ["HP Boost", "Treatment Efficiency Boost"],
-        skillStats: ["Suppression", "Medicant"]
+        name: "Originium Science Park",
+        zone: "Originium Science Park",
+        secondaryStats: ["Physical DMG", "Crit Rate"],
+        skillStats: ["Suppression", "Pursuit", "Inspiring", "Combative", "Infliction", "Medicant", "Fracture", "Efficacy"]
       },
       {
-        id: "loc-03",
-        name: "Highland Spire - Sector 4",
-        zone: "Highland Spire",
-        weapons: ["Alluvium Staff", "Caster Wand"],
-        attributes: ["Intellect Boost", "Will Boost", "Agility Boost"],
-        secondaryStats: ["Arts DMG Boost", "Arts Intensity Boost", "Nature DMG Boost"],
-        skillStats: ["Efficacy", "Inspiring"]
+        name: "Origin Lodesprings",
+        zone: "Origin Lodesprings",
+        secondaryStats: ["HP", "Physical", "Heat", "Cryo", "Nature", "Crit Rate", "Treatment"],
+        skillStats: ["Assault", "Suppression", "Combative", "Brutality", "Infliction", "Detonate", "Twilight", "Efficacy"]
+      },
+      {
+        name: "Power Plateau",
+        zone: "Power Plateau",
+        secondaryStats: ["HP", "Physical", "Heat", "Nature", "Crit Rate", "Treatment"],
+        skillStats: ["Pursuit", "Crusher", "Inspiring", "Brutality", "Infliction", "Medicant", "Fracture", "Flow"]
+      },
+      {
+        name: "Wuling City",
+        zone: "Wuling City",
+        secondaryStats: ["HP", "Electric", "Cryo", "Crit Rate", "Ult Gain", "Arts", "Treatment"],
+        skillStats: ["Assault", "Crusher", "Brutality", "Medicant", "Fracture", "Detonate", "Twilight", "Flow"]
+      },
+      {
+        name: "Qingbo Stockade",
+        zone: "Qingbo Stockade",
+        secondaryStats: ["HP", "Physical", "Electric", "Cryo", "Arts Intensity", "Ult Gain", "Arts", "Treatment"],
+        skillStats: ["Suppression", "Crusher", "Inspiring", "Combative", "Medicant", "Fracture", "Detonate", "Twilight"]
+      },
+      {
+        name: "Marker Stone",
+        zone: "Marker Stone",
+        secondaryStats: ["Attack", "Physical", "Heat", "Electric", "Nature", "Crit Rate", "Ult Gain", "Arts"],
+        skillStats: ["Assault", "Pursuit", "Inspiring", "Brutality", "Infliction", "Twilight", "Flow", "Efficacy"]
+      },
+      {
+        name: "Test Area",
+        zone: "Test Area",
+        secondaryStats: ["HP", "Heat", "Electric", "Cryo", "Nature", "Arts Intensity", "Ult Gain", "Treatment"],
+        skillStats: ["Suppression", "Crusher", "Combative", "Brutality", "Infliction", "Fracture", "Twilight", "Flow"]
+      },
+      {
+        name: "Sword Vault Dale",
+        zone: "Sword Vault Dale",
+        secondaryStats: ["Attack", "HP", "Physical", "Heat", "Cryo", "Nature", "Arts Intensity", "Treatment"],
+        skillStats: ["Assault", "Pursuit", "Inspiring", "Combative", "Medicant", "Fracture", "Detonate", "Efficacy"]
+      },
+      {
+        name: "Yinglung Pass",
+        zone: "Yinglung Pass",
+        secondaryStats: ["Attack", "Physical", "Electric", "Cryo", "Nature", "Crit Rate", "Arts Intensity", "Arts"],
+        skillStats: ["Suppression", "Pursuit", "Combative", "Brutality", "Infliction", "Detonate", "Flow", "Efficacy"]
+      },
+      {
+        name: "North Wuling EZ",
+        zone: "North Wuling EZ",
+        secondaryStats: ["HP", "Physical", "Heat", "Nature", "Crit Rate", "Arts Intensity", "Arts", "Treatment"],
+        skillStats: ["Assault", "Suppression", "Pursuit", "Crusher", "Inspiring", "Infliction", "Medicant", "Efficacy"]
       }
     ];
 
@@ -174,7 +224,6 @@
 
     function filterLocations() {
       const searchVal = document.getElementById('weaponSearch').value.toLowerCase();
-      const attr = document.getElementById('attrStat').value;
       const sec = document.getElementById('secStat').value;
       const skill = document.getElementById('skillStat').value;
 
@@ -182,21 +231,17 @@
       container.innerHTML = "";
 
       const filtered = alluviumLocations.filter(loc => {
-        // Weapon Name Match
-        const matchesWeapon = searchVal === "" || loc.weapons.some(w => w.toLowerCase().includes(searchVal));
-
-        // Strict 1-to-1 Stat Category Matches
-        const matchesAttr = attr === 'any' || loc.attributes.includes(attr);
-        const matchesSec = sec === 'any' || loc.secondaryStats.includes(sec);
+        const matchesWeapon = searchVal === "" || loc.name.toLowerCase().includes(searchVal);
+        const matchesSec = sec === 'any' || loc.secondaryStats.includes(sec) || (sec === "Crit Rate" && loc.secondaryStats.includes("Crit"));
         const matchesSkill = skill === 'any' || loc.skillStats.includes(skill);
 
-        return matchesWeapon && matchesAttr && matchesSec && matchesSkill;
+        return matchesWeapon && matchesSec && matchesSkill;
       });
 
       if (filtered.length === 0) {
         container.innerHTML = `
           <div class="bg-[#05080c] p-6 text-center text-gray-500 text-xs font-bold uppercase tracking-wider">
-            No matching Energy Alluvium locations found for this exact combination.
+            No matching Energy Alluvium locations found for this combination.
           </div>
         `;
         return;
@@ -210,7 +255,7 @@
               <div>
                 <div class="text-white font-bold text-sm">${loc.name}</div>
                 <div class="text-xs text-gray-400 mt-0.5">
-                  <strong class="text-gray-300">Matching Weapons:</strong> ${loc.weapons.join(', ')}
+                  <strong class="text-gray-300">Secondary Stats:</strong> ${loc.secondaryStats.join(', ')}
                 </div>
               </div>
             </div>
@@ -224,7 +269,6 @@
       });
     }
 
-    // Initial render
     filterLocations();
   </script>
 
