@@ -23,37 +23,8 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
       clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
     }
-    .stat-btn {
-      background: #05080c;
-      border: 1px solid #30363d;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    .stat-btn:hover {
+    .hud-card:hover {
       border-color: var(--accent-cyan);
-    }
-    .stat-btn.selected {
-      border-color: var(--accent-cyan);
-      background-color: rgba(0, 240, 255, 0.1);
-      color: #fff;
-    }
-    .radio-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 2px solid #6e7681;
-      display: inline-block;
-    }
-    .stat-btn.selected .radio-dot {
-      border-color: var(--accent-cyan);
-      background-color: var(--accent-cyan);
-      box-shadow: 0 0 8px var(--accent-cyan);
     }
   </style>
 </head>
@@ -61,7 +32,7 @@
 
   <div class="max-w-6xl mx-auto space-y-6">
     
-    <!-- Navigation Bar -->
+    <!-- Top Navigation -->
     <nav class="flex justify-between items-center p-4 hud-card bg-[#0d1117]">
       <div class="text-xl font-black text-[#00F0FF] tracking-wider">ESSENCE SOLVER</div>
       <div class="flex gap-6 font-bold text-sm">
@@ -71,223 +42,169 @@
       </div>
     </nav>
 
-    <!-- Search Weapon Name -->
-    <section class="hud-card p-6">
-      <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon Name (Optional)</label>
-      <input type="text" id="weaponSearch" placeholder="Type weapon name..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 focus:border-[#00F0FF] focus:outline-none font-semibold">
-    </section>
+    <!-- Header Banner -->
+    <header class="hud-card p-6 relative">
+      <div class="text-[#FFB800] text-xs font-bold tracking-widest mb-1">// WEAPON ESSENCE FINDER</div>
+      <h1 class="text-2xl md:text-3xl font-black text-white tracking-wide">ENERGY ALLUVIUM LOCATOR</h1>
+      <p class="text-gray-400 text-xs mt-1">Select weapon stats or search by weapon name to list matching Energy Alluvium farming locations.</p>
+    </header>
 
-    <!-- Section 1: Select 3 Attribute Stats -->
-    <section class="hud-card p-6">
-      <div class="flex justify-between items-center mb-4">
-        <div>
-          <h2 class="text-base font-bold text-white flex items-center gap-2">
-            <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
-            Select 3 Attribute Stats
-          </h2>
-          <p class="text-xs text-gray-400">Attribute stat of the essence rewarded will be randomly chosen from the 3 selected stats</p>
+    <!-- Controls Section: Dropdowns & Weapon Search -->
+    <section class="hud-card p-6 space-y-6">
+      
+      <!-- Weapon Search Input -->
+      <div>
+        <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon Name</label>
+        <input type="text" id="weaponSearch" placeholder="Type weapon name (e.g. Valley Cleaver)..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#00F0FF] focus:outline-none font-semibold">
+      </div>
+
+      <!-- Attribute Stats Dropdowns (Select 3) -->
+      <div>
+        <div class="text-xs font-bold text-[#00F0FF] uppercase mb-2 tracking-wider flex items-center gap-2">
+          <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
+          Select 3 Attribute Stats
         </div>
-        <div class="text-sm font-bold text-[#00F0FF]" id="attrCounter">0/3</div>
-      </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <select id="attr1" onchange="filterLocations()" class="bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
+            <option value="any">Attribute Stat 1 (Any)</option>
+            <option value="Agility Boost">Agility Boost</option>
+            <option value="Strength Boost">Strength Boost</option>
+            <option value="Will Boost">Will Boost</option>
+            <option value="Intellect Boost">Intellect Boost</option>
+            <option value="Main Attribute Boost">Main Attribute Boost</option>
+          </select>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="attributeGroup">
-        <button class="stat-btn" onclick="toggleAttr(this, 'Agility Boost')">
-          <span>Agility Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="toggleAttr(this, 'Strength Boost')">
-          <span>Strength Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="toggleAttr(this, 'Will Boost')">
-          <span>Will Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="toggleAttr(this, 'Intellect Boost')">
-          <span>Intellect Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="toggleAttr(this, 'Main Attribute Boost')">
-          <span>Main Attribute Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-      </div>
-    </section>
+          <select id="attr2" onchange="filterLocations()" class="bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
+            <option value="any">Attribute Stat 2 (Any)</option>
+            <option value="Agility Boost">Agility Boost</option>
+            <option value="Strength Boost">Strength Boost</option>
+            <option value="Will Boost">Will Boost</option>
+            <option value="Intellect Boost">Intellect Boost</option>
+            <option value="Main Attribute Boost">Main Attribute Boost</option>
+          </select>
 
-    <!-- Section 2: Select 1 Secondary or Skill Stat -->
-    <section class="hud-card p-6">
-      <div class="flex justify-between items-center mb-4">
-        <div>
-          <h2 class="text-base font-bold text-white flex items-center gap-2">
-            <span class="w-2 h-2 bg-[#FFB800] inline-block"></span>
-            Select 1 Secondary or Skill Stat
-          </h2>
-          <p class="text-xs text-gray-400">Essence rewarded will have 1 selected stat. The last stat will be completely random.</p>
+          <select id="attr3" onchange="filterLocations()" class="bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
+            <option value="any">Attribute Stat 3 (Any)</option>
+            <option value="Agility Boost">Agility Boost</option>
+            <option value="Strength Boost">Strength Boost</option>
+            <option value="Will Boost">Will Boost</option>
+            <option value="Intellect Boost">Intellect Boost</option>
+            <option value="Main Attribute Boost">Main Attribute Boost</option>
+          </select>
         </div>
-        <div class="text-sm font-bold text-[#FFB800]" id="secCounter">0/1</div>
       </div>
 
-      <!-- Secondary Stats Subheader -->
-      <div class="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">[ Secondary Stats ]</div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6" id="secondaryGroup">
-        <button class="stat-btn" onclick="selectSecondary(this, 'HP Boost')">
-          <span>HP Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Physical DMG Boost')">
-          <span>Physical DMG Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Heat DMG Boost')">
-          <span>Heat DMG Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Nature DMG Boost')">
-          <span>Nature DMG Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Critical Rate Boost')">
-          <span>Critical Rate Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Arts Intensity Boost')">
-          <span>Arts Intensity Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Arts DMG Boost')">
-          <span>Arts DMG Boost</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Treatment Efficiency Boost')">
-          <span>Treatment Efficiency Boost</span>
-          <span class="radio-dot"></span>
-        </button>
+      <!-- Secondary / Skill Stat Dropdown (Select 1) -->
+      <div>
+        <div class="text-xs font-bold text-[#FFB800] uppercase mb-2 tracking-wider flex items-center gap-2">
+          <span class="w-2 h-2 bg-[#FFB800] inline-block"></span>
+          Select 1 Secondary or Skill Stat
+        </div>
+        <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
+          <option value="any">Secondary or Skill Stat (Any)</option>
+          <optgroup label="Secondary Stats">
+            <option value="HP Boost">HP Boost</option>
+            <option value="Physical DMG Boost">Physical DMG Boost</option>
+            <option value="Heat DMG Boost">Heat DMG Boost</option>
+            <option value="Nature DMG Boost">Nature DMG Boost</option>
+            <option value="Critical Rate Boost">Critical Rate Boost</option>
+            <option value="Arts Intensity Boost">Arts Intensity Boost</option>
+            <option value="Arts DMG Boost">Arts DMG Boost</option>
+            <option value="Treatment Efficiency Boost">Treatment Efficiency Boost</option>
+          </optgroup>
+          <optgroup label="Skill Stats">
+            <option value="Assault">Assault</option>
+            <option value="Suppression">Suppression</option>
+            <option value="Pursuit">Pursuit</option>
+            <option value="Crusher">Crusher</option>
+            <option value="Inspiring">Inspiring</option>
+            <option value="Infliction">Infliction</option>
+            <option value="Medicant">Medicant</option>
+            <option value="Efficacy">Efficacy</option>
+          </optgroup>
+        </select>
       </div>
 
-      <!-- Skill Stats Subheader -->
-      <div class="text-xs font-bold text-gray-400 uppercase mb-2 tracking-wider">[ Skill Stats ]</div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="skillGroup">
-        <button class="stat-btn" onclick="selectSecondary(this, 'Assault')">
-          <span>Assault</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Suppression')">
-          <span>Suppression</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Pursuit')">
-          <span>Pursuit</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Crusher')">
-          <span>Crusher</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Inspiring')">
-          <span>Inspiring</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Infliction')">
-          <span>Infliction</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Medicant')">
-          <span>Medicant</span>
-          <span class="radio-dot"></span>
-        </button>
-        <button class="stat-btn" onclick="selectSecondary(this, 'Efficacy')">
-          <span>Efficacy</span>
-          <span class="radio-dot"></span>
-        </button>
-      </div>
     </section>
 
-    <!-- Results Section: Matching Energy Alluvium Locations -->
+    <!-- Results Section: Matching Locations with Icon -->
     <section class="hud-card p-6 border-t-2 border-[#00F0FF]">
-      <h2 class="text-base font-bold text-[#00F0FF] mb-4 uppercase tracking-wider">// MATCHING ENERGY ALLUVIUM LOCATIONS</h2>
+      <h2 class="text-sm font-bold text-[#00F0FF] mb-4 uppercase tracking-wider flex items-center gap-2">
+        <span>// MATCHING ENERGY ALLUVIUM LOCATIONS</span>
+      </h2>
+
       <div id="resultsList" class="space-y-3">
-        <!-- Matching locations render here -->
+        <!-- Matching Location Cards Render Here -->
       </div>
     </section>
 
   </div>
 
   <script>
-    let selectedAttributes = [];
-    let selectedSecondary = null;
-
-    // Database mapping attributes to Energy Alluvium locations & weapons
-    const alluviumDatabase = [
+    // Database mapping Energy Alluvium locations to weapon names and available stats
+    const alluviumLocations = [
       {
-        location: "Valley Outpost - Energy Alluvium Node 01",
-        weaponMatches: ["Valley Cleaver", "Rift Blade"],
+        id: "loc-01",
+        name: "Valley Outpost - Sector 2 Rift",
+        zone: "Valley Outpost",
+        weapons: ["Valley Cleaver", "Rift Blade"],
         attributes: ["Agility Boost", "Strength Boost", "Main Attribute Boost"],
         secondaryStats: ["Physical DMG Boost", "Critical Rate Boost", "Assault"]
       },
       {
-        location: "Central Ruins - Energy Alluvium Node 02",
-        weaponMatches: ["Budget Peak Blade", "Guardian Broadsword"],
+        id: "loc-02",
+        name: "Central Ruins - Node 01",
+        zone: "Central Ruins",
+        weapons: ["Budget Peak Blade", "Guardian Broadsword"],
         attributes: ["Strength Boost", "Will Boost", "Intellect Boost"],
         secondaryStats: ["HP Boost", "Treatment Efficiency Boost", "Suppression", "Medicant"]
       },
       {
-        location: "Highland Spire - Energy Alluvium Node 03",
-        weaponMatches: ["Alluvium Staff", "Caster Wand"],
+        id: "loc-03",
+        name: "Highland Spire - Sector 4",
+        zone: "Highland Spire",
+        weapons: ["Alluvium Staff", "Caster Wand"],
         attributes: ["Intellect Boost", "Will Boost", "Agility Boost"],
         secondaryStats: ["Arts DMG Boost", "Arts Intensity Boost", "Nature DMG Boost", "Efficacy"]
       }
     ];
 
-    function toggleAttr(btn, statName) {
-      if (selectedAttributes.includes(statName)) {
-        selectedAttributes = selectedAttributes.filter(a => a !== statName);
-        btn.classList.remove('selected');
-      } else {
-        if (selectedAttributes.length < 3) {
-          selectedAttributes.push(statName);
-          btn.classList.add('selected');
-        }
-      }
-      document.getElementById('attrCounter').innerText = `${selectedAttributes.length}/3`;
-      filterLocations();
-    }
-
-    function selectSecondary(btn, statName) {
-      // Clear all secondary/skill button selections
-      document.querySelectorAll('#secondaryGroup .stat-btn, #skillGroup .stat-btn').forEach(b => b.classList.remove('selected'));
-      
-      if (selectedSecondary === statName) {
-        selectedSecondary = null;
-        document.getElementById('secCounter').innerText = "0/1";
-      } else {
-        selectedSecondary = statName;
-        btn.classList.add('selected');
-        document.getElementById('secCounter').innerText = "1/1";
-      }
-      filterLocations();
-    }
+    // SVG Location Pin Icon
+    const locationIconSVG = `
+      <svg class="w-6 h-6 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+      </svg>
+    `;
 
     function filterLocations() {
-      const weaponQuery = document.getElementById('weaponSearch').value.toLowerCase();
+      const searchVal = document.getElementById('weaponSearch').value.toLowerCase();
+      const a1 = document.getElementById('attr1').value;
+      const a2 = document.getElementById('attr2').value;
+      const a3 = document.getElementById('attr3').value;
+      const sec = document.getElementById('secStat').value;
+
+      const selectedAttrs = [a1, a2, a3].filter(a => a !== 'any');
       const container = document.getElementById('resultsList');
       container.innerHTML = "";
 
-      const filtered = alluviumDatabase.filter(item => {
-        const matchesWeapon = weaponQuery === "" || item.weaponMatches.some(w => w.toLowerCase().includes(weaponQuery));
-        
-        // Match selected attribute stats
-        const matchesAttr = selectedAttributes.length === 0 || selectedAttributes.some(a => item.attributes.includes(a));
-        
-        // Match selected secondary or skill stat
-        const matchesSec = !selectedSecondary || item.secondaryStats.includes(selectedSecondary);
+      const filtered = alluviumLocations.filter(loc => {
+        // Weapon Name Match
+        const matchesWeapon = searchVal === "" || loc.weapons.some(w => w.toLowerCase().includes(searchVal));
+
+        // Attribute Stats Match
+        const matchesAttr = selectedAttrs.length === 0 || selectedAttrs.some(attr => loc.attributes.includes(attr));
+
+        // Secondary Stat Match
+        const matchesSec = sec === 'any' || loc.secondaryStats.includes(sec);
 
         return matchesWeapon && matchesAttr && matchesSec;
       });
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="p-6 text-center text-gray-500 font-semibold bg-[#05080c]">
-            No matching Energy Alluvium locations found for the selected combination.
+          <div class="bg-[#05080c] p-6 text-center text-gray-500 text-xs font-bold uppercase tracking-wider">
+            No matching Energy Alluvium locations found.
           </div>
         `;
         return;
@@ -295,22 +212,27 @@
 
       filtered.forEach(loc => {
         container.innerHTML += `
-          <div class="bg-[#05080c] p-4 border-l-4 border-[#00F0FF] flex justify-between items-center">
-            <div>
-              <div class="text-white font-bold text-sm mb-1">${loc.location}</div>
-              <div class="text-xs text-gray-400">
-                <strong class="text-gray-300">Matching Weapons:</strong> ${loc.weaponMatches.join(', ')}
+          <div class="bg-[#05080c] p-4 border-l-4 border-[#00F0FF] flex items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              ${locationIconSVG}
+              <div>
+                <div class="text-white font-bold text-sm">${loc.name}</div>
+                <div class="text-xs text-gray-400 mt-0.5">
+                  <strong class="text-gray-300">Matching Weapons:</strong> ${loc.weapons.join(', ')}
+                </div>
               </div>
             </div>
-            <div class="text-right text-xs text-[#FFB800] font-bold">
-              Energy Alluvium Node
+            <div class="text-right">
+              <span class="bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/40 text-[10px] font-bold px-2 py-1 uppercase">
+                ${loc.zone}
+              </span>
             </div>
           </div>
         `;
       });
     }
 
-    // Initial load
+    // Initial render
     filterLocations();
   </script>
 
