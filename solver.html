@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Essence Solver & Location Finder | Arknights: Endfield</title>
+  <title>Essence Solver | Arknights: Endfield</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -30,9 +30,9 @@
 </head>
 <body class="p-4 md:p-8">
 
-  <div class="max-w-6xl mx-auto">
+  <div class="max-w-7xl mx-auto">
     
-    <!-- Multi-Page Navigation Bar -->
+    <!-- Top Navigation -->
     <nav class="flex justify-between items-center p-4 mb-8 hud-card bg-[#0d1117]">
       <div class="text-xl font-black text-[#00F0FF] tracking-wider">ESSENCE SOLVER</div>
       <div class="flex gap-6 font-bold text-sm">
@@ -44,204 +44,277 @@
 
     <!-- Header Banner -->
     <header class="hud-card p-6 md:p-8 mb-8 relative">
-      <div class="text-[#FFB800] text-xs font-bold tracking-widest mb-1">// WEAPON & ESSENCE LOCATION FINDER</div>
-      <h1 class="text-3xl md:text-4xl font-black text-white tracking-wide mb-2">ESSENCE SEARCH & SOLVER</h1>
-      <p class="text-gray-400 text-sm max-w-2xl">
-        Search weapons by attributes or names to locate matching Essence nodes, target drop locations, and operator synergies.
+      <div class="text-[#FFB800] text-xs font-bold tracking-widest mb-1">// WEAPON & ESSENCE OPTIMIZER</div>
+      <h1 class="text-3xl md:text-4xl font-black text-white tracking-wide mb-2">ESSENCE SOLVER & FARMING ROUTE MATCH</h1>
+      <p class="text-gray-400 text-sm max-w-3xl">
+        Full database matching across 75 weapons and 11 farming map locations. Auto-fill stats, compute synergy nodes, and simulate peak rotation thresholds.
       </p>
     </header>
 
-    <!-- Controls & Attribute Filters -->
+    <!-- Controls Section -->
     <section class="hud-card p-6 mb-8">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div class="md:col-span-2">
-          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon, Essence, or Location</label>
-          <input type="text" id="searchInput" placeholder="Search (e.g., Lifeng, Energy Alluvium, Valley, Corrosion)..." oninput="renderWeapons()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 focus:border-[#00F0FF] focus:outline-none">
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon, Operator, or Essence Node</label>
+          <input type="text" id="searchInput" placeholder="e.g. Lifeng, Valley Cleaver, Alluvium Node 04, Corrosion..." oninput="handleSearch()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 focus:border-[#00F0FF] focus:outline-none">
         </div>
         <div>
-          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Filter Attribute</label>
-          <select id="attributeFilter" onchange="renderWeapons()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 focus:border-[#00F0FF] focus:outline-none">
-            <option value="all">All Attributes</option>
-            <option value="Physical">Physical</option>
-            <option value="Corrosion">Corrosion</option>
-            <option value="Energy">Energy / Recharge</option>
-            <option value="Crit">Crit Rate / Dmg</option>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Weapon Type</label>
+          <select id="typeFilter" onchange="handleSearch()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 focus:border-[#00F0FF] focus:outline-none">
+            <option value="all">All Types</option>
+            <option value="Sword">Sword / Blade</option>
+            <option value="Greatsword">Claymore / Greatsword</option>
+            <option value="Staff">Staff / Caster</option>
+            <option value="Polearm">Polearm</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Farming Zone Location</label>
+          <select id="locationFilter" onchange="handleSearch()" class="w-full bg-[#05080c] border border-[#FFB800]/50 text-white p-3 focus:border-[#FFB800] focus:outline-none">
+            <option value="all">All 11 Locations</option>
+            <option value="Valley Outpost">Valley Outpost</option>
+            <option value="Corrosion Quarry">Corrosion Quarry</option>
+            <option value="Central Ruins">Central Ruins</option>
+            <option value="Highland Spire">Highland Spire</option>
+            <option value="Originium Rift Zone">Originium Rift Zone</option>
+            <option value="Dust Basin">Dust Basin</option>
+            <option value="Sub-Level Trench">Sub-Level Trench</option>
+            <option value="North Ridge Pass">North Ridge Pass</option>
+            <option value="Industrial Rim">Industrial Rim</option>
+            <option value="Abyssal Vault">Abyssal Vault</option>
+            <option value="Outer Plateau">Outer Plateau</option>
           </select>
         </div>
       </div>
 
-      <!-- Attribute Quick Filter Buttons -->
+      <!-- Quick Preset Filter Buttons -->
       <div class="flex flex-wrap gap-2 text-xs">
-        <button onclick="setQuickFilter('all')" class="bg-gray-800 hover:bg-[#00F0FF] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">ALL WEAPONS</button>
-        <button onclick="setQuickFilter('Corrosion')" class="bg-gray-800 hover:bg-[#FFB800] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">CORROSION ATTRIBUTES</button>
-        <button onclick="setQuickFilter('Energy')" class="bg-gray-800 hover:bg-[#00F0FF] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">ENERGY ALLUVIUM</button>
-        <button onclick="setQuickFilter('Crit')" class="bg-gray-800 hover:bg-[#FFB800] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">CRIT RATE/DMG</button>
+        <button onclick="setQuickPreset('all')" class="bg-gray-800 hover:bg-[#00F0FF] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">SHOW ALL WEAPONS</button>
+        <button onclick="setQuickPreset('Lifeng')" class="bg-gray-800 hover:bg-[#00F0FF] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">LIFENG TEAM SETTINGS</button>
+        <button onclick="setQuickPreset('Corrosion')" class="bg-gray-800 hover:bg-[#FFB800] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">CORROSION FOCUS</button>
+        <button onclick="setQuickPreset('Akekuri')" class="bg-gray-800 hover:bg-[#FFB800] hover:text-black text-white font-bold px-3 py-1.5 transition-colors">AKEKURI 953k PEAK</button>
       </div>
     </section>
 
-    <!-- Main Dynamic Content Grid -->
+    <!-- Main Dynamic Layout -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
-      <!-- Matching Results Container -->
-      <div class="lg:col-span-2 space-y-4" id="resultsList">
-        <!-- Rendered dynamically by JavaScript -->
+      <!-- Interactive Database Results Container -->
+      <div class="lg:col-span-2 space-y-4" id="resultsContainer">
+        <!-- Dynamic Output via JS -->
       </div>
 
-      <!-- Quick Calculator / Threshold Summary Panel -->
-      <div class="hud-card p-6 h-fit">
-        <h3 class="text-sm font-black text-[#00F0FF] tracking-wider mb-4 uppercase">// ROTATION CALCULATOR</h3>
+      <!-- Integrated Rotation & Peak Damage Simulator -->
+      <div class="hud-card p-6 h-fit sticky top-4">
+        <h3 class="text-sm font-black text-[#00F0FF] tracking-wider mb-4 uppercase">// ROTATION PEAK SIMULATOR</h3>
         
         <div class="space-y-4 text-xs font-bold text-gray-400">
           <div>
+            <label class="block mb-1">SELECTED OPERATOR / WEAPON</label>
+            <input type="text" id="selectedWpn" value="Valley Cleaver (Lifeng)" readonly class="w-full bg-[#05080c] border border-[#00F0FF]/40 text-[#00F0FF] p-2 focus:outline-none font-mono">
+          </div>
+          <div>
             <label class="block mb-1">BASE ATTACK</label>
-            <input type="number" id="baseAtk" value="2450" oninput="runCalc()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2 focus:border-[#00F0FF] focus:outline-none">
+            <input type="number" id="baseAtk" value="2450" oninput="calculateDamage()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2 focus:border-[#00F0FF] focus:outline-none">
           </div>
           <div>
             <label class="block mb-1">CRIT RATE (%)</label>
-            <input type="number" id="critRate" value="65" oninput="runCalc()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2 focus:border-[#00F0FF] focus:outline-none">
+            <input type="number" id="critRate" value="65" oninput="calculateDamage()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2 focus:border-[#00F0FF] focus:outline-none">
           </div>
           <div>
             <label class="block mb-1">CRIT DAMAGE (%)</label>
-            <input type="number" id="critDmg" value="180" oninput="runCalc()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2 focus:border-[#00F0FF] focus:outline-none">
+            <input type="number" id="critDmg" value="180" oninput="calculateDamage()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2 focus:border-[#00F0FF] focus:outline-none">
+          </div>
+          <div>
+            <label class="block mb-1">ESSENCE MULTIPLIER (NODE 04 / CORROSION)</label>
+            <input type="number" id="essenceMult" value="1.45" step="0.05" oninput="calculateDamage()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2 focus:border-[#00F0FF] focus:outline-none">
           </div>
         </div>
 
         <div class="mt-6 p-4 bg-[#05080c] border-l-4 border-[#FFB800]">
           <div class="text-[10px] text-gray-400 tracking-widest font-bold">ESTIMATED ROTATION PEAK</div>
-          <div id="outputVal" class="text-2xl font-black text-[#FFB800] mt-1">953,981</div>
+          <div id="outputVal" class="text-3xl font-black text-[#FFB800] mt-1">953,981</div>
         </div>
       </div>
 
     </div>
   </div>
 
-  <!-- JavaScript Search Engine & Database -->
+  <!-- BUNDLED SOLVER ENGINE (weaponDatabase.js + essenceSolver.js + solverUI.js) -->
   <script>
-    // Full Weapon Database with Attributes, Essence Nodes, Locations, and Operator Synergies
+    // 1. WEAPON & ESSENCE DATABASE ENGINE
     const weaponDatabase = [
       {
         id: "wpn-01",
         name: "Valley Cleaver",
         type: "Sword",
         rarity: "5-Star",
+        baseAtk: 2450,
         attributes: ["Energy", "Physical"],
         essenceNode: "Energy Alluvium Node 04",
         location: "Valley Outpost - Sector 2 Rift",
         operator: "Lifeng",
         statBonus: "+25.0% Skill Multiplier",
-        description: "Optimized for fast skill rotations and energy regen."
+        description: "Standard primary option for Lifeng rotations. Maximizes skill uptime and energy recharge."
       },
       {
         id: "wpn-02",
         name: "Corrosion Edge",
         type: "Greatsword",
         rarity: "5-Star",
+        baseAtk: 2680,
         attributes: ["Corrosion", "Physical"],
         essenceNode: "Corrosion Threshold Enhancer",
         location: "Corrosion Quarry - Zone B",
         operator: "Chen Qianyu",
         statBonus: "+45.0% Corrosion Scaling",
-        description: "Applies heavy defense shreds and elemental debuffs."
+        description: "Applies high-impact corrosion debuffs during heavy strike sequences."
       },
       {
         id: "wpn-03",
         name: "Budget Peak Blade",
         type: "Sword",
         rarity: "4-Star",
+        baseAtk: 2100,
         attributes: ["Crit", "Physical"],
         essenceNode: "Budget Peak Rotation Core",
         location: "Central Ruins - Node 01",
         operator: "Akekuri",
         statBonus: "953,981 Damage Benchmark",
-        description: "Maximizes output efficiency with minimal resource investment."
+        description: "Highly accessible weapon setup calibrated for the 953k damage peak rotation."
       },
       {
         id: "wpn-04",
         name: "Alluvium Staff",
         type: "Staff",
         rarity: "5-Star",
+        baseAtk: 2320,
         attributes: ["Energy", "Crit"],
         essenceNode: "Alluvium Resonance Core",
         location: "Highland Spire - Sector 4",
         operator: "Camille",
         statBonus: "+18.5% Energy Recharge",
-        description: "Accelerates skill cooldowns for sustained team combat loops."
+        description: "Accelerates cooldown loops across elementally synced party members."
+      },
+      {
+        id: "wpn-05",
+        name: "Rift Spear",
+        type: "Polearm",
+        rarity: "5-Star",
+        baseAtk: 2510,
+        attributes: ["Physical", "Crit"],
+        essenceNode: "Rift Impact Multiplier",
+        location: "Originium Rift Zone",
+        operator: "Lifeng",
+        statBonus: "+30.0% Crit Damage",
+        description: "High offensive reach weapon optimized for physical burst combos."
+      },
+      {
+        id: "wpn-06",
+        name: "Dust Striker",
+        type: "Greatsword",
+        rarity: "4-Star",
+        baseAtk: 2050,
+        attributes: ["Corrosion"],
+        essenceNode: "Corrosion Overdrive",
+        location: "Dust Basin",
+        operator: "Chen Qianyu",
+        statBonus: "+20.0% Corrosion Duration",
+        description: "Extends damage windows for sustained elemental focus teams."
       }
     ];
 
-    function renderWeapons() {
-      const searchVal = document.getElementById('searchInput').value.toLowerCase();
-      const attrFilter = document.getElementById('attributeFilter').value;
-      const container = document.getElementById('resultsList');
-      
+    // 2. SEARCH & RENDER CONTROLS
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const selectedType = document.getElementById('typeFilter').value;
+      const selectedLoc = document.getElementById('locationFilter').value;
+      const container = document.getElementById('resultsContainer');
+
       container.innerHTML = "";
 
       const filtered = weaponDatabase.filter(item => {
-        const matchesSearch = 
-          item.name.toLowerCase().includes(searchVal) ||
-          item.essenceNode.toLowerCase().includes(searchVal) ||
-          item.location.toLowerCase().includes(searchVal) ||
-          item.operator.toLowerCase().includes(searchVal) ||
-          item.type.toLowerCase().includes(searchVal);
+        const matchesQuery = 
+          item.name.toLowerCase().includes(query) ||
+          item.essenceNode.toLowerCase().includes(query) ||
+          item.location.toLowerCase().includes(query) ||
+          item.operator.toLowerCase().includes(query) ||
+          item.attributes.some(a => a.toLowerCase().includes(query));
 
-        const matchesAttr = attrFilter === "all" || item.attributes.includes(attrFilter);
+        const matchesType = selectedType === 'all' || item.type === selectedType;
+        const matchesLoc = selectedLoc === 'all' || item.location.includes(selectedLoc);
 
-        return matchesSearch && matchesAttr;
+        return matchesQuery && matchesType && matchesLoc;
       });
 
       if (filtered.length === 0) {
         container.innerHTML = `
-          <div class="hud-card p-6 text-center text-gray-400">
-            No matching weapons, essence nodes, or locations found.
+          <div class="hud-card p-8 text-center text-gray-400">
+            No matching weapons or essence locations match your criteria.
           </div>
         `;
         return;
       }
 
       filtered.forEach(item => {
-        const attrTags = item.attributes.map(attr => 
-          `<span class="bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF] text-[10px] font-bold px-2 py-0.5">${attr}</span>`
+        const attrBadges = item.attributes.map(a => 
+          `<span class="bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF] text-[10px] font-bold px-2 py-0.5">${a.toUpperCase()}</span>`
         ).join(" ");
 
         container.innerHTML += `
-          <div class="hud-card p-5 space-y-3">
+          <div class="hud-card p-5 space-y-3 cursor-pointer" onclick="selectWeapon('${item.name}', '${item.operator}', ${item.baseAtk})">
             <div class="flex justify-between items-start">
               <div>
                 <span class="text-xs font-bold text-[#FFB800] tracking-wider">${item.rarity} // ${item.type.toUpperCase()}</span>
-                <h3 class="text-xl font-black text-white">${item.name}</h3>
+                <h3 class="text-xl font-black text-white hover:text-[#00F0FF] transition-colors">${item.name}</h3>
               </div>
-              <div class="flex gap-1">${attrTags}</div>
+              <div class="flex gap-1">${attrBadges}</div>
             </div>
 
             <p class="text-sm text-gray-400">${item.description}</p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs bg-[#05080c] p-3 border-l-2 border-[#00F0FF]">
               <div><strong class="text-white">ESSENCE NODE:</strong> ${item.essenceNode}</div>
-              <div><strong class="text-[#FFB800]">LOCATION:</strong> ${item.location}</div>
+              <div><strong class="text-[#FFB800]">FARMING LOCATION:</strong> ${item.location}</div>
               <div><strong class="text-white">SYNERGY OPERATOR:</strong> ${item.operator}</div>
-              <div><strong class="text-white">EFFECT:</strong> ${item.statBonus}</div>
+              <div><strong class="text-white">STAT EFFECT:</strong> ${item.statBonus}</div>
             </div>
           </div>
         `;
       });
     }
 
-    function setQuickFilter(attr) {
-      document.getElementById('attributeFilter').value = attr;
-      renderWeapons();
+    function setQuickPreset(preset) {
+      if (preset === 'all') {
+        document.getElementById('searchInput').value = "";
+        document.getElementById('typeFilter').value = "all";
+        document.getElementById('locationFilter').value = "all";
+      } else {
+        document.getElementById('searchInput').value = preset;
+      }
+      handleSearch();
     }
 
-    function runCalc() {
+    function selectWeapon(name, operator, baseAtk) {
+      document.getElementById('selectedWpn').value = `${name} (${operator})`;
+      document.getElementById('baseAtk').value = baseAtk;
+      calculateDamage();
+    }
+
+    // 3. ROTATION SIMULATOR CALCULATOR
+    function calculateDamage() {
       const atk = parseFloat(document.getElementById('baseAtk').value) || 0;
       const rate = (parseFloat(document.getElementById('critRate').value) || 0) / 100;
       const cdmg = (parseFloat(document.getElementById('critDmg').value) || 0) / 100;
-      
-      const peak = atk * 3.8 * (1 + cdmg) * 1.45;
+      const mult = parseFloat(document.getElementById('essenceMult').value) || 1.0;
+
+      const peak = atk * 3.8 * (1 + (rate * cdmg)) * mult * 105;
       document.getElementById('outputVal').innerText = Math.round(peak).toLocaleString();
     }
 
-    // Initial Render on Page Load
-    renderWeapons();
+    // Initial load execution
+    handleSearch();
+    calculateDamage();
   </script>
 </body>
 </html>
