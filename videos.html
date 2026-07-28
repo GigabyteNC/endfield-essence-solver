@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operator Guides & Videos - Endfield Solver</title>
+  <style>
+    :root {
+      --bg-dark: #121418;
+      --card-bg: #1c2026;
+      --accent-yellow: #ffb703;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border-color: #2d3748;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1100px;
+      padding: 2rem 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent-yellow);
+    }
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+    }
+
+    .category-title {
+      font-size: 1.5rem;
+      color: var(--accent-yellow);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .video-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-yellow);
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-info {
+      padding: 1rem;
+    }
+
+    .operator-badge {
+      display: inline-block;
+      background-color: #2b323d;
+      color: var(--accent-yellow);
+      font-size: 0.75rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .video-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+      line-height: 1.3;
+    }
+
+    .video-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Endfield Solver</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="solver.html">Weapon Solver</a>
+      <a href="videos.html" style="color: var(--accent-yellow);">Videos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="video-category">
+      <h2 class="category-title">Operator Guides</h2>
+
+      <div class="video-grid">
+
+        <!-- Arcane -->
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/Bber7FEvQrE" title="Arcane Guide" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <span class="operator-badge">Arcane</span>
+            <h3 class="video-title">Arcane is 2 Operators in 1 (DPS & Support Guide)</h3>
+            <p class="video-desc">Full breakdown on building Arcane for both DPS and Support roles, corrosion mechanics, and optimal weapons.</p>
+          </div>
+        </div>
+
+        <!-- Camille -->
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/Ijyg7hvg8c0" title="Camille Guide" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <span class="operator-badge">Camille</span>
+            <h3 class="video-title">Camille Complete Guide! Best Build, Weapon & Teams</h3>
+            <p class="video-desc">In-depth look at Camille's kit, signature weapon pairings, and synergies with Laevatain & Rosie.</p>
+          </div>
+        </div>
+
+        <!-- Laevatain -->
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/QTmP329qG_M" title="Laevatain Guide" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <span class="operator-badge">Laevatain</span>
+            <h3 class="video-title">Laevatain Is BROKEN - Best AoE DPS</h3>
+            <p class="video-desc">How to maximize Laevatain's massive AoE heat damage output and free-to-play team rotations.</p>
+          </div>
+        </div>
+
+        <!-- Gilberta -->
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/7aaViv1qJBM" title="Gilberta Guide" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <span class="operator-badge">Gilberta</span>
+            <h3 class="video-title">Gilberta Is BETTER Than You Think… But There’s One Problem</h3>
+            <p class="video-desc">Analyzing Gilberta's Arts susceptibility window, gravity well crowd control, and gear sets.</p>
+          </div>
+        </div>
+
+        <!-- Yvonne -->
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/H5DddL1juik" title="Yvonne Guide" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <span class="operator-badge">Yvonne</span>
+            <h3 class="video-title">Yvonne COMPLETE Guide – Best Build, Max Damage Rotation</h3>
+            <p class="video-desc">Fixing common mistakes with Yvonne, rotation strategies for fast ultimate uptime, and team setups.</p>
+          </div>
+        </div>
+
+        <!-- Rosie -->
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/dEkEYGpaZTs" title="Rosie Guide" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <span class="operator-badge">Rosie</span>
+            <h3 class="video-title">Rosie Isn’t a Must Pull… Here’s Why</h3>
+            <p class="video-desc">Testing Rosie across main DPS and sub DPS roles, timed combo mechanics, and physical team synergies.</p>
+          </div>
+        </div>
+
+        <!-- Tangtang -->
+        <div class="video-card">
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/MP8xMXRMF8o" title="Tangtang Guide" allowfullscreen></iframe>
+          </div>
+          <div class="video-info">
+            <span class="operator-badge">Tangtang</span>
+            <h3 class="video-title">Tangtang Isn’t a Main DPS… Pull or Skip?</h3>
+            <p class="video-desc">Understanding Tangtang's true role as a Cryo synergy sub DPS and optimal team rotations.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; Endfield Solver. Arknights: Endfield is a trademark of HYPERGRYPH / GRYPHLINE.
+  </footer>
+
+</body>
+</html>
