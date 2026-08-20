@@ -271,7 +271,6 @@
     ];
 
     const SECONDARY_STATS = [
-      "ATK Boost",
       "Attack Boost",
       "Arts DMG Boost",
       "Arts Intensity Boost",
@@ -323,13 +322,13 @@
       ],
       "Power Plateau": [
         "Agility Boost", "Strength Boost", "Will Boost",
-        "ATK Boost", "Attack Boost", "Electric DMG Boost", "HP Boost", "Heat DMG Boost", "Physical DMG Boost",
+        "Attack Boost", "Electric DMG Boost", "HP Boost", "Heat DMG Boost", "Physical DMG Boost",
         "Assault", "Brutality", "Crusher", "Inspiring", "Medicant", "Suppression", "Twilight"
       ],
       "Wuling City": [
-        "Agility Boost", "Intellect Boost", "Main Attribute Boost", "Strength Boost", "Will Boost",
-        "ATK Boost", "Attack Boost", "Arts Intensity Boost", "Cryo DMG Boost", "Electric DMG Boost", "Nature DMG Boost", "Treatment Efficiency Boost", "Ultimate Gain Efficiency Boost",
-        "Assault", "Combative", "Detonate", "Flow", "Inspiring", "Medicant", "Pursuit", "Suppression"
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "Attack Boost", "HP Boost", "Electric DMG Boost", "Cryo DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Arts DMG Boost", "Treatment Efficiency Boost",
+        "Assault", "Crusher", "Brutality", "Medicant", "Fracture", "Detonate", "Twilight", "Flow"
       ],
       "Qingbo Stockade": [
         "Strength Boost",
@@ -485,17 +484,17 @@
         return matchP && matchS && matchSp;
       });
 
-      // Calculate matching locations
+      // Strict AND matching logic: Location is included ONLY if it has ALL selected stats
       const validLocations = [];
       if (selectedStats.length > 0) {
         for (const [location, stats] of Object.entries(FARMING_LOCATIONS_DB)) {
-          const hasMatch = selectedStats.some(stat => {
+          const hasAllMatches = selectedStats.every(stat => {
             if (stat === "ATK Boost" || stat === "Attack Boost") {
               return stats.includes("ATK Boost") || stats.includes("Attack Boost");
             }
             return stats.includes(stat);
           });
-          if (hasMatch) {
+          if (hasAllMatches) {
             validLocations.push(location);
           }
         }
@@ -506,7 +505,9 @@
       locationContainer.innerHTML = "";
 
       if (validLocations.length === 0) {
-        locationContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">Select stats or weapons to see farmable locations.</span>';
+        locationContainer.innerHTML = selectedStats.length > 0 
+          ? '<span style="color: var(--text-muted); font-size: 0.85rem;">No single location contains all selected stats.</span>'
+          : '<span style="color: var(--text-muted); font-size: 0.85rem;">Select stats or weapons to see farmable locations.</span>';
       } else {
         validLocations.forEach(loc => {
           const pill = document.createElement("div");
