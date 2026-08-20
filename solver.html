@@ -91,8 +91,8 @@
     }
 
     label {
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-size: 0.85rem;
+      font-weight: 700;
       color: var(--accent-yellow);
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -218,33 +218,36 @@
   <main>
     <section class="solver-card">
       <h2 style="margin-top: 0; color: var(--text-main);">Essence & Weapon Solver</h2>
-      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select your desired weapon attributes to locate matching weapons and their farmable essence locations.</p>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select your desired weapon attributes to view matching weapons and their farmable essence locations.</p>
 
       <div class="solver-grid">
+        <!-- ATTRIBUTE STATS -->
         <div class="select-group">
-          <label for="primaryStat">Primary Stat</label>
+          <label for="primaryStat">ATTRIBUTE STATS</label>
           <select id="primaryStat" onchange="runSolver()">
-            <option value="">-- All Primary Stats --</option>
+            <option value="">None</option>
           </select>
         </div>
 
+        <!-- SECONDARY STATS -->
         <div class="select-group">
-          <label for="secondaryStat">Secondary Stat</label>
+          <label for="secondaryStat">SECONDARY STATS</label>
           <select id="secondaryStat" onchange="runSolver()">
-            <option value="">-- All Secondary Stats --</option>
+            <option value="">None</option>
           </select>
         </div>
 
+        <!-- SKILL STATS -->
         <div class="select-group">
-          <label for="specialStat">Special / Passive</label>
+          <label for="specialStat">SKILL STATS</label>
           <select id="specialStat" onchange="runSolver()">
-            <option value="">-- All Special Effects --</option>
+            <option value="">None</option>
           </select>
         </div>
       </div>
 
       <div class="results-panel">
-        <div class="results-heading">Essences Farmable In</div>
+        <div class="results-heading">ESSENCES FARMABLE IN</div>
         <div id="locationPills" class="pill-container">
           <span style="color: var(--text-muted); font-size: 0.85rem;">Select stats or weapons to see farmable locations.</span>
         </div>
@@ -262,22 +265,90 @@
   </footer>
 
   <script>
-    // Essence location database
+    // Exact lists from provided images
+    const ATTRIBUTE_STATS = [
+      "Agility Boost",
+      "Intellect Boost",
+      "Main Attribute Boost",
+      "Strength Boost",
+      "Will Boost"
+    ];
+
+    const SECONDARY_STATS = [
+      "ATK Boost",
+      "Arts DMG Boost",
+      "Arts Intensity Boost",
+      "Critical Rate Boost",
+      "Cryo DMG Boost",
+      "Efficacy: Linked Effort",
+      "Electric DMG Boost",
+      "HP Boost",
+      "Heat DMG Boost",
+      "Nature DMG Boost",
+      "Physical DMG Boost",
+      "Treatment Efficiency Boost",
+      "Ultimate Gain Efficiency Boost"
+    ];
+
+    const SKILL_STATS = [
+      "Assault",
+      "Brutality",
+      "Combative",
+      "Crusher",
+      "Detonate",
+      "Efficacy",
+      "Flow",
+      "Fracture",
+      "Infliction",
+      "Inspiring",
+      "Medicant",
+      "Pursuit",
+      "Suppression",
+      "Twilight"
+    ];
+
+    // Essence Location mappings
     const ESSENCE_LOCATIONS = {
-      "Will Boost": ["Wuling City", "Power Plateau", "North Wuling EZ"],
-      "Treatment Efficiency Boost": ["Wuling City", "Qingbo Stockade", "Sword Vault Dale"],
-      "Medicant": ["Wuling City", "Power Plateau", "Qingbo Stockade", "Sword Vault Dale", "North Wuling EZ"],
-      "Intellect Boost": ["Wuling City", "Sword Vault Dale"],
-      "Ultimate Gain Efficiency Boost": ["Wuling City", "North Wuling EZ"],
-      "Detonate": ["Wuling City", "Sword Vault Dale", "North Wuling EZ"],
+      // Attribute Stats
       "Agility Boost": ["Wuling City", "Sword Vault Dale", "Power Plateau"],
+      "Intellect Boost": ["Wuling City", "Sword Vault Dale"],
+      "Main Attribute Boost": ["Wuling City", "North Wuling EZ"],
       "Strength Boost": ["Wuling City", "Power Plateau", "Qingbo Stockade"],
-      "Heat Damage Boost": ["Power Plateau", "Sword Vault Dale"],
-      "Cryo Damage Boost": ["Wuling City", "North Wuling EZ"],
-      "Physical Damage Boost": ["Qingbo Stockade", "Power Plateau"]
+      "Will Boost": ["Wuling City", "Power Plateau", "North Wuling EZ"],
+
+      // Secondary Stats
+      "ATK Boost": ["Wuling City", "Power Plateau"],
+      "Arts DMG Boost": ["Sword Vault Dale", "North Wuling EZ"],
+      "Arts Intensity Boost": ["Wuling City", "North Wuling EZ"],
+      "Critical Rate Boost": ["Sword Vault Dale", "North Wuling EZ"],
+      "Cryo DMG Boost": ["Wuling City", "North Wuling EZ"],
+      "Efficacy: Linked Effort": ["Qingbo Stockade", "Sword Vault Dale"],
+      "Electric DMG Boost": ["Wuling City", "Power Plateau"],
+      "HP Boost": ["Power Plateau", "Qingbo Stockade"],
+      "Heat DMG Boost": ["Power Plateau", "Sword Vault Dale"],
+      "Nature DMG Boost": ["Wuling City", "Sword Vault Dale"],
+      "Physical DMG Boost": ["Qingbo Stockade", "Power Plateau"],
+      "Treatment Efficiency Boost": ["Wuling City", "Qingbo Stockade", "Sword Vault Dale"],
+      "Ultimate Gain Efficiency Boost": ["Wuling City", "North Wuling EZ"],
+
+      // Skill Stats
+      "Assault": ["Wuling City", "Power Plateau"],
+      "Brutality": ["Power Plateau", "Qingbo Stockade"],
+      "Combative": ["Wuling City", "Sword Vault Dale"],
+      "Crusher": ["Power Plateau", "Qingbo Stockade"],
+      "Detonate": ["Wuling City", "Sword Vault Dale", "North Wuling EZ"],
+      "Efficacy": ["Qingbo Stockade", "Sword Vault Dale"],
+      "Flow": ["Wuling City", "North Wuling EZ"],
+      "Fracture": ["Sword Vault Dale", "North Wuling EZ"],
+      "Infliction": ["Qingbo Stockade", "Sword Vault Dale"],
+      "Inspiring": ["Wuling City", "Power Plateau"],
+      "Medicant": ["Wuling City", "Power Plateau", "Qingbo Stockade", "Sword Vault Dale", "North Wuling EZ"],
+      "Pursuit": ["Wuling City", "Sword Vault Dale", "North Wuling EZ"],
+      "Suppression": ["Wuling City", "Power Plateau"],
+      "Twilight": ["Power Plateau", "Sword Vault Dale"]
     };
 
-    // Weapon database
+    // Centralized Weapon Database
     const WEAPONS_DB = [
       {
         id: "bedazzling_night_debut",
@@ -311,7 +382,7 @@
         baseAtk: 500,
         primary: "Agility Boost",
         secondary: "Ultimate Gain Efficiency Boost",
-        special: "Heat Damage Boost",
+        special: "Twilight",
         specialFull: "Blessing of Carmine",
         farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
       },
@@ -322,8 +393,8 @@
         rarity: 6,
         baseAtk: 500,
         primary: "Intellect Boost",
-        secondary: "Strength Boost",
-        special: "Heat Damage Boost",
+        secondary: "Heat DMG Boost",
+        special: "Twilight",
         specialFull: "Twilight Flame",
         farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "Qingbo Stockade"]
       },
@@ -335,7 +406,7 @@
         baseAtk: 500,
         primary: "Will Boost",
         secondary: "Ultimate Gain Efficiency Boost",
-        special: "Detonate",
+        special: "Pursuit",
         specialFull: "Pursuit Order",
         farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
       },
@@ -346,10 +417,10 @@
         rarity: 6,
         baseAtk: 500,
         primary: "Agility Boost",
-        secondary: "Intellect Boost",
-        special: "Physical Damage Boost",
+        secondary: "Critical Rate Boost",
+        special: "Fracture",
         specialFull: "Gnashing Wolves",
-        farmLocations: ["Wuling City", "Sword Vault Dale", "Power Plateau", "Qingbo Stockade"]
+        farmLocations: ["Wuling City", "Sword Vault Dale", "Power Plateau", "North Wuling EZ"]
       },
       {
         id: "marathon_tassel",
@@ -358,8 +429,8 @@
         rarity: 6,
         baseAtk: 500,
         primary: "Strength Boost",
-        secondary: "Will Boost",
-        special: "Physical Damage Boost",
+        secondary: "Physical DMG Boost",
+        special: "Crusher",
         specialFull: "Crush Surge",
         farmLocations: ["Wuling City", "Power Plateau", "Qingbo Stockade", "North Wuling EZ"]
       },
@@ -370,28 +441,18 @@
         rarity: 6,
         baseAtk: 500,
         primary: "Will Boost",
-        secondary: "Intellect Boost",
-        special: "Detonate",
+        secondary: "Electric DMG Boost",
+        special: "Suppression",
         specialFull: "Suppression Wave",
         farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
       }
     ];
 
-    // Populate dropdown menus
-    function populateDropdowns() {
-      const primaries = new Set();
-      const secondaries = new Set();
-      const specials = new Set();
-
-      WEAPONS_DB.forEach(w => {
-        if (w.primary) primaries.add(w.primary);
-        if (w.secondary) secondaries.add(w.secondary);
-        if (w.special) specials.add(w.special);
-      });
-
-      const fill = (id, set) => {
-        const sel = document.getElementById(id);
-        Array.from(set).sort().forEach(val => {
+    // Populate dropdowns with exact lists
+    function initDropdowns() {
+      const fillSelect = (elemId, list) => {
+        const sel = document.getElementById(elemId);
+        list.forEach(val => {
           const opt = document.createElement("option");
           opt.value = val;
           opt.textContent = val;
@@ -399,12 +460,12 @@
         });
       };
 
-      fill("primaryStat", primaries);
-      fill("secondaryStat", secondaries);
-      fill("specialStat", specials);
+      fillSelect("primaryStat", ATTRIBUTE_STATS);
+      fillSelect("secondaryStat", SECONDARY_STATS);
+      fillSelect("specialStat", SKILL_STATS);
     }
 
-    // Main solver filtering logic
+    // Solver logic
     function runSolver() {
       const p = document.getElementById("primaryStat").value;
       const s = document.getElementById("secondaryStat").value;
@@ -412,18 +473,17 @@
 
       const selectedStats = [p, s, sp].filter(Boolean);
 
-      // Filter matching weapons
+      // Match weapons
       const matchingWeapons = WEAPONS_DB.filter(w => {
         const matchP = !p || w.primary === p;
         const matchS = !s || w.secondary === s;
-        const matchSp = !sp || w.special === sp || (w.specialFull && w.specialFull.includes(sp));
+        const matchSp = !sp || w.special === sp || (w.specialFull && w.specialFull.startsWith(sp));
         return matchP && matchS && matchSp;
       });
 
-      // Calculate combined locations
+      // Calculate farm locations
       const locationSet = new Set();
 
-      // If specific weapons match, pull their known locations
       if (matchingWeapons.length > 0) {
         matchingWeapons.forEach(w => {
           if (w.farmLocations) {
@@ -432,7 +492,7 @@
         });
       }
 
-      // Add individual essence locations for any selected stats
+      // Add individual essence locations for selected stats
       selectedStats.forEach(stat => {
         if (ESSENCE_LOCATIONS[stat]) {
           ESSENCE_LOCATIONS[stat].forEach(loc => locationSet.add(loc));
@@ -444,7 +504,7 @@
       locationContainer.innerHTML = "";
 
       if (locationSet.size === 0) {
-        locationContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">No locations found matching the criteria.</span>';
+        locationContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">Select stats or weapons to see farmable locations.</span>';
       } else {
         locationSet.forEach(loc => {
           const pill = document.createElement("div");
@@ -454,7 +514,7 @@
         });
       }
 
-      // Render Weapons List
+      // Render Matching Weapons
       const weaponContainer = document.getElementById("weaponList");
       weaponContainer.innerHTML = "";
 
@@ -478,8 +538,7 @@
       }
     }
 
-    // Initialize page
-    populateDropdowns();
+    initDropdowns();
     runSolver();
   </script>
 </body>
