@@ -221,7 +221,6 @@
       <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select your desired weapon attributes to view matching weapons and their farmable essence locations.</p>
 
       <div class="solver-grid">
-        <!-- ATTRIBUTE STATS -->
         <div class="select-group">
           <label for="primaryStat">ATTRIBUTE STATS</label>
           <select id="primaryStat" onchange="runSolver()">
@@ -229,7 +228,6 @@
           </select>
         </div>
 
-        <!-- SECONDARY STATS -->
         <div class="select-group">
           <label for="secondaryStat">SECONDARY STATS</label>
           <select id="secondaryStat" onchange="runSolver()">
@@ -237,7 +235,6 @@
           </select>
         </div>
 
-        <!-- SKILL STATS -->
         <div class="select-group">
           <label for="specialStat">SKILL STATS</label>
           <select id="specialStat" onchange="runSolver()">
@@ -265,7 +262,6 @@
   </footer>
 
   <script>
-    // Exact lists from provided images
     const ATTRIBUTE_STATS = [
       "Agility Boost",
       "Intellect Boost",
@@ -276,6 +272,7 @@
 
     const SECONDARY_STATS = [
       "ATK Boost",
+      "Attack Boost",
       "Arts DMG Boost",
       "Arts Intensity Boost",
       "Critical Rate Boost",
@@ -307,48 +304,65 @@
       "Twilight"
     ];
 
-    // Essence Location mappings
-    const ESSENCE_LOCATIONS = {
-      // Attribute Stats
-      "Agility Boost": ["Wuling City", "Sword Vault Dale", "Power Plateau"],
-      "Intellect Boost": ["Wuling City", "Sword Vault Dale"],
-      "Main Attribute Boost": ["Wuling City", "North Wuling EZ"],
-      "Strength Boost": ["Wuling City", "Power Plateau", "Qingbo Stockade"],
-      "Will Boost": ["Wuling City", "Power Plateau", "North Wuling EZ"],
-
-      // Secondary Stats
-      "ATK Boost": ["Wuling City", "Power Plateau"],
-      "Arts DMG Boost": ["Sword Vault Dale", "North Wuling EZ"],
-      "Arts Intensity Boost": ["Wuling City", "North Wuling EZ"],
-      "Critical Rate Boost": ["Sword Vault Dale", "North Wuling EZ"],
-      "Cryo DMG Boost": ["Wuling City", "North Wuling EZ"],
-      "Efficacy: Linked Effort": ["Qingbo Stockade", "Sword Vault Dale"],
-      "Electric DMG Boost": ["Wuling City", "Power Plateau"],
-      "HP Boost": ["Power Plateau", "Qingbo Stockade"],
-      "Heat DMG Boost": ["Power Plateau", "Sword Vault Dale"],
-      "Nature DMG Boost": ["Wuling City", "Sword Vault Dale"],
-      "Physical DMG Boost": ["Qingbo Stockade", "Power Plateau"],
-      "Treatment Efficiency Boost": ["Wuling City", "Qingbo Stockade", "Sword Vault Dale"],
-      "Ultimate Gain Efficiency Boost": ["Wuling City", "North Wuling EZ"],
-
-      // Skill Stats
-      "Assault": ["Wuling City", "Power Plateau"],
-      "Brutality": ["Power Plateau", "Qingbo Stockade"],
-      "Combative": ["Wuling City", "Sword Vault Dale"],
-      "Crusher": ["Power Plateau", "Qingbo Stockade"],
-      "Detonate": ["Wuling City", "Sword Vault Dale", "North Wuling EZ"],
-      "Efficacy": ["Qingbo Stockade", "Sword Vault Dale"],
-      "Flow": ["Wuling City", "North Wuling EZ"],
-      "Fracture": ["Sword Vault Dale", "North Wuling EZ"],
-      "Infliction": ["Qingbo Stockade", "Sword Vault Dale"],
-      "Inspiring": ["Wuling City", "Power Plateau"],
-      "Medicant": ["Wuling City", "Power Plateau", "Qingbo Stockade", "Sword Vault Dale", "North Wuling EZ"],
-      "Pursuit": ["Wuling City", "Sword Vault Dale", "North Wuling EZ"],
-      "Suppression": ["Wuling City", "Power Plateau"],
-      "Twilight": ["Power Plateau", "Sword Vault Dale"]
+    // Master 11-Zone Location Database Mapping
+    const FARMING_LOCATIONS_DB = {
+      "The Hub": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "Attack Boost", "Heat DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost", "Arts DMG Boost",
+        "Assault", "Suppression", "Pursuit", "Crusher", "Combative", "Detonate", "Flow", "Efficacy"
+      ],
+      "Originium Science Park": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "Attack Boost", "Physical DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Arts DMG Boost",
+        "Suppression", "Pursuit", "Inspiring", "Combative", "Infliction", "Medicant", "Fracture", "Efficacy"
+      ],
+      "Origin Lodesprings": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Treatment Efficiency Boost",
+        "Assault", "Suppression", "Combative", "Brutality", "Infliction", "Detonate", "Twilight", "Efficacy"
+      ],
+      "Power Plateau": [
+        "Agility Boost", "Strength Boost", "Will Boost",
+        "ATK Boost", "Attack Boost", "Electric DMG Boost", "HP Boost", "Heat DMG Boost", "Physical DMG Boost",
+        "Assault", "Brutality", "Crusher", "Inspiring", "Medicant", "Suppression", "Twilight"
+      ],
+      "Wuling City": [
+        "Agility Boost", "Intellect Boost", "Main Attribute Boost", "Strength Boost", "Will Boost",
+        "ATK Boost", "Attack Boost", "Arts Intensity Boost", "Cryo DMG Boost", "Electric DMG Boost", "Nature DMG Boost", "Treatment Efficiency Boost", "Ultimate Gain Efficiency Boost",
+        "Assault", "Combative", "Detonate", "Flow", "Inspiring", "Medicant", "Pursuit", "Suppression"
+      ],
+      "Qingbo Stockade": [
+        "Strength Boost",
+        "Efficacy: Linked Effort", "HP Boost", "Physical DMG Boost", "Treatment Efficiency Boost",
+        "Brutality", "Crusher", "Efficacy", "Infliction", "Medicant"
+      ],
+      "Marker Stone": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "Attack Boost", "Physical DMG Boost", "Heat DMG Boost", "Electric DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Arts DMG Boost",
+        "Assault", "Pursuit", "Inspiring", "Brutality", "Infliction", "Twilight", "Flow", "Efficacy"
+      ],
+      "Test Area": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "HP Boost", "Heat DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost", "Treatment Efficiency Boost",
+        "Suppression", "Crusher", "Combative", "Brutality", "Infliction", "Fracture", "Twilight", "Flow"
+      ],
+      "Sword Vault Dale": [
+        "Agility Boost", "Intellect Boost",
+        "Arts DMG Boost", "Critical Rate Boost", "Efficacy: Linked Effort", "Heat DMG Boost", "Nature DMG Boost", "Treatment Efficiency Boost",
+        "Combative", "Detonate", "Efficacy", "Fracture", "Infliction", "Medicant", "Pursuit", "Twilight"
+      ],
+      "Yinglung Pass": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "Attack Boost", "Physical DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Arts DMG Boost",
+        "Suppression", "Pursuit", "Combative", "Brutality", "Infliction", "Detonate", "Flow", "Efficacy"
+      ],
+      "North Wuling EZ": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Arts DMG Boost", "Treatment Efficiency Boost", "Ultimate Gain Efficiency Boost", "Cryo DMG Boost",
+        "Assault", "Suppression", "Pursuit", "Crusher", "Inspiring", "Infliction", "Medicant", "Efficacy", "Detonate", "Flow", "Fracture"
+      ]
     };
 
-    // Centralized Weapon Database
     const WEAPONS_DB = [
       {
         id: "bedazzling_night_debut",
@@ -359,8 +373,7 @@
         primary: "Will Boost",
         secondary: "Treatment Efficiency Boost",
         special: "Medicant",
-        specialFull: "Medicant: Shimmering Curtain",
-        farmLocations: ["Wuling City", "Power Plateau", "Qingbo Stockade", "Sword Vault Dale", "North Wuling EZ"]
+        specialFull: "Medicant: Shimmering Curtain"
       },
       {
         id: "type_42_solemn_phalanx",
@@ -371,8 +384,7 @@
         primary: "Intellect Boost",
         secondary: "Ultimate Gain Efficiency Boost",
         special: "Detonate",
-        specialFull: "Detonate: Debilitating Assault",
-        farmLocations: ["Wuling City", "Sword Vault Dale", "North Wuling EZ"]
+        specialFull: "Detonate: Debilitating Assault"
       },
       {
         id: "blessing_of_lustrous_carmine",
@@ -383,8 +395,7 @@
         primary: "Agility Boost",
         secondary: "Ultimate Gain Efficiency Boost",
         special: "Twilight",
-        specialFull: "Blessing of Carmine",
-        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
+        specialFull: "Blessing of Carmine"
       },
       {
         id: "forge_born",
@@ -395,8 +406,7 @@
         primary: "Intellect Boost",
         secondary: "Heat DMG Boost",
         special: "Twilight",
-        specialFull: "Twilight Flame",
-        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "Qingbo Stockade"]
+        specialFull: "Twilight Flame"
       },
       {
         id: "delivery_guaranteed",
@@ -407,8 +417,7 @@
         primary: "Will Boost",
         secondary: "Ultimate Gain Efficiency Boost",
         special: "Pursuit",
-        specialFull: "Pursuit Order",
-        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
+        specialFull: "Pursuit Order"
       },
       {
         id: "lupine_scarlet",
@@ -419,8 +428,7 @@
         primary: "Agility Boost",
         secondary: "Critical Rate Boost",
         special: "Fracture",
-        specialFull: "Gnashing Wolves",
-        farmLocations: ["Wuling City", "Sword Vault Dale", "Power Plateau", "North Wuling EZ"]
+        specialFull: "Gnashing Wolves"
       },
       {
         id: "marathon_tassel",
@@ -431,8 +439,7 @@
         primary: "Strength Boost",
         secondary: "Physical DMG Boost",
         special: "Crusher",
-        specialFull: "Crush Surge",
-        farmLocations: ["Wuling City", "Power Plateau", "Qingbo Stockade", "North Wuling EZ"]
+        specialFull: "Crush Surge"
       },
       {
         id: "lone_barge",
@@ -443,12 +450,10 @@
         primary: "Will Boost",
         secondary: "Electric DMG Boost",
         special: "Suppression",
-        specialFull: "Suppression Wave",
-        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
+        specialFull: "Suppression Wave"
       }
     ];
 
-    // Populate dropdowns with exact lists
     function initDropdowns() {
       const fillSelect = (elemId, list) => {
         const sel = document.getElementById(elemId);
@@ -465,7 +470,6 @@
       fillSelect("specialStat", SKILL_STATS);
     }
 
-    // Solver logic
     function runSolver() {
       const p = document.getElementById("primaryStat").value;
       const s = document.getElementById("secondaryStat").value;
@@ -481,32 +485,30 @@
         return matchP && matchS && matchSp;
       });
 
-      // Calculate farm locations
-      const locationSet = new Set();
-
-      if (matchingWeapons.length > 0) {
-        matchingWeapons.forEach(w => {
-          if (w.farmLocations) {
-            w.farmLocations.forEach(loc => locationSet.add(loc));
+      // Calculate matching locations
+      const validLocations = [];
+      if (selectedStats.length > 0) {
+        for (const [location, stats] of Object.entries(FARMING_LOCATIONS_DB)) {
+          const hasMatch = selectedStats.some(stat => {
+            if (stat === "ATK Boost" || stat === "Attack Boost") {
+              return stats.includes("ATK Boost") || stats.includes("Attack Boost");
+            }
+            return stats.includes(stat);
+          });
+          if (hasMatch) {
+            validLocations.push(location);
           }
-        });
+        }
       }
 
-      // Add individual essence locations for selected stats
-      selectedStats.forEach(stat => {
-        if (ESSENCE_LOCATIONS[stat]) {
-          ESSENCE_LOCATIONS[stat].forEach(loc => locationSet.add(loc));
-        }
-      });
-
-      // Render Locations
+      // Render Location Pills
       const locationContainer = document.getElementById("locationPills");
       locationContainer.innerHTML = "";
 
-      if (locationSet.size === 0) {
+      if (validLocations.length === 0) {
         locationContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">Select stats or weapons to see farmable locations.</span>';
       } else {
-        locationSet.forEach(loc => {
+        validLocations.forEach(loc => {
           const pill = document.createElement("div");
           pill.className = "pill";
           pill.textContent = loc;
