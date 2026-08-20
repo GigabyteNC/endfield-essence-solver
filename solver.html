@@ -1,322 +1,486 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Essence Solver | Arknights: Endfield</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- LINK TO MASTER WEAPON DATABASE JS FILE -->
-  <script src="weaponDatabase.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weapon & Essence Solver - Endfield Solver</title>
   <style>
     :root {
-      --bg-dark: #090d12;
-      --card-bg: #0d1117;
-      --accent-cyan: #00F0FF;
-      --accent-yellow: #FFB800;
-      --border-color: rgba(0, 240, 255, 0.25);
+      --bg-dark: #121418;
+      --card-bg: #1c2026;
+      --card-inner: #15181e;
+      --accent-yellow: #ffb703;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border-color: #2d3748;
+      --pill-bg: #222730;
+      --pill-border: #384252;
     }
+
     body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--bg-dark);
-      color: #f0f6fc;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
     }
-    .hud-card {
+
+    header {
+      width: 100%;
+      max-width: 1100px;
+      padding: 2rem 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent-yellow);
+    }
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .solver-card {
       background-color: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
     }
-    .hud-card:hover {
-      border-color: var(--accent-cyan);
+
+    .solver-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select {
+      background-color: var(--card-inner);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    select:focus {
+      border-color: var(--accent-yellow);
+    }
+
+    .results-panel {
+      margin-top: 1.5rem;
+      background-color: var(--card-inner);
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .results-heading {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0 0 0.75rem 0;
+    }
+
+    .pill-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .pill {
+      background-color: var(--pill-bg);
+      border: 1px solid var(--pill-border);
+      color: var(--text-main);
+      padding: 0.4rem 0.85rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      transition: border-color 0.2s;
+    }
+
+    .pill:hover {
+      border-color: var(--accent-yellow);
+    }
+
+    .weapon-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .weapon-item {
+      background-color: var(--card-inner);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .weapon-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--accent-yellow);
+      margin: 0;
+    }
+
+    .weapon-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .stat-tag {
+      font-size: 0.8rem;
+      color: var(--text-main);
+      background-color: #242b35;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin-right: 0.3rem;
+      margin-top: 0.2rem;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
     }
   </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-  <div class="max-w-6xl mx-auto space-y-6">
-    
-    <!-- Top Navigation -->
-    <nav class="flex justify-between items-center p-4 hud-card bg-[#0d1117]">
-      <div class="text-xl font-black text-[#00F0FF] tracking-wider">ESSENCE SOLVER</div>
-      <div class="flex gap-6 font-bold text-sm">
-        <a href="index.html" class="hover:text-[#00F0FF] transition-colors">Home</a>
-        <a href="solver.html" class="text-[#00F0FF]">Solver Tool</a>
-        <a href="videos.html" class="hover:text-[#00F0FF] transition-colors">Video Guides</a>
-      </div>
+  <header>
+    <h1>Endfield Solver</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="solver.html" style="color: var(--accent-yellow);">Weapon Solver</a>
+      <a href="videos.html">Videos</a>
     </nav>
+  </header>
 
-    <!-- Header Banner -->
-    <header class="hud-card p-6 relative">
-      <div class="text-[#FFB800] text-xs font-bold tracking-widest mb-1">// WEAPON ESSENCE MATCHING</div>
-      <h1 class="text-2xl md:text-3xl font-black text-white tracking-wide">ENERGY ALLUVIUM LOCATOR</h1>
-      <p class="text-gray-400 text-xs mt-1">Filter by weapon type, stat attributes, or search by weapon name to find matching weapons and farming locations.</p>
-    </header>
+  <main>
+    <section class="solver-card">
+      <h2 style="margin-top: 0; color: var(--text-main);">Essence & Weapon Solver</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Select your desired weapon attributes to locate matching weapons and their farmable essence locations.</p>
 
-    <!-- Controls Section -->
-    <section class="hud-card p-6 space-y-6">
-      
-      <!-- Weapon Search & Type Filter -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="md:col-span-2">
-          <label class="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wider">Search Weapon Name</label>
-          <input type="text" id="weaponSearch" placeholder="Type weapon name (e.g., Oblivion)..." oninput="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#00F0FF] focus:outline-none font-semibold">
+      <div class="solver-grid">
+        <div class="select-group">
+          <label for="primaryStat">Primary Stat</label>
+          <select id="primaryStat" onchange="runSolver()">
+            <option value="">-- All Primary Stats --</option>
+          </select>
         </div>
-        <div>
-          <label class="block text-xs font-bold text-[#FFB800] mb-2 uppercase tracking-wider">Weapon Type (5 Types)</label>
-          <select id="typeFilter" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-3 text-sm focus:border-[#FFB800] focus:outline-none font-semibold">
-            <option value="any">All Weapon Types</option>
-            <option value="Sword">Sword</option>
-            <option value="Greatsword">Greatsword</option>
-            <option value="Polearm">Polearm</option>
-            <option value="Handcannon">Handcannon</option>
-            <option value="Arts Unit">Arts Unit</option>
+
+        <div class="select-group">
+          <label for="secondaryStat">Secondary Stat</label>
+          <select id="secondaryStat" onchange="runSolver()">
+            <option value="">-- All Secondary Stats --</option>
+          </select>
+        </div>
+
+        <div class="select-group">
+          <label for="specialStat">Special / Passive</label>
+          <select id="specialStat" onchange="runSolver()">
+            <option value="">-- All Special Effects --</option>
           </select>
         </div>
       </div>
 
-      <!-- 3 Category Attribute Dropdowns -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        
-        <!-- 1. Attribute Stat Dropdown -->
-        <div>
-          <label class="block text-xs font-bold text-[#00F0FF] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-            <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
-            1. Attribute Stat
-          </label>
-          <select id="attrStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
-            <option value="any">Any Attribute Stat</option>
-            <option value="Agility">Agility Boost</option>
-            <option value="Strength">Strength Boost</option>
-            <option value="Will">Will Boost</option>
-            <option value="Intellect">Intellect Boost</option>
-            <option value="Main Attribute">Main Attribute Boost</option>
-          </select>
+      <div class="results-panel">
+        <div class="results-heading">Essences Farmable In</div>
+        <div id="locationPills" class="pill-container">
+          <span style="color: var(--text-muted); font-size: 0.85rem;">Select stats or weapons to see farmable locations.</span>
         </div>
-
-        <!-- 2. Secondary Stat Dropdown -->
-        <div>
-          <label class="block text-xs font-bold text-[#FFB800] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-            <span class="w-2 h-2 bg-[#FFB800] inline-block"></span>
-            2. Secondary Stat
-          </label>
-          <select id="secStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#FFB800] focus:outline-none">
-            <option value="any">Any Secondary Stat</option>
-            <option value="Attack Boost">Attack Boost</option>
-            <option value="HP Boost">HP Boost</option>
-            <option value="Physical DMG Boost">Physical DMG Boost</option>
-            <option value="Heat DMG Boost">Heat DMG Boost</option>
-            <option value="Electric DMG Boost">Electric DMG Boost</option>
-            <option value="Cryo DMG Boost">Cryo DMG Boost</option>
-            <option value="Nature DMG Boost">Nature DMG Boost</option>
-            <option value="Critical Rate Boost">Critical Rate Boost</option>
-            <option value="Arts Intensity Boost">Arts Intensity Boost</option>
-            <option value="Arts DMG Boost">Arts DMG Boost</option>
-            <option value="Ultimate Gain Efficiency Boost">Ultimate Energy Gain Boost</option>
-            <option value="Treatment Efficiency Boost">Treatment Efficiency Boost</option>
-          </select>
-        </div>
-
-        <!-- 3. Skill Stat Dropdown -->
-        <div>
-          <label class="block text-xs font-bold text-[#00F0FF] mb-2 uppercase tracking-wider flex items-center gap-1.5">
-            <span class="w-2 h-2 bg-[#00F0FF] inline-block"></span>
-            3. Skill Stat
-          </label>
-          <select id="skillStat" onchange="filterLocations()" class="w-full bg-[#05080c] border border-gray-700 text-white p-2.5 text-xs focus:border-[#00F0FF] focus:outline-none">
-            <option value="any">Any Skill Stat</option>
-            <option value="Assault">Assault</option>
-            <option value="Suppression">Suppression</option>
-            <option value="Pursuit">Pursuit</option>
-            <option value="Crusher">Crusher</option>
-            <option value="Combative">Combative</option>
-            <option value="Detonate">Detonate</option>
-            <option value="Flow">Flow</option>
-            <option value="Efficacy">Efficacy</option>
-            <option value="Inspiring">Inspiring</option>
-            <option value="Infliction">Infliction</option>
-            <option value="Medicant">Medicant</option>
-            <option value="Fracture">Fracture</option>
-            <option value="Brutality">Brutality</option>
-            <option value="Twilight">Twilight</option>
-          </select>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- SECTION A: MATCHING WEAPONS RESULTS -->
-    <section class="hud-card p-6 border-t-2 border-[#FFB800]">
-      <h2 class="text-sm font-bold text-[#FFB800] mb-4 uppercase tracking-wider flex items-center gap-2">
-        <span>// MATCHING WEAPONS</span>
-      </h2>
-      <div id="matchingWeaponsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        <!-- Weapon cards render here -->
       </div>
     </section>
 
-    <!-- SECTION B: MATCHING ALLUVIUM LOCATIONS RESULTS -->
-    <section class="hud-card p-6 border-t-2 border-[#00F0FF]">
-      <h2 class="text-sm font-bold text-[#00F0FF] mb-4 uppercase tracking-wider flex items-center gap-2">
-        <span>// MATCHING ENERGY ALLUVIUM LOCATIONS</span>
-      </h2>
-      <div id="resultsList" class="space-y-3">
-        <!-- Matching location cards render here -->
-      </div>
+    <section>
+      <h3 style="color: var(--text-main); margin-bottom: 1rem;">Matching Weapons</h3>
+      <div id="weaponList" class="weapon-results"></div>
     </section>
+  </main>
 
-  </div>
+  <footer>
+    &copy; Endfield Solver. Arknights: Endfield is a trademark of HYPERGRYPH / GRYPHLINE.
+  </footer>
 
   <script>
-    // 11 Verified Energy Alluvium farming locations
-    const alluviumLocations = [
-      { name: "The Hub", zone: "The Hub", secondaryStats: ["Attack Boost", "HP Boost"], skillStats: ["Assault", "Suppression", "Pursuit", "Crusher", "Combative", "Detonate", "Flow", "Efficacy"] },
-      { name: "Originium Science Park", zone: "Originium Science Park", secondaryStats: ["Physical DMG Boost", "Critical Rate Boost"], skillStats: ["Suppression", "Pursuit", "Inspiring", "Combative", "Infliction", "Medicant", "Fracture", "Efficacy"] },
-      { name: "Origin Lodesprings", zone: "Origin Lodesprings", secondaryStats: ["HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Suppression", "Combative", "Brutality", "Infliction", "Detonate", "Twilight", "Efficacy"] },
-      { name: "Power Plateau", zone: "Power Plateau", secondaryStats: ["HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Treatment Efficiency Boost"], skillStats: ["Pursuit", "Crusher", "Inspiring", "Brutality", "Infliction", "Medicant", "Fracture", "Flow"] },
-      { name: "Wuling City", zone: "Wuling City", secondaryStats: ["HP Boost", "Electric DMG Boost", "Cryo DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Crusher", "Brutality", "Medicant", "Fracture", "Detonate", "Twilight", "Flow"] },
-      { name: "Qingbo Stockade", zone: "Qingbo Stockade", secondaryStats: ["HP Boost", "Physical DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Suppression", "Crusher", "Inspiring", "Combative", "Medicant", "Fracture", "Detonate", "Twilight"] },
-      { name: "Marker Stone", zone: "Marker Stone", secondaryStats: ["Attack Boost", "Physical DMG Boost", "Heat DMG Boost", "Electric DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Arts DMG Boost"], skillStats: ["Assault", "Pursuit", "Inspiring", "Brutality", "Infliction", "Twilight", "Flow", "Efficacy"] },
-      { name: "Test Area", zone: "Test Area", secondaryStats: ["HP Boost", "Heat DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost", "Ultimate Energy Gain Boost", "Treatment Efficiency Boost"], skillStats: ["Suppression", "Crusher", "Combative", "Brutality", "Infliction", "Fracture", "Twilight", "Flow"] },
-      { name: "Sword Vault Dale", zone: "Sword Vault Dale", secondaryStats: ["Attack Boost", "HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Arts Intensity Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Pursuit", "Inspiring", "Combative", "Medicant", "Fracture", "Detonate", "Efficacy"] },
-      { name: "Yinglung Pass", zone: "Yinglung Pass", secondaryStats: ["Attack Boost", "Physical DMG Boost", "Electric DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Arts DMG Boost"], skillStats: ["Suppression", "Pursuit", "Combative", "Brutality", "Infliction", "Detonate", "Flow", "Efficacy"] },
-      { name: "North Wuling EZ", zone: "North Wuling EZ", secondaryStats: ["HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Arts DMG Boost", "Treatment Efficiency Boost"], skillStats: ["Assault", "Suppression", "Pursuit", "Crusher", "Inspiring", "Infliction", "Medicant", "Efficacy"] }
+    // Essence location database
+    const ESSENCE_LOCATIONS = {
+      "Will Boost": ["Wuling City", "Power Plateau", "North Wuling EZ"],
+      "Treatment Efficiency Boost": ["Wuling City", "Qingbo Stockade", "Sword Vault Dale"],
+      "Medicant": ["Wuling City", "Power Plateau", "Qingbo Stockade", "Sword Vault Dale", "North Wuling EZ"],
+      "Intellect Boost": ["Wuling City", "Sword Vault Dale"],
+      "Ultimate Gain Efficiency Boost": ["Wuling City", "North Wuling EZ"],
+      "Detonate": ["Wuling City", "Sword Vault Dale", "North Wuling EZ"],
+      "Agility Boost": ["Wuling City", "Sword Vault Dale", "Power Plateau"],
+      "Strength Boost": ["Wuling City", "Power Plateau", "Qingbo Stockade"],
+      "Heat Damage Boost": ["Power Plateau", "Sword Vault Dale"],
+      "Cryo Damage Boost": ["Wuling City", "North Wuling EZ"],
+      "Physical Damage Boost": ["Qingbo Stockade", "Power Plateau"]
+    };
+
+    // Weapon database
+    const WEAPONS_DB = [
+      {
+        id: "bedazzling_night_debut",
+        name: "Bedazzling Night Debut",
+        type: "Polearm",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Will Boost",
+        secondary: "Treatment Efficiency Boost",
+        special: "Medicant",
+        specialFull: "Medicant: Shimmering Curtain",
+        farmLocations: ["Wuling City", "Power Plateau", "Qingbo Stockade", "Sword Vault Dale", "North Wuling EZ"]
+      },
+      {
+        id: "type_42_solemn_phalanx",
+        name: "Type 42: Solemn Phalanx",
+        type: "Arts Unit",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Intellect Boost",
+        secondary: "Ultimate Gain Efficiency Boost",
+        special: "Detonate",
+        specialFull: "Detonate: Debilitating Assault",
+        farmLocations: ["Wuling City", "Sword Vault Dale", "North Wuling EZ"]
+      },
+      {
+        id: "blessing_of_lustrous_carmine",
+        name: "Blessing of Lustrous Carmine",
+        type: "Sword",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Agility Boost",
+        secondary: "Ultimate Gain Efficiency Boost",
+        special: "Heat Damage Boost",
+        specialFull: "Blessing of Carmine",
+        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
+      },
+      {
+        id: "forge_born",
+        name: "Forge Born",
+        type: "Greatsword",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Intellect Boost",
+        secondary: "Strength Boost",
+        special: "Heat Damage Boost",
+        specialFull: "Twilight Flame",
+        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "Qingbo Stockade"]
+      },
+      {
+        id: "delivery_guaranteed",
+        name: "Delivery Guaranteed",
+        type: "Arts Unit",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Will Boost",
+        secondary: "Ultimate Gain Efficiency Boost",
+        special: "Detonate",
+        specialFull: "Pursuit Order",
+        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
+      },
+      {
+        id: "lupine_scarlet",
+        name: "Lupine Scarlet",
+        type: "Sword",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Agility Boost",
+        secondary: "Intellect Boost",
+        special: "Physical Damage Boost",
+        specialFull: "Gnashing Wolves",
+        farmLocations: ["Wuling City", "Sword Vault Dale", "Power Plateau", "Qingbo Stockade"]
+      },
+      {
+        id: "marathon_tassel",
+        name: "Marathon Tassel",
+        type: "Polearm",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Strength Boost",
+        secondary: "Will Boost",
+        special: "Physical Damage Boost",
+        specialFull: "Crush Surge",
+        farmLocations: ["Wuling City", "Power Plateau", "Qingbo Stockade", "North Wuling EZ"]
+      },
+      {
+        id: "lone_barge",
+        name: "Lone Barge",
+        type: "Sword",
+        rarity: 6,
+        baseAtk: 500,
+        primary: "Will Boost",
+        secondary: "Intellect Boost",
+        special: "Detonate",
+        specialFull: "Suppression Wave",
+        farmLocations: ["Wuling City", "Power Plateau", "Sword Vault Dale", "North Wuling EZ"]
+      }
     ];
 
-    const locationIconSVG = `
-      <svg class="w-6 h-6 text-[#00F0FF] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-      </svg>
-    `;
+    // Populate dropdown menus
+    function populateDropdowns() {
+      const primaries = new Set();
+      const secondaries = new Set();
+      const specials = new Set();
 
-    // Helper for fuzzy string comparisons (ignores trailing 's', case differences, and extra spacing)
-    function normalizeStr(str) {
-      if (!str) return "";
-      return String(str).toLowerCase().trim().replace(/s$/, "");
-    }
+      WEAPONS_DB.forEach(w => {
+        if (w.primary) primaries.add(w.primary);
+        if (w.secondary) secondaries.add(w.secondary);
+        if (w.special) specials.add(w.special);
+      });
 
-    function isFlexibleMatch(target, searchVal) {
-      if (!searchVal || searchVal === "any") return true;
-      if (!target) return false;
-
-      const normSearch = normalizeStr(searchVal);
-
-      if (Array.isArray(target)) {
-        return target.some(item => normalizeStr(item).includes(normSearch) || normSearch.includes(normalizeStr(item)));
-      }
-      const normTarget = normalizeStr(target);
-      return normTarget.includes(normSearch) || normSearch.includes(normTarget);
-    }
-
-    function filterLocations() {
-      const searchVal = document.getElementById('weaponSearch').value.toLowerCase();
-      const typeVal = document.getElementById('typeFilter').value;
-      const attr = document.getElementById('attrStat').value;
-      const sec = document.getElementById('secStat').value;
-      const skill = document.getElementById('skillStat').value;
-
-      const weaponsContainer = document.getElementById('matchingWeaponsList');
-      const locationsContainer = document.getElementById('resultsList');
-      
-      weaponsContainer.innerHTML = "";
-      locationsContainer.innerHTML = "";
-
-      let dataset = [];
-      if (typeof weaponDatabase !== 'undefined') dataset = weaponDatabase;
-      else if (typeof window.weaponDatabase !== 'undefined') dataset = window.weaponDatabase;
-      else if (typeof masterWeapons !== 'undefined') dataset = masterWeapons;
-      else if (typeof weapons !== 'undefined') dataset = weapons;
-
-      let matchingWeapons = [];
-
-      if (dataset.length === 0) {
-        weaponsContainer.innerHTML = `<span class="text-xs text-red-400 font-semibold col-span-3">Could not load weapon dataset. Check weaponDatabase.js.</span>`;
-      } else {
-        matchingWeapons = dataset.filter(w => {
-          const wName = w.name || w.weaponName || w.title || "";
-          const wType = w.category || w.type || w.weaponType || "";
-          
-          const wAttr = w.attributes || w.primaryStat || w.attr || w.attribute || null;
-          const wSec = w.secondaryStat || w.secondaryStats || w.sec || null;
-          const wSkill = w.skillStat || w.skillStats || w.skill || null;
-
-          const nameMatch = searchVal === "" || wName.toLowerCase().includes(searchVal);
-          const typeMatch = typeVal === "any" || isFlexibleMatch(wType, typeVal);
-          
-          // If database item doesn't specify an attribute, don't reject it on attribute search unless explicitly defined
-          const attrMatch = attr === "any" || !wAttr || isFlexibleMatch(wAttr, attr);
-          const secMatch = isFlexibleMatch(wSec, sec);
-          const skillMatch = isFlexibleMatch(wSkill, skill);
-
-          return nameMatch && typeMatch && attrMatch && secMatch && skillMatch;
+      const fill = (id, set) => {
+        const sel = document.getElementById(id);
+        Array.from(set).sort().forEach(val => {
+          const opt = document.createElement("option");
+          opt.value = val;
+          opt.textContent = val;
+          sel.appendChild(opt);
         });
+      };
 
-        if (matchingWeapons.length === 0) {
-          weaponsContainer.innerHTML = `<span class="text-xs text-gray-500 font-semibold col-span-3">No matching weapons found for selected filters.</span>`;
-        } else {
-          matchingWeapons.forEach(w => {
-            const wName = w.name || w.weaponName || "Unknown Weapon";
-            const locName = w.location || w.farmingLocation || w.zone || "Energy Alluvium Node";
-            const wType = w.category || w.type || "Weapon";
-
-            weaponsContainer.innerHTML += `
-              <div class="bg-[#05080c] border border-[#FFB800]/50 p-3 flex justify-between items-center">
-                <div>
-                  <div class="text-white font-bold text-xs">${wName}</div>
-                  <div class="text-[10px] text-gray-400 mt-0.5">Location: <span class="text-[#00F0FF]">${locName}</span></div>
-                </div>
-                <span class="bg-[#FFB800]/10 text-[#FFB800] border border-[#FFB800]/40 text-[9px] font-bold px-1.5 py-0.5 uppercase">
-                  ${wType}
-                </span>
-              </div>
-            `;
-          });
-        }
-      }
-
-      // Filter Energy Alluvium farming locations
-      const matchingLocationNames = new Set(matchingWeapons.map(w => w.location || w.farmingLocation || w.zone));
-      const filteredLocations = alluviumLocations.filter(loc => {
-        const matchesSec = isFlexibleMatch(loc.secondaryStats, sec);
-        const matchesSkill = isFlexibleMatch(loc.skillStats, skill);
-        const matchesWeaponLoc = matchingWeapons.length === 0 || matchingLocationNames.has(loc.name);
-        return matchesSec && matchesSkill && matchesWeaponLoc;
-      });
-
-      if (filteredLocations.length === 0) {
-        locationsContainer.innerHTML = `
-          <div class="bg-[#05080c] p-6 text-center text-gray-500 text-xs font-bold uppercase tracking-wider">
-            No matching Energy Alluvium locations found for this criteria.
-          </div>
-        `;
-        return;
-      }
-
-      filteredLocations.forEach(loc => {
-        const secText = loc.secondaryStats.length > 0 ? loc.secondaryStats.join(', ') : 'None';
-        locationsContainer.innerHTML += `
-          <div class="bg-[#05080c] p-4 border-l-4 border-[#00F0FF] flex items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
-              ${locationIconSVG}
-              <div>
-                <div class="text-white font-bold text-sm">${loc.name}</div>
-                <div class="text-[11px] text-gray-400 mt-1">
-                  <strong class="text-gray-300">Secondary Stats:</strong> ${secText}
-                </div>
-              </div>
-            </div>
-            <div class="text-right">
-              <span class="bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/40 text-[10px] font-bold px-2 py-1 uppercase">
-                ${loc.zone}
-              </span>
-            </div>
-          </div>
-        `;
-      });
+      fill("primaryStat", primaries);
+      fill("secondaryStat", secondaries);
+      fill("specialStat", specials);
     }
 
-    document.addEventListener('DOMContentLoaded', filterLocations);
-  </script>
+    // Main solver filtering logic
+    function runSolver() {
+      const p = document.getElementById("primaryStat").value;
+      const s = document.getElementById("secondaryStat").value;
+      const sp = document.getElementById("specialStat").value;
 
+      const selectedStats = [p, s, sp].filter(Boolean);
+
+      // Filter matching weapons
+      const matchingWeapons = WEAPONS_DB.filter(w => {
+        const matchP = !p || w.primary === p;
+        const matchS = !s || w.secondary === s;
+        const matchSp = !sp || w.special === sp || (w.specialFull && w.specialFull.includes(sp));
+        return matchP && matchS && matchSp;
+      });
+
+      // Calculate combined locations
+      const locationSet = new Set();
+
+      // If specific weapons match, pull their known locations
+      if (matchingWeapons.length > 0) {
+        matchingWeapons.forEach(w => {
+          if (w.farmLocations) {
+            w.farmLocations.forEach(loc => locationSet.add(loc));
+          }
+        });
+      }
+
+      // Add individual essence locations for any selected stats
+      selectedStats.forEach(stat => {
+        if (ESSENCE_LOCATIONS[stat]) {
+          ESSENCE_LOCATIONS[stat].forEach(loc => locationSet.add(loc));
+        }
+      });
+
+      // Render Locations
+      const locationContainer = document.getElementById("locationPills");
+      locationContainer.innerHTML = "";
+
+      if (locationSet.size === 0) {
+        locationContainer.innerHTML = '<span style="color: var(--text-muted); font-size: 0.85rem;">No locations found matching the criteria.</span>';
+      } else {
+        locationSet.forEach(loc => {
+          const pill = document.createElement("div");
+          pill.className = "pill";
+          pill.textContent = loc;
+          locationContainer.appendChild(pill);
+        });
+      }
+
+      // Render Weapons List
+      const weaponContainer = document.getElementById("weaponList");
+      weaponContainer.innerHTML = "";
+
+      if (matchingWeapons.length === 0) {
+        weaponContainer.innerHTML = '<p style="color: var(--text-muted); grid-column: 1/-1;">No weapons match this exact combination.</p>';
+      } else {
+        matchingWeapons.forEach(w => {
+          const card = document.createElement("div");
+          card.className = "weapon-item";
+          card.innerHTML = `
+            <h4 class="weapon-name">${w.name}</h4>
+            <p class="weapon-meta">${w.rarity}★ ${w.type} &bull; Base ATK: ${w.baseAtk}</p>
+            <div>
+              <span class="stat-tag">${w.primary}</span>
+              <span class="stat-tag">${w.secondary}</span>
+              <span class="stat-tag" style="border-left: 2px solid var(--accent-yellow);">${w.specialFull || w.special}</span>
+            </div>
+          `;
+          weaponContainer.appendChild(card);
+        });
+      }
+    }
+
+    // Initialize page
+    populateDropdowns();
+    runSolver();
+  </script>
 </body>
 </html>
