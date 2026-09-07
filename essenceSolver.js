@@ -65,6 +65,12 @@ const ALLUVIUM_NODES = [
     name: "North Wuling EZ",
     secondary: ["HP Boost", "Physical DMG Boost", "Heat DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Arts DMG Boost", "Treatment Efficiency Boost"],
     skill: ["Assault", "Suppression", "Pursuit", "Crusher", "Inspiring", "Infliction", "Medicant", "Efficacy"]
+  },
+  {
+    id: "snowy_forest",
+    name: "Snowy Forest",
+    secondary: ["Attack Boost", "HP Boost", "Heat DMG Boost", "Electric DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Arts DMG Boost", "Treatment Efficiency Boost"],
+    skill: ["Assault", "Crusher", "Inspiring", "Brutality", "Medicant", "Detonate", "Twilight", "Flow"]
   }
 ];
 

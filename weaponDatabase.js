@@ -82,7 +82,9 @@ const weaponDatabase = [
   { name: "Lone Barge", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
   { name: "Flickers in the Mist", category: "Arts Unit", primaryStat: "Will Boost", secondaryStat: "Electric DMG Boost", skillStat: "Efficacy" },
   { name: "Type 42: Solemn Phalanx", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Detonate" },
-  { name: "Junction Point", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Efficacy" }
+  { name: "Junction Point", category: "Arts Unit", primaryStat: "Intellect Boost", secondaryStat: "Ultimate Gain Efficiency Boost", skillStat: "Efficacy" },
+  { name: "Umbra of Frigid Eventide", category: "Arts Unit", primaryStat: "Agility Boost", secondaryStat: "Attack Boost", skillStat: "Detonate" },
+  { name: "Suffering's End", category: "Arts Unit", primaryStat: "Agility Boost", secondaryStat: "Nature DMG Boost", skillStat: "Detonate" }
 ];
 
 if (typeof module !== 'undefined' && module.exports) {
