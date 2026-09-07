@@ -36,6 +36,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.25rem;
       border-bottom: 1px solid var(--border-color);
       box-sizing: border-box;
     }
@@ -48,10 +50,18 @@
       letter-spacing: 1px;
     }
 
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.35rem 1rem;
+    }
+
     nav a {
       color: var(--text-main);
       text-decoration: none;
-      margin-left: 1.5rem;
+      margin-left: 0;
+      padding: 0.35rem 0.1rem;
       font-weight: 500;
       transition: color 0.2s;
     }
@@ -87,7 +97,7 @@
 
     .solver-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
       gap: 1.25rem;
       margin-top: 1rem;
     }
@@ -131,6 +141,9 @@
       border-radius: 6px;
       font-size: 0.95rem;
       outline: none;
+      width: 100%;
+      max-width: 420px;
+      box-sizing: border-box;
     }
 
     .weapon-item {
@@ -179,7 +192,7 @@
 
     .weapon-results {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
       gap: 1.25rem;
       margin-top: 1.5rem;
     }
@@ -224,6 +237,38 @@
       color: var(--text-muted);
       font-size: 0.85rem;
       text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.25rem 1rem 1rem;
+      }
+
+      h1 {
+        font-size: 1.35rem;
+        letter-spacing: 0.5px;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      main {
+        padding: 1.25rem 1rem 2rem;
+        gap: 1.25rem;
+      }
+
+      .solver-card {
+        padding: 1.15rem;
+      }
+
+      select,
+      input[type="search"] {
+        font-size: 16px;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -278,7 +323,7 @@
 
     <section>
       <h3 style="color: var(--text-main); margin-bottom: 1rem;">Matching Weapons</h3>
-      <div class="select-group" style="max-width: 420px; margin-bottom: 1.25rem;">
+      <div class="select-group" style="max-width: 100%; margin-bottom: 1.25rem;">
         <label for="weaponNameSearch">SEARCH WEAPONS</label>
         <input type="search" id="weaponNameSearch" placeholder="e.g. Dreams of the Starry Beach" oninput="runSolver()" autocomplete="off">
       </div>

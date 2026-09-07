@@ -103,7 +103,7 @@
     /* Visual Image Grid */
     .visual-gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: 16px;
       margin-bottom: 40px;
     }
@@ -132,7 +132,7 @@
     /* Portal Cards Grid */
     .portal-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
       gap: 20px;
       margin-bottom: 40px;
     }
@@ -185,6 +185,60 @@
     .portal-btn.discord {
       background-color: #5865F2;
       color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 12px 12px 24px;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+      }
+
+      .nav-brand {
+        font-size: 1rem;
+        letter-spacing: 1px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 10px 14px;
+      }
+
+      .nav-links a {
+        padding: 6px 0;
+      }
+
+      .hero {
+        padding: 24px 18px;
+        clip-path: none;
+      }
+
+      .hero h1 {
+        font-size: 1.7rem;
+        line-height: 1.15;
+      }
+
+      .hero p {
+        font-size: 0.95rem;
+      }
+
+      .gallery-card img {
+        height: 160px;
+      }
+
+      .portal-card {
+        padding: 20px;
+      }
+
+      .portal-btn {
+        width: 100%;
+      }
     }
   </style>
 </head>
