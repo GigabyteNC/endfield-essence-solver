@@ -110,8 +110,23 @@
       transition: border-color 0.2s;
     }
 
-    select:focus {
+    select:focus,
+    input[type="search"]:focus {
       border-color: var(--accent-yellow);
+    }
+
+    input[type="search"] {
+      background-color: var(--card-inner);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .weapon-item {
+      cursor: pointer;
     }
 
     .results-panel {
@@ -253,6 +268,10 @@
 
     <section>
       <h3 style="color: var(--text-main); margin-bottom: 1rem;">Matching Weapons</h3>
+      <div class="select-group" style="max-width: 420px; margin-bottom: 1.25rem;">
+        <label for="weaponNameSearch">SEARCH WEAPONS</label>
+        <input type="search" id="weaponNameSearch" placeholder="e.g. Dreams of the Starry Beach" oninput="runSolver()" autocomplete="off">
+      </div>
       <div id="weaponList" class="weapon-results"></div>
     </section>
   </main>
@@ -261,6 +280,7 @@
     &copy; Endfield Solver. Arknights: Endfield is a trademark of HYPERGRYPH / GRYPHLINE.
   </footer>
 
+  <script src="weaponDatabase.js"></script>
   <script>
     const ATTRIBUTE_STATS = [
       "Agility Boost",
@@ -367,118 +387,71 @@
       ]
     };
 
-    const WEAPONS_DB = [
-      {
-        id: "bedazzling_night_debut",
-        name: "Bedazzling Night Debut",
-        type: "Polearm",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Will Boost",
-        secondary: "Treatment Efficiency Boost",
-        special: "Medicant",
-        specialFull: "Medicant: Shimmering Curtain"
-      },
-      {
-        id: "type_42_solemn_phalanx",
-        name: "Type 42: Solemn Phalanx",
-        type: "Arts Unit",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Intellect Boost",
-        secondary: "Ultimate Gain Efficiency Boost",
-        special: "Detonate",
-        specialFull: "Detonate: Debilitating Assault"
-      },
-      {
-        id: "blessing_of_lustrous_carmine",
-        name: "Blessing of Lustrous Carmine",
-        type: "Sword",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Agility Boost",
-        secondary: "Ultimate Gain Efficiency Boost",
-        special: "Twilight",
-        specialFull: "Blessing of Carmine"
-      },
-      {
-        id: "forge_born",
-        name: "Forge Born",
-        type: "Greatsword",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Intellect Boost",
-        secondary: "Heat DMG Boost",
-        special: "Twilight",
-        specialFull: "Twilight Flame"
-      },
-      {
-        id: "delivery_guaranteed",
-        name: "Delivery Guaranteed",
-        type: "Arts Unit",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Will Boost",
-        secondary: "Ultimate Gain Efficiency Boost",
-        special: "Pursuit",
-        specialFull: "Pursuit Order"
-      },
-      {
-        id: "lupine_scarlet",
-        name: "Lupine Scarlet",
-        type: "Sword",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Agility Boost",
-        secondary: "Critical Rate Boost",
-        special: "Fracture",
-        specialFull: "Gnashing Wolves"
-      },
-      {
-        id: "marathon_tassel",
-        name: "Marathon Tassel",
-        type: "Polearm",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Strength Boost",
-        secondary: "Physical DMG Boost",
-        special: "Crusher",
-        specialFull: "Crush Surge"
-      },
-      {
-        id: "lone_barge",
-        name: "Lone Barge",
-        type: "Sword",
-        rarity: 6,
-        baseAtk: 500,
-        primary: "Will Boost",
-        secondary: "Electric DMG Boost",
-        special: "Suppression",
-        specialFull: "Suppression Wave"
-      },
-      {
-        id: "umbra_of_frigid_eventide",
-        name: "Umbra of Frigid Eventide",
-        type: "Arts Unit",
-        rarity: 6,
-        baseAtk: 51,
-        primary: "Agility Boost",
-        secondary: "Attack Boost",
-        special: "Detonate",
-        specialFull: "Detonate: Hunter Instinct"
-      },
-      {
-        id: "sufferings_end",
-        name: "Suffering's End",
-        type: "Arts Unit",
-        rarity: 5,
-        baseAtk: 50,
-        primary: "Agility Boost",
-        secondary: "Nature DMG Boost",
-        special: "Detonate",
-        specialFull: "Detonate: Dawn of the Long Night"
-      }
-    ];
+    const SECONDARY_STAT_ALIASES = {
+      "ATK": "Attack Boost",
+      "ATK Boost": "Attack Boost",
+      "Arts Boost": "Arts DMG Boost"
+    };
+
+    function canonicalSecondary(stat) {
+      return SECONDARY_STAT_ALIASES[stat] || stat;
+    }
+
+    function slugifyWeapon(name) {
+      return name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+    }
+
+    // Extra display fields for weapons confirmed from in-game screenshots / prior solver entries
+    const WEAPON_DETAILS = {
+      "Bedazzling Night Debut": { id: "bedazzling_night_debut", type: "Polearm", rarity: 6, baseAtk: 500, primary: "Will Boost", secondary: "Treatment Efficiency Boost", special: "Medicant", specialFull: "Medicant: Shimmering Curtain" },
+      "Type 42: Solemn Phalanx": { id: "type_42_solemn_phalanx", type: "Arts Unit", rarity: 6, baseAtk: 500, primary: "Intellect Boost", secondary: "Ultimate Gain Efficiency Boost", special: "Detonate", specialFull: "Detonate: Debilitating Assault" },
+      "Blessing of Lustrous Carmine": { id: "blessing_of_lustrous_carmine", type: "Sword", rarity: 6, baseAtk: 500, primary: "Agility Boost", secondary: "Ultimate Gain Efficiency Boost", special: "Twilight", specialFull: "Blessing of Carmine" },
+      "Forge Born": { id: "forge_born", type: "Greatsword", rarity: 6, baseAtk: 500, primary: "Intellect Boost", secondary: "Heat DMG Boost", special: "Twilight", specialFull: "Twilight Flame" },
+      "Delivery Guaranteed": { id: "delivery_guaranteed", type: "Arts Unit", rarity: 6, baseAtk: 500, primary: "Will Boost", secondary: "Ultimate Gain Efficiency Boost", special: "Pursuit", specialFull: "Pursuit Order" },
+      "Lupine Scarlet": { id: "lupine_scarlet", type: "Sword", rarity: 6, baseAtk: 500, primary: "Agility Boost", secondary: "Critical Rate Boost", special: "Fracture", specialFull: "Gnashing Wolves" },
+      "Marathon Tassel": { id: "marathon_tassel", type: "Polearm", rarity: 6, baseAtk: 500, primary: "Strength Boost", secondary: "Physical DMG Boost", special: "Crusher", specialFull: "Crush Surge" },
+      "Lone Barge": { id: "lone_barge", type: "Sword", rarity: 6, baseAtk: 500, primary: "Will Boost", secondary: "Electric DMG Boost", special: "Suppression", specialFull: "Suppression Wave" },
+      "Umbra of Frigid Eventide": { id: "umbra_of_frigid_eventide", type: "Arts Unit", rarity: 6, baseAtk: 51, primary: "Agility Boost", secondary: "Attack Boost", special: "Detonate", specialFull: "Detonate: Hunter Instinct" },
+      "Suffering's End": { id: "sufferings_end", type: "Arts Unit", rarity: 5, baseAtk: 50, primary: "Agility Boost", secondary: "Nature DMG Boost", special: "Detonate", specialFull: "Detonate: Dawn of the Long Night" },
+      "Dreams of the Starry Beach": { id: "dreams_of_the_starry_beach", type: "Arts Unit", rarity: 6, baseAtk: 50, specialFull: "Infliction: Tidal Murmurs" }
+    };
+
+    const catalog = typeof weaponDatabase !== "undefined" ? weaponDatabase : [];
+    const WEAPONS_DB = [];
+    const seenNames = new Set();
+
+    catalog.forEach(w => {
+      const extra = WEAPON_DETAILS[w.name] || {};
+      const special = extra.special || w.skillStat;
+      WEAPONS_DB.push({
+        id: extra.id || slugifyWeapon(w.name),
+        name: w.name,
+        type: extra.type || w.category,
+        rarity: extra.rarity || null,
+        baseAtk: extra.baseAtk || null,
+        primary: extra.primary || w.primaryStat,
+        secondary: canonicalSecondary(extra.secondary || w.secondaryStat),
+        special,
+        specialFull: extra.specialFull || special
+      });
+      seenNames.add(w.name);
+    });
+
+    Object.keys(WEAPON_DETAILS).forEach(name => {
+      if (seenNames.has(name)) return;
+      const extra = WEAPON_DETAILS[name];
+      WEAPONS_DB.push({
+        id: extra.id || slugifyWeapon(name),
+        name,
+        type: extra.type,
+        rarity: extra.rarity || null,
+        baseAtk: extra.baseAtk || null,
+        primary: extra.primary,
+        secondary: canonicalSecondary(extra.secondary),
+        special: extra.special,
+        specialFull: extra.specialFull || extra.special
+      });
+    });
 
     function initDropdowns() {
       const fillSelect = (elemId, list) => {
@@ -500,15 +473,17 @@
       const p = document.getElementById("primaryStat").value;
       const s = document.getElementById("secondaryStat").value;
       const sp = document.getElementById("specialStat").value;
+      const query = (document.getElementById("weaponNameSearch").value || "").trim().toLowerCase();
 
       const selectedStats = [p, s, sp].filter(Boolean);
 
-      // Match weapons
+      // Match weapons from the full catalog (name search + optional stat filters)
       const matchingWeapons = WEAPONS_DB.filter(w => {
+        const matchName = !query || w.name.toLowerCase().includes(query);
         const matchP = !p || w.primary === p;
         const matchS = !s || w.secondary === s;
         const matchSp = !sp || w.special === sp || (w.specialFull && w.specialFull.startsWith(sp));
-        return matchP && matchS && matchSp;
+        return matchName && matchP && matchS && matchSp;
       });
 
       // Strict AND matching logic: Location is included ONLY if it has ALL selected stats
@@ -554,15 +529,24 @@
         matchingWeapons.forEach(w => {
           const card = document.createElement("div");
           card.className = "weapon-item";
+          const rarityLabel = w.rarity ? `${w.rarity}★ ` : "";
+          const atkLabel = w.baseAtk ? ` &bull; Base ATK: ${w.baseAtk}` : "";
           card.innerHTML = `
             <h4 class="weapon-name">${w.name}</h4>
-            <p class="weapon-meta">${w.rarity}★ ${w.type} &bull; Base ATK: ${w.baseAtk}</p>
+            <p class="weapon-meta">${rarityLabel}${w.type}${atkLabel}</p>
             <div>
               <span class="stat-tag">${w.primary}</span>
               <span class="stat-tag">${w.secondary}</span>
               <span class="stat-tag" style="border-left: 2px solid var(--accent-yellow);">${w.specialFull || w.special}</span>
             </div>
           `;
+          card.addEventListener("click", () => {
+            document.getElementById("primaryStat").value = w.primary || "";
+            document.getElementById("secondaryStat").value = w.secondary || "";
+            document.getElementById("specialStat").value = w.special || "";
+            document.getElementById("weaponNameSearch").value = w.name;
+            runSolver();
+          });
           weaponContainer.appendChild(card);
         });
       }
