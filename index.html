@@ -47,7 +47,9 @@
 
     .nav-links {
       display: flex;
+      flex-wrap: wrap;
       gap: 20px;
+      justify-content: flex-end;
     }
 
     .nav-links a {
@@ -59,6 +61,14 @@
     }
 
     .nav-links a:hover { color: var(--accent-cyan); }
+
+    .nav-links a.discord-link {
+      color: #5865F2;
+    }
+
+    .nav-links a.discord-link:hover {
+      color: #8b93f7;
+    }
 
     /* Hero Banner */
     .hero {
@@ -183,6 +193,8 @@
         <a href="index.html">Home</a>
         <a href="solver.html">Solver Tool</a>
         <a href="videos.html">Video Guides</a>
+        <a href="community.html">Community</a>
+        <a class="discord-link" href="https://discord.gg/MDW3jR5XA6" target="_blank" rel="noopener noreferrer">Discord</a>
       </div>
     </nav>
 
@@ -229,6 +241,16 @@
           </p>
         </div>
         <a href="videos.html" class="portal-btn yellow">BROWSE VIDEOS</a>
+      </div>
+
+      <div class="portal-card">
+        <div>
+          <div class="portal-title">Community</div>
+          <p class="portal-desc">
+            Talk farms, weapons, and everything else with other Endfield players — or jump into Discord.
+          </p>
+        </div>
+        <a href="community.html" class="portal-btn">OPEN COMMUNITY</a>
       </div>
     </section>
   </div>

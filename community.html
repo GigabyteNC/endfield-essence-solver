@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community - Endfield Solver</title>
+  <style>
+    :root {
+      --bg-dark: #121418;
+      --card-bg: #1c2026;
+      --card-inner: #15181e;
+      --accent-yellow: #ffb703;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border-color: #2d3748;
+      --discord: #5865F2;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      max-width: 1100px;
+      padding: 2rem 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: var(--accent-yellow);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--accent-yellow);
+    }
+
+    nav a.discord-link {
+      color: var(--discord);
+    }
+
+    nav a.discord-link:hover {
+      color: #8b93f7;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+    }
+
+    .intro {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .intro h2 {
+      margin: 0 0 0.5rem 0;
+      color: var(--text-main);
+    }
+
+    .intro p {
+      margin: 0 0 1rem 0;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .discord-btn {
+      display: inline-block;
+      background-color: var(--discord);
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      padding: 0.65rem 1.1rem;
+      border-radius: 6px;
+    }
+
+    .discord-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .thread-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .thread-tabs button {
+      background-color: var(--card-inner);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 0.45rem 0.95rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .thread-tabs button.active {
+      border-color: var(--accent-yellow);
+      color: var(--accent-yellow);
+    }
+
+    .thread-panel {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+
+    .thread-panel h3 {
+      margin: 0 0 0.4rem 0;
+      color: var(--accent-yellow);
+    }
+
+    .thread-panel .thread-blurb {
+      margin: 0 0 1rem 0;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .setup-note {
+      background-color: var(--card-inner);
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      padding: 1rem 1.15rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    .setup-note ol {
+      margin: 0.75rem 0 0 1.1rem;
+      padding: 0;
+    }
+
+    .setup-note a {
+      color: var(--accent-yellow);
+    }
+
+    .giscus,
+    .giscus-frame {
+      width: 100%;
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 2rem 1rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Endfield Solver</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="solver.html">Weapon Solver</a>
+      <a href="videos.html">Videos</a>
+      <a href="community.html" style="color: var(--accent-yellow);">Community</a>
+      <a class="discord-link" href="https://discord.gg/MDW3jR5XA6" target="_blank" rel="noopener noreferrer">Discord</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2>Community</h2>
+      <p>
+        Leave a post in a thread below (GitHub login) or hop into Discord to chat live with other Endfield players.
+      </p>
+      <a class="discord-btn" href="https://discord.gg/MDW3jR5XA6" target="_blank" rel="noopener noreferrer">Join Discord</a>
+      <p class="thread-blurb" style="margin-top: 1rem; margin-bottom: 0;">
+        Comment threads use GitHub Discussions via Giscus. One-time repo setup:
+        enable <strong>Discussions</strong> on
+        <a href="https://github.com/GigabyteNC/endfield-essence-solver" target="_blank" rel="noopener noreferrer" style="color: var(--accent-yellow);">endfield-essence-solver</a>,
+        then install <a href="https://github.com/apps/giscus" target="_blank" rel="noopener noreferrer" style="color: var(--accent-yellow);">the Giscus app</a> on that repo.
+        The first comment in each tab creates the Essence Farms, Weapons, and General threads.
+      </p>
+    </section>
+
+    <div class="thread-tabs" role="tablist" aria-label="Community threads">
+      <button type="button" class="active" data-term="Essence Farms" aria-selected="true">Essence Farms</button>
+      <button type="button" data-term="Weapons" aria-selected="false">Weapons</button>
+      <button type="button" data-term="General" aria-selected="false">General</button>
+    </div>
+
+    <section class="thread-panel">
+      <h3 id="threadTitle">Essence Farms</h3>
+      <p class="thread-blurb" id="threadBlurb">Share alluvium nodes, drop luck, and which zones are worth farming.</p>
+      <div id="giscusHost"></div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; Endfield Solver. Arknights: Endfield is a trademark of HYPERGRYPH / GRYPHLINE.
+  </footer>
+
+  <script>
+    const REPO = "GigabyteNC/endfield-essence-solver";
+    const REPO_ID = "R_kgDOTfkYNA";
+    const THREADS = {
+      "Essence Farms": "Share alluvium nodes, drop luck, and which zones are worth farming.",
+      "Weapons": "Talk signatures, 5-stars, and which stats you are chasing on essence.",
+      "General": "Anything else — operators, teams, site feedback, and off-topic Endfield chat."
+    };
+
+    const host = document.getElementById("giscusHost");
+    const titleEl = document.getElementById("threadTitle");
+    const blurbEl = document.getElementById("threadBlurb");
+    const tabs = document.querySelectorAll(".thread-tabs button");
+
+    function mountGiscus(term) {
+      host.innerHTML = "";
+      const script = document.createElement("script");
+      script.src = "https://giscus.app/client.js";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      script.setAttribute("data-repo", REPO);
+      script.setAttribute("data-repo-id", REPO_ID);
+      script.setAttribute("data-category", "General");
+      script.setAttribute("data-mapping", "specific");
+      script.setAttribute("data-term", term);
+      script.setAttribute("data-strict", "1");
+      script.setAttribute("data-reactions-enabled", "1");
+      script.setAttribute("data-emit-metadata", "0");
+      script.setAttribute("data-input-position", "top");
+      script.setAttribute("data-theme", "dark");
+      script.setAttribute("data-lang", "en");
+      host.appendChild(script);
+    }
+
+    function openThread(term) {
+      titleEl.textContent = term;
+      blurbEl.textContent = THREADS[term];
+      mountGiscus(term);
+    }
+
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabs.forEach(t => {
+          t.classList.toggle("active", t === btn);
+          t.setAttribute("aria-selected", t === btn ? "true" : "false");
+        });
+        const term = btn.dataset.term;
+        history.replaceState(null, "", `#${term.toLowerCase().replace(/\s+/g, "-")}`);
+        openThread(term);
+      });
+    });
+
+    const hash = decodeURIComponent(location.hash.replace("#", "")).replace(/-/g, " ");
+    const initial = Object.keys(THREADS).find(name => name.toLowerCase() === hash.toLowerCase()) || "Essence Farms";
+    tabs.forEach(t => {
+      const on = t.dataset.term === initial;
+      t.classList.toggle("active", on);
+      t.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    openThread(initial);
+  </script>
+</body>
+</html>
