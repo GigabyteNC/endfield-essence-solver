@@ -17,6 +17,7 @@ const weaponDatabase = [
   { name: "Steel Tempest", category: "Sword", primaryStat: "Agility Boost", secondaryStat: "Physical DMG Boost", skillStat: "Combative" },
   { name: "Silver Light", category: "Sword", primaryStat: "Main Attribute Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
   { name: "Sunblade", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "Heat DMG Boost", skillStat: "Efficacy" },
+  { name: "Dessert Moment", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "Treatment Efficiency Boost", skillStat: "Medicant" },
 
   // ==========================================
   // GREATSWORDS
