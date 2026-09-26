@@ -207,6 +207,13 @@
       gap: 0.5rem;
     }
 
+    .weapon-art {
+      width: 100%;
+      height: 148px;
+      object-fit: contain;
+      display: block;
+    }
+
     .weapon-name {
       font-size: 1.1rem;
       font-weight: bold;
@@ -456,6 +463,17 @@
       return name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
     }
 
+    // Transparent WebP files live in weapons/<id>.webp.
+    // Add the weapon id here when that file is added.
+    const WEAPON_ART = new Set([
+      "artzy_tyrannical",
+      "dessert_moment",
+      "glorius_memory",
+      "lupine_scarlet",
+      "type_42_solemn_phalanx",
+      "umbra_of_frigid_eventide"
+    ]);
+
     // Extra display fields for weapons confirmed from in-game screenshots / prior solver entries
     const WEAPON_DETAILS = {
       "Bedazzling Night Debut": { id: "bedazzling_night_debut", type: "Polearm", rarity: 6, baseAtk: 500, primary: "Will Boost", secondary: "Treatment Efficiency Boost", special: "Medicant", specialFull: "Medicant: Shimmering Curtain" },
@@ -469,7 +487,8 @@
       "Umbra of Frigid Eventide": { id: "umbra_of_frigid_eventide", type: "Arts Unit", rarity: 6, baseAtk: 51, primary: "Agility Boost", secondary: "Attack Boost", special: "Detonate", specialFull: "Detonate: Hunter Instinct" },
       "Suffering's End": { id: "sufferings_end", type: "Arts Unit", rarity: 5, baseAtk: 50, primary: "Agility Boost", secondary: "Nature DMG Boost", special: "Detonate", specialFull: "Detonate: Dawn of the Long Night" },
       "Dreams of the Starry Beach": { id: "dreams_of_the_starry_beach", type: "Arts Unit", rarity: 6, baseAtk: 50, specialFull: "Infliction: Tidal Murmurs" },
-      "Dessert Moment": { id: "dessert_moment", type: "Sword", rarity: 5, baseAtk: 42, primary: "Strength Boost", secondary: "Treatment Efficiency Boost", special: "Medicant", specialFull: "Medicant: Sweetness and Dreams" }
+      "Dessert Moment": { id: "dessert_moment", type: "Sword", rarity: 5, baseAtk: 42, primary: "Strength Boost", secondary: "Treatment Efficiency Boost", special: "Medicant", specialFull: "Medicant: Sweetness and Dreams" },
+      "Glorius Memory": { id: "glorius_memory", type: "Sword" }
     };
 
     const catalog = typeof weaponDatabase !== "undefined" ? weaponDatabase : [];
@@ -587,14 +606,19 @@
           card.className = "weapon-item";
           const rarityLabel = w.rarity ? `${w.rarity}★ ` : "";
           const atkLabel = w.baseAtk ? ` &bull; Base ATK: ${w.baseAtk}` : "";
+          const art = WEAPON_ART.has(w.id)
+            ? `<img class="weapon-art" src="weapons/${w.id}.webp" alt="${w.name}" loading="lazy">`
+            : "";
+          const statTags = [
+            w.primary ? `<span class="stat-tag">${w.primary}</span>` : "",
+            w.secondary ? `<span class="stat-tag">${w.secondary}</span>` : "",
+            (w.specialFull || w.special) ? `<span class="stat-tag" style="border-left: 2px solid var(--accent-yellow);">${w.specialFull || w.special}</span>` : ""
+          ].join("");
           card.innerHTML = `
+            ${art}
             <h4 class="weapon-name">${w.name}</h4>
             <p class="weapon-meta">${rarityLabel}${w.type}${atkLabel}</p>
-            <div>
-              <span class="stat-tag">${w.primary}</span>
-              <span class="stat-tag">${w.secondary}</span>
-              <span class="stat-tag" style="border-left: 2px solid var(--accent-yellow);">${w.specialFull || w.special}</span>
-            </div>
+            <div>${statTags}</div>
           `;
           card.addEventListener("click", () => {
             document.getElementById("primaryStat").value = w.primary || "";
