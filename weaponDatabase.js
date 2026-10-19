@@ -30,6 +30,8 @@ const weaponDatabase = [
   { name: "Shattered Mountain", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Physical DMG Boost", skillStat: "Suppression" },
   { name: "Earthshaker", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Critical Rate Boost", skillStat: "Efficacy" },
   { name: "Colossus", category: "Greatsword", primaryStat: "Strength Boost", secondaryStat: "Physical DMG Boost", skillStat: "Combative" },
+  { name: "Long Heritage", category: "Greatsword", primaryStat: "Intellect Boost", secondaryStat: "Cryo DMG Boost", skillStat: "Efficacy" },
+  { name: "Jade Vessel", category: "Greatsword", primaryStat: "Intellect Boost", secondaryStat: "Cryo DMG Boost", skillStat: "Efficacy" },
 
   // ==========================================
   // POLEARMS

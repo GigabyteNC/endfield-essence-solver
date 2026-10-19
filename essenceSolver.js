@@ -71,6 +71,12 @@ const ALLUVIUM_NODES = [
     name: "Snowy Forest",
     secondary: ["Attack Boost", "HP Boost", "Heat DMG Boost", "Electric DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Arts DMG Boost", "Treatment Efficiency Boost"],
     skill: ["Assault", "Crusher", "Inspiring", "Brutality", "Medicant", "Detonate", "Twilight", "Flow"]
+  },
+  {
+    id: "sis_painting",
+    name: "Si's Painting",
+    secondary: ["Attack Boost", "Physical DMG Boost", "Heat DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost"],
+    skill: ["Suppression", "Pursuit", "Combative", "Infliction", "Fracture", "Detonate", "Flow", "Efficacy"]
   }
 ];
 

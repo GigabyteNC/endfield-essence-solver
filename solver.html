@@ -385,7 +385,7 @@
       "Twilight"
     ];
 
-    // Master 12-Zone Location Database Mapping
+    // Master 13-Zone Location Database Mapping
     const FARMING_LOCATIONS_DB = {
       "The Hub": [
         "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
@@ -446,6 +446,11 @@
         "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
         "Attack Boost", "HP Boost", "Heat DMG Boost", "Electric DMG Boost", "Critical Rate Boost", "Ultimate Gain Efficiency Boost", "Arts DMG Boost", "Treatment Efficiency Boost",
         "Assault", "Crusher", "Inspiring", "Brutality", "Medicant", "Detonate", "Twilight", "Flow"
+      ],
+      "Si's Painting": [
+        "Agility Boost", "Strength Boost", "Will Boost", "Intellect Boost", "Main Attribute Boost",
+        "Attack Boost", "Physical DMG Boost", "Heat DMG Boost", "Cryo DMG Boost", "Nature DMG Boost", "Critical Rate Boost", "Arts Intensity Boost", "Ultimate Gain Efficiency Boost",
+        "Suppression", "Pursuit", "Combative", "Infliction", "Fracture", "Detonate", "Flow", "Efficacy"
       ]
     };
 
@@ -488,7 +493,9 @@
       "Suffering's End": { id: "sufferings_end", type: "Arts Unit", rarity: 5, baseAtk: 50, primary: "Agility Boost", secondary: "Nature DMG Boost", special: "Detonate", specialFull: "Detonate: Dawn of the Long Night" },
       "Dreams of the Starry Beach": { id: "dreams_of_the_starry_beach", type: "Arts Unit", rarity: 6, baseAtk: 50, specialFull: "Infliction: Tidal Murmurs" },
       "Dessert Moment": { id: "dessert_moment", type: "Sword", rarity: 5, baseAtk: 42, primary: "Strength Boost", secondary: "Treatment Efficiency Boost", special: "Medicant", specialFull: "Medicant: Sweetness and Dreams" },
-      "Glorius Memory": { id: "glorius_memory", type: "Sword" }
+      "Glorius Memory": { id: "glorius_memory", type: "Sword" },
+      "Long Heritage": { id: "long_heritage", type: "Greatsword", rarity: 6, baseAtk: 49, primary: "Intellect Boost", secondary: "Cryo DMG Boost", special: "Efficacy", specialFull: "Efficacy: Secret History" },
+      "Jade Vessel": { id: "jade_vessel", type: "Greatsword", rarity: 6, baseAtk: 51, primary: "Intellect Boost", secondary: "Cryo DMG Boost", special: "Efficacy", specialFull: "Efficacy: Dabbles of Ink" }
     };
 
     const catalog = typeof weaponDatabase !== "undefined" ? weaponDatabase : [];
