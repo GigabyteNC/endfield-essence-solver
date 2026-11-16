@@ -18,6 +18,8 @@ const weaponDatabase = [
   { name: "Silver Light", category: "Sword", primaryStat: "Main Attribute Boost", secondaryStat: "Attack Boost", skillStat: "Suppression" },
   { name: "Sunblade", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "Heat DMG Boost", skillStat: "Efficacy" },
   { name: "Dessert Moment", category: "Sword", primaryStat: "Strength Boost", secondaryStat: "Treatment Efficiency Boost", skillStat: "Medicant" },
+  { name: "Lunar Calling", category: "Sword", primaryStat: "Will Boost", secondaryStat: "Attack Boost", skillStat: "Infliction" },
+  { name: "Complexed Industry", category: "Sword", primaryStat: "Will Boost", secondaryStat: "Electric DMG Boost", skillStat: "Detonate" },
 
   // ==========================================
   // GREATSWORDS
